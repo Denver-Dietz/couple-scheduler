@@ -1,0 +1,76 @@
+{
+  "theme": "Daytime & Morning",
+  "description": "Farmers markets, cafés, picnics, sunrise walks, and other daytime date activities.",
+  "ideas": [
+    {
+      "id": "morning_01",
+      "title": "Sunrise Rooftop Coffee",
+      "description": "Scout a rooftop, hilltop, or waterfront spot in advance, then set your alarm and show up with homemade coffee in a thermos to watch the sun come up together. Morning dates feel effortlessly romantic — the quiet, the golden light, and the sense that the whole day stretches ahead of you. NOAA's website lists exact sunrise times by location.",
+      "estimated_cost": "$",
+      "effort_level": "Low"
+    },
+    {
+      "id": "morning_02",
+      "title": "Farmers Market Cook-Off",
+      "description": "Arrive at your local farmers market at opening time and each person independently shops for ingredients with a $15 budget. Head home and cook your market hauls into a brunch dish simultaneously, then taste and score. The constraint of random seasonal produce forces creativity and the results are always memorable.",
+      "estimated_cost": "$",
+      "effort_level": "Medium"
+    },
+    {
+      "id": "morning_03",
+      "title": "Botanical Garden Slow Morning",
+      "description": "Visit a botanical garden before the day warms up and give yourselves a mini challenge: find the most unusual plant, the one with the most incredible scent, and the one that looks most out of place. Walk slowly, take photos, and end with brunch at a nearby café. It's unhurried and beautifully calm.",
+      "estimated_cost": "$",
+      "effort_level": "Low"
+    },
+    {
+      "id": "morning_04",
+      "title": "Café Crawl & Blind Coffee Tasting",
+      "description": "Visit 3–4 different independently owned coffee shops in a walkable neighborhood and order the same drink at each one — a latte, a black coffee, or a specialty drink. Rate each stop on ambiance, quality, and vibe. The conversation flows naturally, the caffeine keeps you energized, and you discover gems you'd never have visited alone.",
+      "estimated_cost": "$",
+      "effort_level": "Low"
+    },
+    {
+      "id": "morning_05",
+      "title": "Breakfast Picnic in the Park",
+      "description": "Pack a wicker basket with fresh pastries, fruit, soft cheeses, and a thermos of good coffee, then claim a blanket spot in a scenic park before the crowds arrive. The simplicity of eating fresh food outdoors together in the morning light — no phones, no rushing — is one of the most genuinely romantic things you can do.",
+      "estimated_cost": "$",
+      "effort_level": "Medium"
+    },
+    {
+      "id": "morning_06",
+      "title": "Morning Flower Market Date",
+      "description": "Find a local wholesale or specialty flower market that opens early and spend an hour picking out blooms for each other. Give each person a $10 budget to assemble a bouquet for their partner using whatever catches their eye. The result is a window into each other's aesthetic and a beautiful arrangement to bring home.",
+      "estimated_cost": "$",
+      "effort_level": "Low"
+    },
+    {
+      "id": "morning_07",
+      "title": "Sunrise Hike with Packed Brunch",
+      "description": "Choose a trail with a summit view timed to reach the top at sunrise. Pack a small backpack with croissants, fruit, and a thermos to eat at the top. The physical effort, the reward of the view, and the intimacy of sharing food while watching the world light up below you makes this one of the most memorable morning dates possible.",
+      "estimated_cost": "$",
+      "effort_level": "High"
+    },
+    {
+      "id": "morning_08",
+      "title": "Bike Ride to a Hidden Bakery",
+      "description": "Research the best independent bakery within a 3–5 mile bike ride of home, map a scenic route, and make the ride the date. Order something you'd never normally choose, sit at a window table, and take your time over coffee and pastries before riding back. The anticipation of the destination elevates the whole experience.",
+      "estimated_cost": "$",
+      "effort_level": "Medium"
+    },
+    {
+      "id": "morning_09",
+      "title": "Outdoor Morning Yoga Session",
+      "description": "Find a free weekend park yoga class or load a couples yoga video on a tablet and set up mats in the backyard or a quiet park corner. Morning endorphins are real, and the gentle vulnerability of trying yoga poses together — including the ones you can't manage — creates easy laughter and physical closeness.",
+      "estimated_cost": "$",
+      "effort_level": "Medium"
+    },
+    {
+      "id": "morning_10",
+      "title": "Bookshop Browsing & Brunch Date",
+      "description": "Spend an hour in an independent bookshop where each person must find a book they think the other will love — no genre restrictions. Exchange them over a long brunch at a nearby café and explain your choices. Reading the first chapters together that afternoon is the perfect close to a lazy, literary morning.",
+      "estimated_cost": "$$",
+      "effort_level": "Low"
+    }
+  ]
+}

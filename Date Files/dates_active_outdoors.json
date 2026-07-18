@@ -1,0 +1,66 @@
+{
+  "theme": "Active & Outdoors",
+  "description": "Hiking, sports, nature, and outdoor activities for energetic couples.",
+  "ideas": [
+    {
+      "id": "active_01",
+      "title": "Summit Hike & Picnic",
+      "description": "Choose a local trail with a rewarding viewpoint at the top and pack a small backpack with snacks to share at the summit. The shared physical effort and natural high of reaching the top together creates a powerful bonding moment. Turn it into a mini photo session to capture the moment.",
+      "image_prompt": "[ID: active_01] Two cartoon characters at the peak of a mountain summit, arms triumphantly raised, a colorful picnic spread of sandwiches, fruit, and a thermos on a blanket beside them. A sweeping valley view stretches behind them under a vivid blue sky. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation."
+    },
+    {
+      "id": "active_02",
+      "title": "Kayak or Canoe Adventure",
+      "description": "Rent a kayak or canoe at a local lake or river and paddle together for a morning or afternoon. Paddling requires coordination and patience, making it a surprisingly fun team-building exercise. Pack a waterproof bag with lunch and stop along the shore for a scenic break.",
+      "image_prompt": "[ID: active_02] Two cartoon characters paddling a bright red canoe across a glassy turquoise lake, mountain reflections shimmering below. A waterproof bag sits between them and both paddle with exaggerated focused expressions. Pine-covered slopes rise in the background. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation."
+    },
+    {
+      "id": "active_03",
+      "title": "Indoor Rock Climbing Date",
+      "description": "Head to an indoor climbing gym as total beginners and take turns belaying and encouraging each other on the wall. Rock climbing builds trust like almost no other activity — you're literally relying on each other for safety. Celebrate every completed route with high fives and post-climb smoothies.",
+      "image_prompt": "[ID: active_03] Two cartoon characters at a colorful indoor climbing wall with neon handholds, one reaching for a high hold while harnessed, the other belaying below with a confident thumbs-up. Post-climb smoothies wait on a bench nearby. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation."
+    },
+    {
+      "id": "active_04",
+      "title": "Geocaching Treasure Hunt",
+      "description": "Download a free geocaching app and set off on a GPS-guided treasure hunt through your local area. You'll discover hidden caches left by other explorers in parks, neighborhoods, and unexpected corners of your city. The shared goal and sense of discovery makes this endlessly playful and replayable.",
+      "image_prompt": "[ID: active_04] Two cartoon characters crouching beside a gnarly tree root in a park, eyes wide with excitement as they discover a small geocache container. A glowing GPS app map is visible on a phone between them. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation."
+    },
+    {
+      "id": "active_05",
+      "title": "Sunrise Yoga in the Park",
+      "description": "Find a free outdoor yoga class in a local park or follow a couples yoga video on a tablet brought to the backyard. Morning endorphins, fresh air, and the gentle vulnerability of trying new poses together makes this a surprisingly connective experience. Grab breakfast together immediately after.",
+      "image_prompt": "[ID: active_05] Two cartoon characters on yoga mats in a golden-lit park at sunrise, attempting a partner tree pose — one wobbling comically but smiling. Morning dew sparkles on the grass and birds arc across the sky above the glowing horizon. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation."
+    },
+    {
+      "id": "active_06",
+      "title": "Pickleball Showdown",
+      "description": "Book a pickleball court at a local rec center or community park — courts are widely available and cheap to rent. Neither of you needs prior experience; the rules are simple and the rallies get hilarious fast. Keep score and let the loser pick up the post-game snack.",
+      "image_prompt": "[ID: active_06] Two cartoon characters mid-rally on a bright blue and orange pickleball court, paddles swinging, the ball frozen between them. Both wear exaggerated competitive game-face expressions and a scoreboard behind the net shows a tied match. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation."
+    },
+    {
+      "id": "active_07",
+      "title": "Tandem Bike Ride to a Café",
+      "description": "Rent bikes (or grab your own) and map a scenic route to a café, bakery, or market neither of you has visited. The journey becomes the date — choose a route through parks, waterways, or charming neighborhoods. Reward yourselves with a long, leisurely brunch at the destination.",
+      "image_prompt": "[ID: active_07] Two cartoon characters riding bikes along a sunlit tree-lined path with baskets on their handlebars. In the distance a cozy cafe sign is visible. Autumn leaves drift across the path and birds perch on the branches overhead. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation."
+    },
+    {
+      "id": "active_08",
+      "title": "Snowshoe or Winter Trail Walk",
+      "description": "Rent snowshoes at a local outdoor gear shop and explore a snow-covered trail together during winter months. The quiet of a snow-blanked forest and the novelty of the activity make even a short loop feel like an adventure. Warm up afterward with hot cocoa and a shared blanket by a fireplace.",
+      "image_prompt": "[ID: active_08] Two cartoon characters in snowshoes on a snow-covered forest trail, bundled in bright scarves and puffer coats with small puffs of breath visible in the cold air. One holds a thermos while the other points at animal tracks in the pristine snow. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation."
+    },
+    {
+      "id": "active_09",
+      "title": "Paddleboard Sunset Session",
+      "description": "Rent stand-up paddleboards at a local lake or bay for an early evening session timed with sunset. Balancing on the boards is equal parts challenge and hilarity, and the golden-hour lighting on the water makes for stunning views and photos. Most rental shops offer beginner instruction included.",
+      "image_prompt": "[ID: active_09] Two cartoon characters on stand-up paddleboards on a shimmering lake at golden hour, one caught mid-fall with a massive comedic splash while the other grins from a safely balanced board. The orange and pink sunset reflects brilliantly on the water. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation."
+    },
+    {
+      "id": "active_10",
+      "title": "Botanical Garden Slow Walk",
+      "description": "Visit a botanical garden on a weekday morning before the crowds arrive and challenge each other to find the most unusual plant, the most beautiful flower, and the one that smells the best. Many botanical gardens are free or low-cost and offer a lush, almost meditative escape from daily life.",
+      "image_prompt": "[ID: active_10] Two cartoon characters meandering through a lush botanical garden, one pressing their nose deep into a giant tropical flower, the other photographing a spectacularly bizarre cactus. Towering exotic plants and vivid blooms fill every corner of the scene. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation."
+    }
+  ]
+}

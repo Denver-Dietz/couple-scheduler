@@ -1,0 +1,66 @@
+{
+  "theme": "Cozy At-Home",
+  "description": "Intimate, creative dates that can be done entirely at home.",
+  "ideas": [
+    {
+      "id": "cozy_01",
+      "title": "DIY Paint & Sip Night",
+      "description": "Pick a landscape or still life image you both love, open a bottle of wine, and attempt to recreate it side by side on canvas. No artistic skill required — in fact, the worse the paintings turn out, the more fun the night becomes. Frame the results and hang them as a reminder of the evening.",
+      "image_prompt": "[ID: cozy_01] Two cartoon characters in a cozy living room standing before easels, each holding up a hilariously bad painted portrait of the other — lopsided faces, wild colors, impossible proportions. Wine glasses sit on a side table and fairy lights twinkle in the background. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation."
+    },
+    {
+      "id": "cozy_02",
+      "title": "Indoor Camping Night",
+      "description": "Push the furniture aside and build a fort with blankets and pillows, string fairy lights overhead, and roll out sleeping bags inside your living room. Make s'mores in the oven or microwave, tell stories, and watch a nature documentary as your 'campfire.' Phones stay off for the whole evening.",
+      "image_prompt": "[ID: cozy_02] Two cartoon characters nestled inside a grand blanket fort strung with warm fairy lights, sleeping bags unrolled, toasting marshmallows over a tablet showing a campfire video. Pillows and stuffed animals pile at the edges for maximum coziness. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation."
+    },
+    {
+      "id": "cozy_03",
+      "title": "Mock Movie Theater Date",
+      "description": "Set up a projector or large screen, make homemade popcorn with three different flavor seasonings, and design a proper ticket stub for each other. Pick a film with meaning — your first movie together, a favorite, or something from each other's childhood. Dress up slightly to make it feel like an event.",
+      "image_prompt": "[ID: cozy_03] Two cartoon characters in a living room home theater setup, holding elaborately designed homemade ticket stubs, facing a glowing projector screen. Popcorn bowls with colorful seasoning toppings sit between them and the room is draped with velvet curtains. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation."
+    },
+    {
+      "id": "cozy_04",
+      "title": "At-Home Spa Night",
+      "description": "Set the bathroom and bedroom with candles, play ambient spa music, and take turns giving each other face masks, massages, and foot soaks. Prepare a tray of herbal teas, sparkling water, and light snacks beforehand so neither person has to break the mood mid-session. Pure indulgent relaxation, zero cost.",
+      "image_prompt": "[ID: cozy_04] Two cartoon characters in a candlelit bathroom with thick green face masks applied and cucumber slices over their eyes, steaming mugs of herbal tea on a tray beside them. Soft ambient lighting, rose petals on the floor, and gentle steam create a spa-like glow. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation."
+    },
+    {
+      "id": "cozy_05",
+      "title": "Recreate Your First Date",
+      "description": "Order takeout from the restaurant where you had your first meal together, or cook a version of it at home. Play the music that was on when you met, look at photos from early in your relationship, and tell each other what you were thinking on that very first date. Nostalgia is one of the most powerful romantic tools.",
+      "image_prompt": "[ID: cozy_05] Two cartoon characters at a home dinner table lovingly decorated to match a specific restaurant, sharing familiar takeout, flipping through a small photo album of early relationship memories. Soft candles and fairy lights fill the intimate scene. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation."
+    },
+    {
+      "id": "cozy_06",
+      "title": "Love Letter Exchange Dinner",
+      "description": "Each person secretly writes a heartfelt letter to the other before the evening begins. Set the table with candles and flowers, cook a simple nice dinner together, and exchange and read the letters aloud over the meal. It's vulnerable, meaningful, and creates a keepsake neither of you will throw away.",
+      "image_prompt": "[ID: cozy_06] Two cartoon characters at a beautifully set candlelit dinner table, each holding an open handwritten letter with deeply emotional expressions — one teary-eyed, one broadly smiling. Fresh flowers, flickering candles, and a home-cooked meal surround them. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation."
+    },
+    {
+      "id": "cozy_07",
+      "title": "Couples Trivia & Game Marathon",
+      "description": "Write Jenga blocks with Truth or Dare questions before the night begins, then alternate between that and your favorite board or card games. Make it competitive with a running tally and let the winner choose the next date activity. Have snacks and drinks ready so the energy stays high all evening.",
+      "image_prompt": "[ID: cozy_07] Two cartoon characters on a living room floor surrounded by board games, Jenga blocks covered in handwritten questions, tally score sheets, and a spread of snacks. Both are intensely focused on an ongoing game with half-eaten snacks nearby. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation."
+    },
+    {
+      "id": "cozy_08",
+      "title": "Photo Album & Time Capsule Night",
+      "description": "Print out photos from your relationship and spend the evening building a physical scrapbook or photo album together. Write captions, add mementos, and create a small time capsule — sealed with a date to open it in one, three, or five years. It's deeply sentimental and costs almost nothing.",
+      "image_prompt": "[ID: cozy_08] Two cartoon characters sitting on a rug surrounded by printed photos, scissors, glue sticks, and scrapbook pages. They hold up a finished spread together, smiling. A sealed envelope labeled with a future date sits prominently in the center of the scene. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation."
+    },
+    {
+      "id": "cozy_09",
+      "title": "Myers-Briggs & Personality Test Night",
+      "description": "Take turns doing online personality tests — Myers-Briggs, Enneagram, love language quizzes, and Hogwarts house sorting — and compare your results in depth. Read each other the descriptions and debate how accurate they are. The conversation that unfolds is genuine, revealing, and often hilarious.",
+      "image_prompt": "[ID: cozy_09] Two cartoon characters on a cozy couch, each with a laptop showing personality quiz results. One holds up a printed MBTI card with a shocked expression. Quiz charts, Enneagram diagrams, and highlighters litter the coffee table between them. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation."
+    },
+    {
+      "id": "cozy_10",
+      "title": "Fancy Restaurant at Home",
+      "description": "Transform your dining room with candles, borrowed tablecloths, printed menus, and a multi-course meal you cook together. Dress up as if going to a Michelin-star restaurant and play soft jazz throughout. The effort and intentionality of recreating the restaurant experience at home is genuinely more romantic than the real thing.",
+      "image_prompt": "[ID: cozy_10] Two cartoon characters in formal dinner attire seated at a home dining table transformed into a fine restaurant — printed menus, cloth napkins, candelabras, and a hand-drawn 'Maison de Nous' sign on the wall. A vinyl record spins on a turntable nearby. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation."
+    }
+  ]
+}

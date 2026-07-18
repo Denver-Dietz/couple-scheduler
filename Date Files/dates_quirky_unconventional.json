@@ -1,0 +1,66 @@
+{
+  "theme": "Quirky & Unconventional",
+  "description": "Arcade nights, weird trivia, thrifting for each other, and delightfully unusual local experiences.",
+  "ideas": [
+    {
+      "id": "quirky_01",
+      "title": "Thrift Store Outfit Challenge",
+      "description": "Head to a thrift or vintage store each with a $15 budget and the mission of building the other person an outfit — from shoes to accessories. Try on your partner's selections without editing them and document the results in a photo shoot. The reveals are always outrageous and the laughter is guaranteed.",
+      "image_prompt": "[ID: quirky_01] Two cartoon characters in a thrift store dressing room, each modeling an absolutely outrageous vintage outfit chosen by the other — clashing patterns, oversized hats, neon belts. Floor-length mirrors and price-tag-covered racks surround them on all sides. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation."
+    },
+    {
+      "id": "quirky_02",
+      "title": "Arcade Bar Night",
+      "description": "Find a bar arcade that combines vintage games with cocktails and spend the evening competing on skee-ball, air hockey, pinball, and classic arcade cabinets. Keep a running tally of wins and let the ultimate loser leave an excessively dramatic tip. The combination of nostalgia, competition, and drinks is a consistently great night.",
+      "image_prompt": "[ID: quirky_02] Two cartoon characters at an arcade bar, one mid-skee-ball throw with full athletic form, the other cheering from beside a pinball machine. Vintage cabinet screens glow in neon colors behind them and drinks rest on the ledge. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation."
+    },
+    {
+      "id": "quirky_03",
+      "title": "Pub Trivia Night as a Team",
+      "description": "Find a local bar hosting weekly pub trivia and enter as a two-person team with a brilliantly terrible team name. The format forces communication, reveals each other's obscure knowledge gaps, and the communal energy of a packed trivia bar is unlike any other date setting. Win or lose, the post-game debate is the real entertainment.",
+      "image_prompt": "[ID: quirky_03] Two cartoon characters hunched over an answer sheet at a bar trivia table, whispering intensely to each other. Their absurd team name card sits visibly on the table and a scoreboard on the wall shows them in second-to-last place with three rounds still to go. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation."
+    },
+    {
+      "id": "quirky_04",
+      "title": "Open Mic Night Performance",
+      "description": "Find a local open mic night and sign up to perform something together — a joke, a terrible song, a dramatic reading, or even an improvised poem. The shared vulnerability of performing for a live audience, even badly, creates a bond that a hundred conventional dates couldn't. Even going just to watch and heckle softly is a great time.",
+      "image_prompt": "[ID: quirky_04] Two cartoon characters on a small bare-bones open mic stage — one strumming a guitar with dramatically incorrect technique, the other belting into a microphone with exaggerated operatic flair. A small audience of cartoon characters watches with varying expressions. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation."
+    },
+    {
+      "id": "quirky_05",
+      "title": "Flea Market Treasure Hunt",
+      "description": "Visit a local flea market or antique fair each with a $10 budget and the mission of finding the other person the weirdest, most wonderful, or most deeply puzzling object available. Exchange your finds at a café afterward and explain the logic — or total lack of it — behind your choices. It's a window into how each of you sees the world.",
+      "image_prompt": "[ID: quirky_05] Two cartoon characters at a bustling flea market, each holding up a completely bizarre vintage object — a taxidermied squirrel lamp, a painted portrait of a stranger — for the other's inspection. Overflowing stalls of treasures and oddities stretch in every direction. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation."
+    },
+    {
+      "id": "quirky_06",
+      "title": "Historic Cemetery Walk",
+      "description": "Download a walking map for a local historic cemetery and explore the headstones, reading epitaphs and researching the most interesting figures on your phone as you go. Many old cemeteries are visually stunning public parks and the history they contain is genuinely fascinating. Bring coffee and treat it as a slow, curious stroll.",
+      "image_prompt": "[ID: quirky_06] Two cartoon characters at dusk in a beautifully ornate historic cemetery, coffees in hand, reading an interesting epitaph on an elaborate headstone. Warm amber light rakes across the gravestones and ancient mossy trees frame the atmospheric scene. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation."
+    },
+    {
+      "id": "quirky_07",
+      "title": "Vintage Photo Studio Shoot",
+      "description": "Visit a vintage or old-timey portrait studio where you choose period costumes — Victorian, Wild West, 1920s — and get professionally lit photos taken together. The results are hilariously great and you walk away with physical prints that are genuinely unlike any other couple photo you own. No photography skills required.",
+      "image_prompt": "[ID: quirky_07] Two cartoon characters in full Wild West costumes — hats, vests, boots — striking dramatic poses in front of a painted Western backdrop at an old-timey portrait studio. Freshly printed sepia-tone photo strips hang to dry from a line behind them. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation."
+    },
+    {
+      "id": "quirky_08",
+      "title": "Sensory Deprivation Float Tank",
+      "description": "Book individual float tank sessions back-to-back at a float spa. Each person spends 60 minutes in a soundproof, lightless tank of body-temperature saltwater — an experience that ranges from bizarre to profoundly meditative. Comparing your experiences over dinner afterward is endlessly fascinating and reveals very different inner worlds.",
+      "image_prompt": "[ID: quirky_08] Two cartoon characters each floating serenely in separate egg-shaped float tank pods, blissful smiles on their faces. Soft bioluminescent blue-green light glows from the water around them and the room is perfectly still and quiet. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation."
+    },
+    {
+      "id": "quirky_09",
+      "title": "Board Game Café Marathon",
+      "description": "Visit a board game café with access to hundreds of titles and commit to playing at least four games you've never tried before — including at least one strategy game, one word game, and one that neither of you fully understands. The absurdity of learning new games mid-play, arguing over rules, and celebrating small wins is a surprisingly great date format.",
+      "image_prompt": "[ID: quirky_09] Two cartoon characters at a board game cafe table, four new games stacked to one side, fully absorbed in a bewilderingly complex strategy game. Cards, tokens, and rule sheets cover every inch of the table while their coffee goes cold beside them. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation."
+    },
+    {
+      "id": "quirky_10",
+      "title": "Night Kayaking with Bioluminescence",
+      "description": "Book a guided night kayaking tour in a location known for bioluminescent waters — certain bays and inlets where the water glows blue-green when disturbed. Paddling through glowing water together in near-total darkness is surreal, otherworldly, and completely unlike any other experience. Seasonal and location-specific, but worth planning a trip around.",
+      "image_prompt": "[ID: quirky_10] Two cartoon characters paddling kayaks across a dark bay at night, their paddles stirring vivid bioluminescent blue-green glowing water beneath them. Stars are reflected on the calm surface and a faint shoreline glows in the far distance. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation."
+    }
+  ]
+}

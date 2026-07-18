@@ -1,0 +1,14 @@
+repo_path: C:\Users\Denver\.gemini\antigravity\scratch\couple-scheduler
+output_dir: C:\Users\Denver\.gemini\antigravity\scratch\couple-scheduler\NotebookLM\output
+max_words: 200000
+max_file_size: 10485760
+skip_patterns:
+  - "*.log"
+  - "*.tmp"
+  - "*.pyc"
+skip_dirs:
+  - "__pycache__"
+  - "node_modules"
+  - ".venv"
+  - ".git"
+verbose: false

@@ -1,0 +1,86 @@
+{
+  "theme": "Art & Culture",
+  "description": "Museums, galleries, theater, pottery, live music, and creative cultural experiences.",
+  "ideas": [
+    {
+      "id": "art_01",
+      "title": "Gallery Hop & Coffee Crawl",
+      "description": "Map out 3–4 contemporary art galleries in your city and spend an afternoon moving between them, stopping at a café between each one. At every gallery, each person picks the one piece they'd hang in their home and explains why. The conversation it sparks is more interesting than any guided tour.",
+      "image_prompt": "[ID: art_01] Two cartoon characters in a sleek contemporary art gallery, holding coffee cups, one animatedly pointing at a large abstract painting while explaining their choice to the other. Bold colorful paintings line white walls and soft spotlights illuminate each piece. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation.",
+      "hasImage": true,
+      "imageUrl": "/dates/images/art_01.png"
+    },
+    {
+      "id": "art_02",
+      "title": "Pottery Wheel Class for Two",
+      "description": "Book a beginner pottery class and learn to center clay on the wheel together — yes, Ghost-style. Most studios provide all materials, tools, and firing of your finished piece so you take home a keepsake you actually made. BYOB policies at many studios add to the fun.",
+      "image_prompt": "[ID: art_02] Two cartoon characters at pottery wheels in a warm clay-scented studio, both with clay-covered hands shaping spinning vessels and laughing. One leans over the other's shoulder in a playful Ghost-movie pose. Finished pots dry on shelves behind them. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation.",
+      "hasImage": true,
+      "imageUrl": "/dates/images/art_02.png"
+    },
+    {
+      "id": "art_03",
+      "title": "Live Jazz or Blues Night",
+      "description": "Find an intimate local jazz bar or blues venue with live music and settle in for a few sets with cocktails. Small venues offer a warmth and musical authenticity that large concert halls can't replicate — you're close enough to watch the musicians' faces. Let the music carry the conversation.",
+      "image_prompt": "[ID: art_03] Two cartoon characters at a tiny intimate jazz bar, seated at a small round table with glowing cocktails, eyes half-closed and swaying to the music. A saxophonist is spotlit on a small stage, musical notes visually floating through the warm amber-lit air. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation.",
+      "hasImage": true,
+      "imageUrl": "/dates/images/art_03.png"
+    },
+    {
+      "id": "art_04",
+      "title": "Theater or Improv Comedy Show",
+      "description": "Book tickets to a local theater production — community theater is often excellent and cheap — or an improv comedy night. Improv shows in particular are uniquely interactive and unpredictably hilarious, making them a great shared experience even if neither of you is a theater person.",
+      "image_prompt": "[ID: art_04] Two cartoon characters in a theater audience, doubled over laughing as improv performers on stage react wildly to an audience suggestion card. Stage spotlights, red curtains, and a packed house of other cartoon audience members fill the scene. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation.",
+      "hasImage": true,
+      "imageUrl": "/dates/images/art_04.png"
+    },
+    {
+      "id": "art_05",
+      "title": "Museum After-Hours VIP Tour",
+      "description": "Some museums host special evening events — wine receptions, candlelit tours, or members-only nights — where you can experience the collections without crowds. Research your local museums for these events; they transform a familiar cultural institution into something entirely new and intimate.",
+      "image_prompt": "[ID: art_05] Two cartoon characters with wine glasses, alone after hours in a dimly lit museum gallery. A single dramatic spotlight illuminates a large painting. The rest of the grand hall stretches into shadow behind them, creating a sense of exclusive intimacy. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation.",
+      "hasImage": true,
+      "imageUrl": "/dates/images/art_05.png"
+    },
+    {
+      "id": "art_06",
+      "title": "Glassblowing Studio Workshop",
+      "description": "Sign up for a glassblowing introductory class where you'll shape molten glass into a small vessel or ornament with guidance from a skilled instructor. The fire, the skill, and the beautiful result make this unlike any other creative date. You leave with a one-of-a-kind piece you made together.",
+      "image_prompt": "[ID: art_06] Two cartoon characters in safety goggles at a glassblowing studio, watching a glowing orange molten glass bubble being shaped on a blowpipe. Firelight reflects on their faces and colorful finished glass pieces glow on shelves behind them. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation.",
+      "hasImage": true,
+      "imageUrl": "/dates/images/art_06.png"
+    },
+    {
+      "id": "art_07",
+      "title": "Outdoor Concert or Street Festival",
+      "description": "Find a free outdoor concert series, open-air festival, or street performance in your area and make an evening of it — bring a blanket, pack snacks, and settle in. The combination of live music, open sky, and a relaxed crowd creates an effortlessly romantic atmosphere with no ticket required.",
+      "image_prompt": "[ID: art_07] Two cartoon characters on a blanket at a packed outdoor concert at dusk, a live band on a glowing stage before them, string lights crisscrossing overhead. A city skyline silhouettes against a purple-to-orange gradient sky in the distance. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation.",
+      "hasImage": true,
+      "imageUrl": "/dates/images/art_07.png"
+    },
+    {
+      "id": "art_08",
+      "title": "Paint & Sip Studio Night",
+      "description": "Book a guided paint-and-sip class at a local studio where an instructor walks you both through recreating the same painting step by step. The BYOB format keeps it relaxed and the side-by-side comparison of your finished canvases — always hilariously different — becomes the night's highlight.",
+      "image_prompt": "[ID: art_08] Two cartoon characters at a paint-and-sip class, comparing their wildly different interpretations of the same guided painting — one photorealistic attempt, one total abstract disaster. BYOB bottles line the table and an amused instructor smiles in the background. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation.",
+      "hasImage": true,
+      "imageUrl": "/dates/images/art_08.png"
+    },
+    {
+      "id": "art_09",
+      "title": "Historic Walking Tour",
+      "description": "Book a guided walking tour of a historic neighborhood, cemetery, or architectural district in your city. Many history museums and local tour companies offer themed walks covering everything from architectural heritage to true crime. You'll discover corners of a familiar city that feel completely new.",
+      "image_prompt": "[ID: art_09] Two cartoon characters on a cobblestone street following a costumed historic tour guide holding a lantern. Old stone buildings and gas lamps surround them while illustrated historical fact bubbles pop up over notable landmarks. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation.",
+      "hasImage": true,
+      "imageUrl": "/dates/images/art_09.png"
+    },
+    {
+      "id": "art_10",
+      "title": "Silent Disco Dance Night",
+      "description": "Find a local silent disco event where participants wear wireless headphones and can switch between different DJ channels. The experience is surreal and hilarious — from the outside, everyone appears to be dancing to nothing. Pick the same channel, lose yourselves in the music, and dance until you're breathless.",
+      "image_prompt": "[ID: art_10] A crowd of cartoon characters at a silent disco, all wearing large colorful wireless headphones and dancing wildly. Two characters in the center share the same channel, dancing in perfect sync while everyone else moves to entirely different rhythms. A high-quality, vibrant, flat-vector illustration in the iconic Kurzgesagt style. Use a high-saturation color palette with bold, clean lines, flat shapes, and minimal shading. The scene should be whimsical, educational, and polished, featuring charming character designs, expressive poses, and a clean, clutter-free composition. The aesthetic should be modern, professional, and visually engaging, suitable for high-end educational animation.",
+      "hasImage": true,
+      "imageUrl": "/dates/images/art_10.png"
+    }
+  ]
+}
