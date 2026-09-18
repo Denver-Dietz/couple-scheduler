@@ -1086,17 +1086,51 @@ def api_get_latest_schedule():
 # --- Journal ---
 @app.get("/api/journal")
 def api_get_journal_entries():
+    """
+    Retrieves all journal entries with their associated comments and reactions.
+
+    Why:
+    - Resolves an N+1 query issue by aggregating comments and reactions in memory
+      using a dictionary lookup instead of issuing separate SELECT queries for every entry.
+    """
     with get_db() as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM journal_entries ORDER BY created_at DESC")
         entries = [dict(row) for row in cursor.fetchall()]
         
-        for entry in entries:
-            cursor.execute("SELECT * FROM journal_comments WHERE entry_id = ? ORDER BY created_at ASC", (entry["id"],))
-            entry["comments"] = [dict(row) for row in cursor.fetchall()]
+        if not entries:
+            return []
             
-            cursor.execute("SELECT * FROM journal_reactions WHERE entry_id = ?", (entry["id"],))
-            entry["reactions"] = [dict(row) for row in cursor.fetchall()]
+        entry_ids = [entry['id'] for entry in entries]
+        placeholders = ','.join('?' for _ in entry_ids)
+
+        # Fetch all comments in a single query
+        cursor.execute(f"SELECT * FROM journal_comments WHERE entry_id IN ({placeholders}) ORDER BY created_at ASC", entry_ids)
+        all_comments = cursor.fetchall()
+
+        comments_by_entry = {}
+        for row in all_comments:
+            comment = dict(row)
+            entry_id = comment['entry_id']
+            if entry_id not in comments_by_entry:
+                comments_by_entry[entry_id] = []
+            comments_by_entry[entry_id].append(comment)
+
+        # Fetch all reactions in a single query
+        cursor.execute(f"SELECT * FROM journal_reactions WHERE entry_id IN ({placeholders})", entry_ids)
+        all_reactions = cursor.fetchall()
+
+        reactions_by_entry = {}
+        for row in all_reactions:
+            reaction = dict(row)
+            entry_id = reaction['entry_id']
+            if entry_id not in reactions_by_entry:
+                reactions_by_entry[entry_id] = []
+            reactions_by_entry[entry_id].append(reaction)
+
+        for entry in entries:
+            entry["comments"] = comments_by_entry.get(entry["id"], [])
+            entry["reactions"] = reactions_by_entry.get(entry["id"], [])
             
         return entries
 
