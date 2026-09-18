@@ -43,21 +43,21 @@ export default function LogisticsPanel({ tripData, refresh, activeUser }) {
               <div style={{ fontWeight: 500, fontSize: '0.8rem', color: 'var(--text-muted)' }}>{item.type}</div>
               <div style={{ fontSize: '0.9rem' }}>{item.details}</div>
             </div>
-            <button onClick={() => handleDelete(item.id)} className="btn btn-outline" style={{ padding: '4px', border: 'none' }}><Trash2 size={14}/></button>
+            <button aria-label="Delete Logistics Item" title="Delete Logistics Item" onClick={() => handleDelete(item.id)} className="btn btn-outline" style={{ padding: '4px', border: 'none' }}><Trash2 size={14}/></button>
           </div>
         ))}
       </div>
 
       <div className="flex gap-2 mt-auto" style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1rem' }}>
-        <select className="input" value={type} onChange={e => setType(e.target.value)} style={{ width: '120px' }}>
+        <select aria-label="Logistics Type" className="input" value={type} onChange={e => setType(e.target.value)} style={{ width: '120px' }}>
           <option>Flights</option>
           <option>Hotels</option>
           <option>Transportation</option>
           <option>Travel Documents</option>
           <option>Packing List</option>
         </select>
-        <input className="input" placeholder="Details..." value={details} onChange={e => setDetails(e.target.value)} style={{ flex: 1 }} />
-        <button className="btn btn-primary" onClick={handleAdd}><Plus size={16}/></button>
+        <input aria-label="Logistics Details" className="input" placeholder="Details..." value={details} onChange={e => setDetails(e.target.value)} style={{ flex: 1 }} />
+        <button aria-label="Add Logistics Item" title="Add Logistics Item" className="btn btn-primary" onClick={handleAdd}><Plus size={16}/></button>
       </div>
     </div>
   );

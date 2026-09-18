@@ -1,0 +1,3 @@
+## 2024-05-16 - Icon-only Buttons A11y Pattern
+**Learning:** Found a widespread pattern across interactive panels (TripPlanner panels: Wishlist, Logistics, Budget, Itinerary) where icon-only action buttons (like Delete, Add, ThumbsUp/Down) lack `aria-label`s and `title` tooltips. This severely hinders screen reader accessibility and makes the purpose of these buttons unclear to users without hovering or using assistive tech. Similarly, inline quick-add inputs lack descriptive labels.
+**Action:** Always ensure that any icon-only button added to a component has both an `aria-label` for screen readers and a `title` for visual tooltips. Ensure quick-add inputs without explicit `<label>` tags have an `aria-label` describing their purpose.
