@@ -115,7 +115,7 @@ export default function TripPlannerMain({ activeUser }) {
                 <div key={trip.id} className="card hoverable cursor-pointer flex flex-col" onClick={() => setActiveTripId(trip.id)}>
                   <div className="flex justify-between items-start mb-2">
                     <h3 style={{ margin: 0 }}>{trip.name || 'Unnamed Trip'}</h3>
-                    <button className="btn btn-outline" style={{ padding: '4px', border: 'none' }} onClick={(e) => { e.stopPropagation(); setTripToDelete(trip.id); }}>
+                    <button aria-label="Delete trip" className="btn btn-outline" style={{ padding: '4px', border: 'none' }} onClick={(e) => { e.stopPropagation(); setTripToDelete(trip.id); }}>
                       <Trash2 size={16} />
                     </button>
                   </div>

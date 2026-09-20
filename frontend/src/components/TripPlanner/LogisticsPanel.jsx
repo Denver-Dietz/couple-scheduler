@@ -43,7 +43,7 @@ export default function LogisticsPanel({ tripData, refresh, activeUser }) {
               <div style={{ fontWeight: 500, fontSize: '0.8rem', color: 'var(--text-muted)' }}>{item.type}</div>
               <div style={{ fontSize: '0.9rem' }}>{item.details}</div>
             </div>
-            <button onClick={() => handleDelete(item.id)} className="btn btn-outline" style={{ padding: '4px', border: 'none' }}><Trash2 size={14}/></button>
+            <button aria-label="Delete logistic item" onClick={() => handleDelete(item.id)} className="btn btn-outline" style={{ padding: '4px', border: 'none' }}><Trash2 size={14}/></button>
           </div>
         ))}
       </div>
@@ -57,7 +57,7 @@ export default function LogisticsPanel({ tripData, refresh, activeUser }) {
           <option>Packing List</option>
         </select>
         <input className="input" placeholder="Details..." value={details} onChange={e => setDetails(e.target.value)} style={{ flex: 1 }} />
-        <button className="btn btn-primary" onClick={handleAdd}><Plus size={16}/></button>
+        <button aria-label="Add logistic item" className="btn btn-primary" onClick={handleAdd}><Plus size={16}/></button>
       </div>
     </div>
   );
