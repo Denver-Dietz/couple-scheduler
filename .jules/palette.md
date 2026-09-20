@@ -1,0 +1,3 @@
+## 2024-10-24 - Interactive Form Toggles and Actions in List Views
+**Learning:** Icon-only buttons used for expanding inline forms and deleting list items frequently lack accessible labels and tooltips, making them completely opaque to screen reader users and confusing for mouse users who depend on hover contexts.
+**Action:** Always ensure dynamic toggle states (like form show/hide actions) provide context-aware `aria-label` and `title` attributes that update with the state. Similarly, ensure destructive actions explicitly name the entity they affect (e.g., "Delete goal X") to avoid ambiguity.
