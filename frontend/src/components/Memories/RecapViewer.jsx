@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { api, BACKEND_URL } from '../../utils/api';
-import { X, Play, Pause, Volume2, VolumeX } from 'lucide-react';
+import RecapControls from './RecapControls';
+import RecapProgressBar from './RecapProgressBar';
+import RecapSlide from './RecapSlide';
 
 export default function RecapViewer({ onClose }) {
   const [recapData, setRecapData] = useState([]);
@@ -84,82 +86,27 @@ export default function RecapViewer({ onClose }) {
         muted={isMuted}
       />
 
-      {/* Controls */}
-      <div style={{ position: 'absolute', top: '20px', right: '20px', zIndex: 1001, display: 'flex', gap: '1rem' }}>
-        <button className="btn" style={{ background: 'rgba(255,255,255,0.2)', color: 'white', border: 'none', padding: '0.5rem' }} onClick={() => setIsMuted(!isMuted)}>
-          {isMuted ? <VolumeX size={24} /> : <Volume2 size={24} />}
-        </button>
-        <button className="btn" style={{ background: 'rgba(255,255,255,0.2)', color: 'white', border: 'none', padding: '0.5rem' }} onClick={() => setIsPlaying(!isPlaying)}>
-          {isPlaying ? <Pause size={24} /> : <Play size={24} />}
-        </button>
-        <button className="btn" style={{ background: 'rgba(255,255,255,0.2)', color: 'white', border: 'none', padding: '0.5rem' }} onClick={onClose}>
-          <X size={24} />
-        </button>
-      </div>
+      <RecapControls
+        isMuted={isMuted}
+        setIsMuted={setIsMuted}
+        isPlaying={isPlaying}
+        setIsPlaying={setIsPlaying}
+        onClose={onClose}
+      />
 
-      {/* Progress Bar */}
-      <div style={{ position: 'absolute', top: '0', left: '0', right: '0', height: '4px', background: 'rgba(255,255,255,0.2)', zIndex: 1001 }}>
-        <div style={{ 
-          height: '100%', 
-          background: 'white', 
-          width: `${((currentIndex + 1) / recapData.length) * 100}%`,
-          transition: 'width 0.5s ease'
-        }}></div>
-      </div>
+      <RecapProgressBar
+        currentIndex={currentIndex}
+        totalLength={recapData.length}
+      />
 
       {/* The Slides */}
       {recapData.map((memory, index) => (
-        <div 
+        <RecapSlide
           key={memory.id}
-          style={{
-            position: 'absolute',
-            top: 0, left: 0, right: 0, bottom: 0,
-            opacity: index === currentIndex ? 1 : 0,
-            transition: 'opacity 1s ease-in-out',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center'
-          }}
-        >
-          {/* Ken Burns effect via CSS animation inline (or injected style) */}
-          <style>
-            {`
-              @keyframes kenburns-${memory.id} {
-                0% { transform: scale(1) translate(0, 0); }
-                100% { transform: scale(1.1) translate(${index % 2 === 0 ? '-2%' : '2%'}, ${index % 3 === 0 ? '2%' : '-2%'}); }
-              }
-            `}
-          </style>
-          
-          <img 
-            src={`${BACKEND_URL}${memory.storage_url}`} 
-            alt="Memory"
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              animation: index === currentIndex ? `kenburns-${memory.id} 10s ease-out forwards` : 'none'
-            }}
-          />
-          
-          {/* Caption Overlay */}
-          <div style={{
-            position: 'absolute',
-            bottom: '10%',
-            left: '10%',
-            right: '10%',
-            textAlign: 'center',
-            color: 'white',
-            textShadow: '0 2px 4px rgba(0,0,0,0.8)',
-            background: 'linear-gradient(transparent, rgba(0,0,0,0.7))',
-            padding: '2rem',
-            borderRadius: '12px'
-          }}>
-            <h2 style={{ fontSize: '2.5rem', margin: '0 0 1rem 0' }}>{new Date(memory.captured_at + 'Z').toLocaleDateString(undefined, { month: 'long', year: 'numeric' })}</h2>
-            <p style={{ fontSize: '1.5rem', margin: 0 }}>{memory.caption}</p>
-          </div>
-        </div>
+          memory={memory}
+          index={index}
+          currentIndex={currentIndex}
+        />
       ))}
     </div>
   );
