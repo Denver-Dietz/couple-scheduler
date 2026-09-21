@@ -338,11 +338,16 @@ def api_update_commitment(item_id: str, payload: CommitmentUpdatePayload):
 
     with get_db() as conn:
         cursor = conn.cursor()
+
+        # Security: Whitelist allowed fields to prevent SQL injection
+        ALLOWED_FIELDS = {'title', 'start_time', 'end_time', 'is_fixed', 'user_id', 'description', 'color'}
+
         update_fields = []
         params = []
         for field, value in payload.model_dump(exclude_unset=True).items():
-            update_fields.append(f"{field} = ?")
-            params.append(value)
+            if field in ALLOWED_FIELDS:
+                update_fields.append(f"{field} = ?")
+                params.append(value)
             
         if update_fields:
             params.append(item_id)
@@ -1239,8 +1244,12 @@ def api_record_swipe(payload: SwipePayload):
         record = cursor.fetchone()
         
         if record:
-            col = "user1_swipe" if payload.user_id == "user1" else "user2_swipe"
-            cursor.execute(f"UPDATE date_matches SET {col} = ? WHERE date_idea_id = ?", (payload.direction, payload.date_idea_id))
+            if payload.user_id == "user1":
+                cursor.execute("UPDATE date_matches SET user1_swipe = ? WHERE date_idea_id = ?", (payload.direction, payload.date_idea_id))
+            elif payload.user_id == "user2":
+                cursor.execute("UPDATE date_matches SET user2_swipe = ? WHERE date_idea_id = ?", (payload.direction, payload.date_idea_id))
+            else:
+                return {"status": "error", "message": "Invalid user_id"}
         else:
             u1_val = payload.direction if payload.user_id == "user1" else "none"
             u2_val = payload.direction if payload.user_id == "user2" else "none"
