@@ -126,6 +126,35 @@ export default function MonthlyCalendar({ activeUser }) {
     }
   };
 
+  const renderEvent = (evt, idx) => {
+    const uid = evt.user_id || 'both';
+    const colorClass = uid === 'user1' ? 'u1-event' : uid === 'user2' ? 'u2-event' : 'both-event';
+    const isOwner = uid === activeUser || uid === 'both';
+    const isSlotEditable = evt.item_id && isOwner;
+
+    return (
+      <div
+        key={idx}
+        className={`calendar-event-pill ${evt.is_fixed ? 'fixed-event' : 'tentative-event'} ${colorClass}`}
+      >
+        {isSlotEditable && (
+          <button
+            className="edit-pencil-btn"
+            style={{ position: 'absolute', top: '2px', right: '2px', background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '4px', padding: '2px', color: 'var(--text-muted)', cursor: 'pointer', opacity: 0, transition: 'opacity 0.2s', zIndex: 10 }}
+            onClick={(e) => {
+              e.stopPropagation();
+              setSelectedEvent(evt);
+            }}
+          >
+            <Pencil size={10} />
+          </button>
+        )}
+        {evt.start_time && <span className="event-time">{evt.start_time}</span>}
+        <span className="event-title">{evt.title}</span>
+      </div>
+    );
+  };
+
   const renderCells = () => {
     const cells = [];
     
@@ -143,34 +172,7 @@ export default function MonthlyCalendar({ activeUser }) {
         <div key={day} className="calendar-cell glass-panel">
           <div className="calendar-day-number">{day}</div>
           <div className="calendar-events-container">
-            {dayEvents.map((evt, idx) => {
-              const uid = evt.user_id || 'both';
-              const colorClass = uid === 'user1' ? 'u1-event' : uid === 'user2' ? 'u2-event' : 'both-event';
-              const isOwner = uid === activeUser || uid === 'both';
-              const isSlotEditable = evt.item_id && isOwner;
-
-              return (
-                <div 
-                  key={idx} 
-                  className={`calendar-event-pill ${evt.is_fixed ? 'fixed-event' : 'tentative-event'} ${colorClass}`}
-                >
-                  {isSlotEditable && (
-                    <button 
-                      className="edit-pencil-btn"
-                      style={{ position: 'absolute', top: '2px', right: '2px', background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '4px', padding: '2px', color: 'var(--text-muted)', cursor: 'pointer', opacity: 0, transition: 'opacity 0.2s', zIndex: 10 }}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedEvent(evt);
-                      }}
-                    >
-                      <Pencil size={10} />
-                    </button>
-                  )}
-                  {evt.start_time && <span className="event-time">{evt.start_time}</span>}
-                  <span className="event-title">{evt.title}</span>
-                </div>
-              );
-            })}
+            {dayEvents.map((evt, idx) => renderEvent(evt, idx))}
           </div>
         </div>
       );
