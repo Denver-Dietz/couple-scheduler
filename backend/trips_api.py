@@ -158,10 +158,17 @@ def create_wishlist_item(trip_id: str, payload: TripWishlistCreate):
 @trips_router.post("/wishlist/{item_id}/vote")
 def vote_wishlist_item(item_id: str, user: str, vote: int):
     # vote is 1 for upvote, -1 for downvote, 0 for neutral
-    column = "votes_u1" if user == "user1" else "votes_u2"
+    if user not in ("user1", "user2"):
+        raise HTTPException(status_code=400, detail="Invalid user")
+
+    if user == "user1":
+        query = "UPDATE trip_wishlist SET votes_u1 = ? WHERE id = ?"
+    else:
+        query = "UPDATE trip_wishlist SET votes_u2 = ? WHERE id = ?"
+
     with get_db() as conn:
         cursor = conn.cursor()
-        cursor.execute(f"UPDATE trip_wishlist SET {column} = ? WHERE id = ?", (vote, item_id))
+        cursor.execute(query, (vote, item_id))
         conn.commit()
     return {"status": "success"}
 
