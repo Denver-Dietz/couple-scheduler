@@ -5,6 +5,7 @@ import {
   DollarSign, Flame, Compass, Search, Loader2, ArrowUpDown, Clock
 } from 'lucide-react';
 
+
 // Custom SVG component for overlapping drawing cards
 const CardsIcon = ({ size = 20, className, style }) => (
   <svg 
@@ -23,6 +24,26 @@ const CardsIcon = ({ size = 20, className, style }) => (
     <rect x="10" y="4" width="11" height="14" rx="2" transform="rotate(6 10 4)" />
   </svg>
 );
+
+// Helper to sort activities
+const sortActivities = (a, b, sortBy) => {
+  if (sortBy === 'alpha') {
+    return a.title.localeCompare(b.title);
+  }
+  if (sortBy === 'energy') {
+    return (parseInt(a.effort_level) || 0) - (parseInt(b.effort_level) || 0);
+  }
+  if (sortBy === 'budget') {
+    return (parseInt(a.estimated_cost) || 0) - (parseInt(b.estimated_cost) || 0);
+  }
+  if (sortBy === 'distance') {
+    if (a.distance === null) return 1;
+    if (b.distance === null) return -1;
+    return a.distance - b.distance;
+  }
+  return 0;
+};
+
 
 export default function ActivitiesTab({ items, refresh }) {
   // Tabs: 'draw' or 'browse'
@@ -302,23 +323,7 @@ export default function ActivitiesTab({ items, refresh }) {
     });
 
   // Sort activities
-  const sortedActivities = [...activeActivities].sort((a, b) => {
-    if (sortBy === 'alpha') {
-      return a.title.localeCompare(b.title);
-    }
-    if (sortBy === 'energy') {
-      return (parseInt(a.effort_level) || 0) - (parseInt(b.effort_level) || 0);
-    }
-    if (sortBy === 'budget') {
-      return (parseInt(a.estimated_cost) || 0) - (parseInt(b.estimated_cost) || 0);
-    }
-    if (sortBy === 'distance') {
-      if (a.distance === null) return 1;
-      if (b.distance === null) return -1;
-      return a.distance - b.distance;
-    }
-    return 0;
-  });
+  const sortedActivities = [...activeActivities].sort((a, b) => sortActivities(a, b, sortBy));
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', width: '100%', maxWidth: '800px', margin: '0 auto' }}>
