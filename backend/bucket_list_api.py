@@ -34,9 +34,11 @@ def update_bucket_list_item(item_id: str, payload: BucketListUpdate):
         # Build dynamic update statement based on provided fields
         update_fields = []
         params = []
+        allowed_keys = {"title", "status", "estimated_cost", "effort_level", "latitude", "longitude", "address"}
         for field, value in payload.model_dump(exclude_unset=True).items():
-            update_fields.append(f"{field} = ?")
-            params.append(value)
+            if field in allowed_keys:
+                update_fields.append(f"{field} = ?")
+                params.append(value)
             
         if not update_fields:
             return {"status": "no updates"}
