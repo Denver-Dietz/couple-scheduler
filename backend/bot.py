@@ -215,12 +215,14 @@ If no duration is specified, assume 1 hour. Resolve relative dates based on the 
             return
 
         with get_db() as conn:
-            for apt in appointments:
-                item_id = str(uuid.uuid4())
-                conn.execute(
-                    "INSERT INTO commitments (id, user_id, title, start_time, end_time, raw_text) VALUES (?, ?, ?, ?, ?, ?)",
-                    (item_id, user_profile_id, apt["title"], apt.get("start_time"), apt.get("end_time"), text)
-                )
+            data = [
+                (str(uuid.uuid4()), user_profile_id, apt["title"], apt.get("start_time"), apt.get("end_time"), text)
+                for apt in appointments
+            ]
+            conn.executemany(
+                "INSERT INTO commitments (id, user_id, title, start_time, end_time, raw_text) VALUES (?, ?, ?, ?, ?, ?)",
+                data
+            )
             conn.commit()
 
         if on_update_callback:
@@ -686,9 +688,12 @@ For type "project", the input may be phrased in several ways:
         with get_db() as conn:
             if item_type == "commitment":
                 appointments = parsed.get("appointments", [])
-                for apt in appointments:
-                    conn.execute("INSERT INTO commitments (id, user_id, title, start_time, end_time, raw_text) VALUES (?, ?, ?, ?, ?, ?)",
-                        (str(uuid.uuid4()), user_profile_id, parsed["title"], apt.get("start_time"), apt.get("end_time"), text))
+                if appointments:
+                    data = [
+                        (str(uuid.uuid4()), user_profile_id, parsed["title"], apt.get("start_time"), apt.get("end_time"), text)
+                        for apt in appointments
+                    ]
+                    conn.executemany("INSERT INTO commitments (id, user_id, title, start_time, end_time, raw_text) VALUES (?, ?, ?, ?, ?, ?)", data)
             elif item_type == "goal":
                 conn.execute("INSERT INTO goals (id, title, duration_minutes, target_per_week, preferred_time_of_day, user_id, start_date) VALUES (?, ?, ?, ?, ?, ?, ?)",
                     (item_id, parsed["title"], parsed.get("duration_minutes", 60), parsed.get("target_per_week", 3), "any", user_profile_id, start_date))
