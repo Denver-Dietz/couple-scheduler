@@ -47,7 +47,7 @@ export default function BudgetPanel({ tripData, refresh, activeUser }) {
               <div style={{ fontWeight: 500 }}>{item.category}</div>
               <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Est: ${item.estimated} • Act: ${item.actual}</div>
             </div>
-            <button onClick={() => handleDelete(item.id)} className="btn btn-outline" style={{ padding: '4px', border: 'none' }}><Trash2 size={14}/></button>
+            <button aria-label="Delete budget item" onClick={() => handleDelete(item.id)} className="btn btn-outline" style={{ padding: '4px', border: 'none' }}><Trash2 size={14}/></button>
           </div>
         ))}
       </div>
@@ -55,7 +55,7 @@ export default function BudgetPanel({ tripData, refresh, activeUser }) {
       <div className="flex gap-2 mt-auto" style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1rem' }}>
         <input className="input" placeholder="Category" value={category} onChange={e => setCategory(e.target.value)} style={{ flex: 1 }} />
         <input className="input" type="number" placeholder="Est $" value={estimated} onChange={e => setEstimated(e.target.value)} style={{ width: '80px' }} />
-        <button className="btn btn-primary" onClick={handleAdd}><Plus size={16}/></button>
+        <button aria-label="Add budget item" className="btn btn-primary" onClick={handleAdd}><Plus size={16}/></button>
       </div>
     </div>
   );
