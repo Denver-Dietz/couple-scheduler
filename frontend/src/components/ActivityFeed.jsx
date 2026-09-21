@@ -74,7 +74,7 @@ const ActivityFeed = ({ activeUser }) => {
           }
           const quoteIndex = Math.abs(hash) % QUOTES.length;
           const dailyQuote = QUOTES[quoteIndex];
-          newMessages.push(`✨ <strong>Quote of the Day:</strong> ${dailyQuote}`);
+          newMessages.push({ emoji: '✨', label: 'Quote of the Day:', text: dailyQuote });
         }
 
         // 3. Weather
@@ -92,12 +92,12 @@ const ActivityFeed = ({ activeUser }) => {
               const weatherData = await weatherRes.json();
               const current = weatherData.current_weather;
               const info = getWeatherDescription(current.weathercode);
-              newMessages.push(`${info.emoji} <strong>Current Weather:</strong> ${Math.round(current.temperature)}°F, ${info.text} in ${city}, ${state}`);
+              newMessages.push({ emoji: info.emoji, label: 'Current Weather:', text: `${Math.round(current.temperature)}°F, ${info.text} in ${city}, ${state}` });
             } else {
-              newMessages.push(`🌡️ <strong>Weather:</strong> Invalid Zip Code (${zip})`);
+              newMessages.push({ emoji: '🌡️', label: 'Weather:', text: `Invalid Zip Code (${zip})` });
             }
           } catch(err) {
-            newMessages.push(`🌡️ <strong>Weather:</strong> Unavailable`);
+            newMessages.push({ emoji: '🌡️', label: 'Weather:', text: 'Unavailable' });
           }
         }
 
@@ -107,7 +107,7 @@ const ActivityFeed = ({ activeUser }) => {
             const newsRes = await fetch('https://api.rss2json.com/v1/api.json?rss_url=http://feeds.bbci.co.uk/news/world/rss.xml');
             const newsData = await newsRes.json();
             if (newsData.items && newsData.items.length > 0) {
-              newMessages.push(`📰 <strong>Breaking News:</strong> ${newsData.items[0].title}`);
+              newMessages.push({ emoji: '📰', label: 'Breaking News:', text: newsData.items[0].title });
             }
           } catch(err) {}
         }
@@ -119,9 +119,9 @@ const ActivityFeed = ({ activeUser }) => {
           const oppositeUser = currentUser === 'user1' ? 'user2' : 'user1';
           
           for (const item of actData) {
-            if (item.type === 'appointment' && prefs.appointment && item.user_id === oppositeUser) newMessages.push(item.text);
-            if (item.type === 'goal' && prefs.goal && item.user_id === oppositeUser) newMessages.push(item.text);
-            if (item.type === 'project' && prefs.project && item.user_id === oppositeUser) newMessages.push(item.text);
+            if (item.type === 'appointment' && prefs.appointment && item.user_id === oppositeUser) newMessages.push({ text: item.text });
+            if (item.type === 'goal' && prefs.goal && item.user_id === oppositeUser) newMessages.push({ text: item.text });
+            if (item.type === 'project' && prefs.project && item.user_id === oppositeUser) newMessages.push({ text: item.text });
           }
         } catch(err) {}
 
@@ -191,8 +191,15 @@ const ActivityFeed = ({ activeUser }) => {
         <span 
           key={messageIndex} 
           className="activity-feed-text fade-in-out" 
-          dangerouslySetInnerHTML={{ __html: messages[messageIndex] }} 
-        />
+        >
+          {messages[messageIndex]?.label ? (
+            <>
+              {messages[messageIndex].emoji} <strong>{messages[messageIndex].label}</strong> {messages[messageIndex].text}
+            </>
+          ) : (
+            messages[messageIndex]?.text
+          )}
+        </span>
       </div>
     </div>
   );
