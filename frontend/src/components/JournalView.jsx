@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../utils/api';
 import { Loader2, MessageSquare, Heart, ThumbsUp, Smile, Sparkles, Send, Edit2, Trash2, Lock } from 'lucide-react';
 import { format } from 'date-fns';
+import JournalEntryCard from './JournalEntryCard';
 
 /**
  * Interactive Journaling Interface.
@@ -290,209 +291,44 @@ export default function JournalView({ activeUser }) {
           </button>
         </div>
 
-        {entries.filter(e => (e.user_id === 'user1' && showU1) || (e.user_id === 'user2' && showU2)).map(entry => (
-          <div key={entry.id} className="card glass-panel flex-col gap-4">
-            <div className="flex justify-between items-center" style={{ borderBottom: '1px solid var(--border-color)', paddingBottom: '0.5rem' }}>
-              <div className="flex items-center gap-2">
-                <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: entry.user_id === 'user1' ? 'var(--accent-emerald)' : 'var(--accent-purple)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontWeight: 'bold' }}>
-                  {getUserName(entry.user_id).charAt(0)}
-                </div>
-                <strong>{getUserName(entry.user_id)}</strong>
-              </div>
-              <small style={{ color: 'var(--text-muted)' }}>
-                {format(new Date(entry.created_at + 'Z'), 'MMM d, yyyy h:mm a')}
-              </small>
-            </div>
-            
-            {(() => {
-              const today = getLocalDateString(new Date());
-              const isToday = getEntryLocalDateString(entry.created_at) === today;
-              const isQotd = entry.content.startsWith(`**QotD:**`);
-              
-              let isBlurred = false;
-              if (isQotd && isToday && entry.user_id !== currentUser) {
-                 const iAnswered = entries.some(e => 
-                   e.user_id === currentUser && 
-                   e.content.startsWith(`**QotD:**`) && 
-                   getEntryLocalDateString(e.created_at) === today
-                 );
-                 if (!iAnswered) isBlurred = true;
-              }
+        {entries.filter(e => (e.user_id === 'user1' && showU1) || (e.user_id === 'user2' && showU2)).map(entry => {
+          const today = getLocalDateString(new Date());
+          const isToday = getEntryLocalDateString(entry.created_at) === today;
+          const isQotd = entry.content.startsWith(`**QotD:**`);
+          let isBlurred = false;
 
-              if (editingEntryId === entry.id) {
-                return (
-                  <div className="flex flex-col gap-2">
-                    <textarea 
-                      className="input"
-                      style={{ minHeight: '120px', resize: 'vertical', width: '100%', background: 'rgba(0,0,0,0.2)', color: 'var(--text-primary)', border: '1px solid rgba(255,255,255,0.1)' }}
-                      value={editContent}
-                      onChange={e => setEditContent(e.target.value)}
-                    />
-                    <div className="flex gap-2 justify-end mt-2">
-                      <button className="btn btn-secondary" onClick={() => setEditingEntryId(null)}>Cancel</button>
-                      <button className="btn btn-primary" onClick={() => handleEditSave(entry.id)}>Save Changes</button>
-                    </div>
-                  </div>
-                );
-              }
+          if (isQotd && isToday && entry.user_id !== currentUser) {
+             const iAnswered = entries.some(e =>
+               e.user_id === currentUser &&
+               e.content.startsWith(`**QotD:**`) &&
+               getEntryLocalDateString(e.created_at) === today
+             );
+             if (!iAnswered) isBlurred = true;
+          }
 
-              if (isBlurred) {
-                return (
-                  <div style={{ position: 'relative', overflow: 'hidden', borderRadius: '8px' }}>
-                    <p style={{ whiteSpace: 'pre-wrap', lineHeight: '1.6', filter: 'blur(6px)', opacity: 0.5, userSelect: 'none' }}>
-                      {entry.content}
-                    </p>
-                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.1)' }}>
-                      <Lock size={24} style={{ color: 'var(--accent-blue)', marginBottom: '0.5rem' }} />
-                      <span style={{ fontWeight: 'bold', textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>Answer today's question to unlock</span>
-                    </div>
-                  </div>
-                );
-              }
-
-              return (
-                <p style={{ whiteSpace: 'pre-wrap', lineHeight: '1.6' }}>
-                  {isQotd ? (
-                    <>
-                      <strong style={{ color: 'var(--accent-blue)', display: 'block' }}>Question of the Day:</strong>
-                      <em style={{ color: 'var(--text-muted)' }}>{entry.content.split('\n\n')[0].replace('**QotD:** ', '')}</em>
-                      <br/><br/>
-                      {entry.content.substring(entry.content.indexOf('\n\n') + 2)}
-                    </>
-                  ) : (
-                    entry.content
-                  )}
-                </p>
-              );
-            })()}
-            
-            {/* Actions for author */}
-            {entry.user_id === currentUser && editingEntryId !== entry.id && (
-              <div className="flex gap-2 justify-end" style={{ marginTop: '0.75rem' }}>
-                <button 
-                  onClick={() => handleEditStart(entry)}
-                  title="Edit entry"
-                  style={{
-                    background: 'rgba(255,255,255,0.05)',
-                    border: '1px solid rgba(255,255,255,0.08)',
-                    borderRadius: '8px',
-                    padding: '6px',
-                    cursor: 'pointer',
-                    color: 'var(--text-muted)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    transition: 'all 0.2s ease'
-                  }}
-                  onMouseEnter={e => { e.currentTarget.style.background = 'rgba(139,92,246,0.15)'; e.currentTarget.style.color = 'var(--accent-purple)'; e.currentTarget.style.borderColor = 'rgba(139,92,246,0.3)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; }}
-                >
-                  <Edit2 size={14} />
-                </button>
-                <button 
-                  onClick={() => handleDelete(entry.id)}
-                  title="Delete entry"
-                  style={{
-                    background: 'rgba(255,255,255,0.05)',
-                    border: '1px solid rgba(255,255,255,0.08)',
-                    borderRadius: '8px',
-                    padding: '6px',
-                    cursor: 'pointer',
-                    color: 'var(--text-muted)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    transition: 'all 0.2s ease'
-                  }}
-                  onMouseEnter={e => { e.currentTarget.style.background = 'rgba(239,68,68,0.12)'; e.currentTarget.style.color = 'rgba(248,113,113,0.9)'; e.currentTarget.style.borderColor = 'rgba(239,68,68,0.25)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.05)'; e.currentTarget.style.color = 'var(--text-muted)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; }}
-                >
-                  <Trash2 size={14} />
-                </button>
-              </div>
-            )}
-            
-            {/* Reactions */}
-            <div className="flex items-center gap-2" style={{ marginTop: '0.75rem' }}>
-              {['❤️', '👍', '😊', '🙌'].map(emoji => {
-                const count = entry.reactions.filter(r => r.reaction === emoji).length;
-                const iReacted = entry.reactions.some(r => r.reaction === emoji && r.user_id === currentUser);
-                
-                return (
-                  <button 
-                    key={emoji}
-                    onClick={() => toggleReaction(entry.id, emoji)}
-                    style={{
-                      background: iReacted ? 'rgba(255,255,255,0.1)' : 'transparent',
-                      border: `1px solid ${iReacted ? 'var(--accent-blue)' : 'var(--border-color)'}`,
-                      borderRadius: '16px',
-                      padding: '4px 8px',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      gap: '4px',
-                      alignItems: 'center',
-                      fontSize: '0.85rem'
-                    }}
-                  >
-                    <span>{emoji}</span>
-                    {count > 0 && <span style={{ color: 'var(--text-muted)' }}>{count}</span>}
-                  </button>
-                );
-              })}
-              
-              <button 
-                onClick={() => setActiveCommentEntry(activeCommentEntry === entry.id ? null : entry.id)}
-                style={{
-                  marginLeft: 'auto',
-                  fontSize: '0.8rem',
-                  color: activeCommentEntry === entry.id ? 'var(--accent-blue)' : 'var(--text-muted)',
-                  background: activeCommentEntry === entry.id ? 'rgba(59,130,246,0.12)' : 'rgba(255,255,255,0.05)',
-                  border: `1px solid ${activeCommentEntry === entry.id ? 'rgba(59,130,246,0.3)' : 'rgba(255,255,255,0.08)'}`,
-                  borderRadius: '16px',
-                  padding: '4px 12px',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  transition: 'all 0.2s ease'
-                }}
-              >
-                <MessageSquare size={14} /> {entry.comments.length}
-              </button>
-            </div>
-            
-            {/* Comments Section */}
-            {(entry.comments.length > 0 || activeCommentEntry === entry.id) && (
-              <div style={{ background: 'rgba(0,0,0,0.2)', padding: '1rem', borderRadius: '8px', marginTop: '0.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                {entry.comments.map(comment => (
-                  <div key={comment.id} className="flex gap-2">
-                    <strong style={{ color: comment.user_id === 'user1' ? 'var(--accent-emerald)' : 'var(--accent-purple)' }}>
-                      {getUserName(comment.user_id)}:
-                    </strong>
-                    <span style={{ flex: 1, whiteSpace: 'pre-wrap' }}>{comment.content}</span>
-                  </div>
-                ))}
-                
-                {activeCommentEntry === entry.id && (
-                  <div className="flex gap-2" style={{ marginTop: '0.5rem' }}>
-                    <input 
-                      type="text" 
-                      className="input" 
-                      style={{ flex: 1 }}
-                      placeholder="Write a comment..." 
-                      value={commentText}
-                      onChange={e => setCommentText(e.target.value)}
-                      onKeyDown={e => e.key === 'Enter' && submitComment(entry.id)}
-                    />
-                    <button className="btn btn-primary" onClick={() => submitComment(entry.id)}>
-                      <Send size={16} />
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-        ))}
+          return (
+            <JournalEntryCard
+              key={entry.id}
+              entry={entry}
+              currentUser={currentUser}
+              getUserName={getUserName}
+              isBlurred={isBlurred}
+              editingEntryId={editingEntryId}
+              editContent={editContent}
+              setEditContent={setEditContent}
+              setEditingEntryId={setEditingEntryId}
+              handleEditStart={handleEditStart}
+              handleEditSave={handleEditSave}
+              handleDelete={handleDelete}
+              activeCommentEntry={activeCommentEntry}
+              setActiveCommentEntry={setActiveCommentEntry}
+              commentText={commentText}
+              setCommentText={setCommentText}
+              submitComment={submitComment}
+              toggleReaction={toggleReaction}
+            />
+          );
+        })}
         {entries.length === 0 && (
           <div style={{ textAlign: 'center', padding: '3rem', color: 'var(--text-muted)' }}>
             No journal entries yet. Be the first to share your thoughts!
