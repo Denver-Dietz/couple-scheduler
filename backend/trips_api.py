@@ -82,9 +82,11 @@ def update_trip(trip_id: str, payload: TripUpdate):
             
         updates = []
         params = []
-        for k, v in payload.dict(exclude_unset=True).items():
-            updates.append(f"{k} = ?")
-            params.append(v)
+        allowed_fields = type(payload).model_fields.keys() if hasattr(type(payload), 'model_fields') else payload.__fields__.keys()
+        for k, v in payload.model_dump(exclude_unset=True).items():
+            if k in allowed_fields and k.isidentifier():
+                updates.append(f"{k} = ?")
+                params.append(v)
             
         if updates:
             params.append(trip_id)
@@ -125,9 +127,11 @@ def update_itinerary_item(item_id: str, payload: TripItineraryUpdate):
         cursor = conn.cursor()
         updates = []
         params = []
-        for k, v in payload.dict(exclude_unset=True).items():
-            updates.append(f"{k} = ?")
-            params.append(v)
+        allowed_fields = type(payload).model_fields.keys() if hasattr(type(payload), 'model_fields') else payload.__fields__.keys()
+        for k, v in payload.model_dump(exclude_unset=True).items():
+            if k in allowed_fields and k.isidentifier():
+                updates.append(f"{k} = ?")
+                params.append(v)
         if updates:
             params.append(item_id)
             cursor.execute(f"UPDATE trip_itinerary SET {', '.join(updates)} WHERE id = ?", params)
@@ -192,9 +196,11 @@ def update_budget_item(item_id: str, payload: TripBudgetUpdate):
         cursor = conn.cursor()
         updates = []
         params = []
-        for k, v in payload.dict(exclude_unset=True).items():
-            updates.append(f"{k} = ?")
-            params.append(v)
+        allowed_fields = type(payload).model_fields.keys() if hasattr(type(payload), 'model_fields') else payload.__fields__.keys()
+        for k, v in payload.model_dump(exclude_unset=True).items():
+            if k in allowed_fields and k.isidentifier():
+                updates.append(f"{k} = ?")
+                params.append(v)
         if updates:
             params.append(item_id)
             cursor.execute(f"UPDATE trip_budget SET {', '.join(updates)} WHERE id = ?", params)
@@ -228,9 +234,11 @@ def update_logistics_item(item_id: str, payload: TripLogisticsUpdate):
         cursor = conn.cursor()
         updates = []
         params = []
-        for k, v in payload.dict(exclude_unset=True).items():
-            updates.append(f"{k} = ?")
-            params.append(v)
+        allowed_fields = type(payload).model_fields.keys() if hasattr(type(payload), 'model_fields') else payload.__fields__.keys()
+        for k, v in payload.model_dump(exclude_unset=True).items():
+            if k in allowed_fields and k.isidentifier():
+                updates.append(f"{k} = ?")
+                params.append(v)
         if updates:
             params.append(item_id)
             cursor.execute(f"UPDATE trip_logistics SET {', '.join(updates)} WHERE id = ?", params)
