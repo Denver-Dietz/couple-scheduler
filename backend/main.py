@@ -1000,7 +1000,10 @@ def api_submit_schedule(req: SubmitScheduleRequest):
     with get_db() as conn:
         cursor = conn.cursor()
         
-        # 1. Rollback project hours from previous schedule
+        # 1 & 2: Calculate net hour changes for projects to avoid N+1 queries
+        project_hour_changes = {}
+
+        # Rollback previous schedule hours
         cursor.execute("SELECT schedule_json FROM schedules WHERE user_id = ? AND start_date = ?", (req.user_id, req.start_date))
         prev_row = cursor.fetchone()
         if prev_row:
@@ -1012,20 +1015,28 @@ def api_submit_schedule(req: SubmitScheduleRequest):
                             sh, sm = map(int, p_slot["start_time"].split(":"))
                             eh, em = map(int, p_slot["end_time"].split(":"))
                             dur_hours = (eh * 60 + em - (sh * 60 + sm)) / 60.0
-                            cursor.execute("UPDATE projects SET hours_allocated = MAX(0, hours_allocated - ?) WHERE id = ?", (dur_hours, p_slot["item_id"]))
+                            project_id = p_slot["item_id"]
+                            project_hour_changes[project_id] = project_hour_changes.get(project_id, 0) - dur_hours
             except Exception as e:
                 logger.error(f"Failed to rollback prev project hours: {e}")
 
-        # 2. Add project hours from new schedule
+        # Add new schedule hours
         for slot in req.slots:
             if slot.get("type") == "project" and slot.get("item_id"):
                 try:
                     sh, sm = map(int, slot["start_time"].split(":"))
                     eh, em = map(int, slot["end_time"].split(":"))
                     dur_hours = (eh * 60 + em - (sh * 60 + sm)) / 60.0
-                    cursor.execute("UPDATE projects SET hours_allocated = MIN(total_hours, hours_allocated + ?) WHERE id = ?", (dur_hours, slot["item_id"]))
+                    project_id = slot["item_id"]
+                    project_hour_changes[project_id] = project_hour_changes.get(project_id, 0) + dur_hours
                 except Exception as e:
-                    logger.error(f"Failed to update project hours: {e}")
+                    logger.error(f"Failed to calculate project hour changes: {e}")
+
+        # Apply net changes in a single batch
+        if project_hour_changes:
+            updates = [(change, proj_id) for proj_id, change in project_hour_changes.items() if change != 0]
+            if updates:
+                cursor.executemany("UPDATE projects SET hours_allocated = MAX(0, MIN(total_hours, hours_allocated + ?)) WHERE id = ?", updates)
 
         # 3. Delete existing schedule & Insert new schedule
         cursor.execute("DELETE FROM schedules WHERE user_id = ? AND start_date = ?", (req.user_id, req.start_date))
