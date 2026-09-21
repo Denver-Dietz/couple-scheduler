@@ -6,6 +6,8 @@ Handles creation and promotion of long-term goals and travel ideas.
 import uuid
 from fastapi import APIRouter, HTTPException
 from backend.database import get_db
+
+ALLOWED_BUCKET_LIST_FIELDS = {'title', 'status', 'estimated_cost', 'effort_level', 'latitude', 'longitude', 'address'}
 from backend.models import BucketListCreate, BucketListLinkCreate, BucketListUpdate
 
 bucket_list_router = APIRouter(prefix="/api/bucket-list", tags=["bucket_list"])
@@ -35,8 +37,9 @@ def update_bucket_list_item(item_id: str, payload: BucketListUpdate):
         update_fields = []
         params = []
         for field, value in payload.model_dump(exclude_unset=True).items():
-            update_fields.append(f"{field} = ?")
-            params.append(value)
+            if field in ALLOWED_BUCKET_LIST_FIELDS:
+                update_fields.append(f"{field} = ?")
+                params.append(value)
             
         if not update_fields:
             return {"status": "no updates"}
