@@ -82,7 +82,10 @@ def update_trip(trip_id: str, payload: TripUpdate):
             
         updates = []
         params = []
-        for k, v in payload.dict(exclude_unset=True).items():
+        ALLOWED_COLUMNS = {"name", "dates", "destination", "cover_photo", "mood_tags", "progress"}
+        for k, v in payload.model_dump(exclude_unset=True).items():
+            if k not in ALLOWED_COLUMNS:
+                raise HTTPException(status_code=400, detail=f"Invalid field: {k}")
             updates.append(f"{k} = ?")
             params.append(v)
             
@@ -125,7 +128,10 @@ def update_itinerary_item(item_id: str, payload: TripItineraryUpdate):
         cursor = conn.cursor()
         updates = []
         params = []
-        for k, v in payload.dict(exclude_unset=True).items():
+        ALLOWED_COLUMNS = {"day", "title", "time", "location", "notes"}
+        for k, v in payload.model_dump(exclude_unset=True).items():
+            if k not in ALLOWED_COLUMNS:
+                raise HTTPException(status_code=400, detail=f"Invalid field: {k}")
             updates.append(f"{k} = ?")
             params.append(v)
         if updates:
@@ -192,7 +198,10 @@ def update_budget_item(item_id: str, payload: TripBudgetUpdate):
         cursor = conn.cursor()
         updates = []
         params = []
-        for k, v in payload.dict(exclude_unset=True).items():
+        ALLOWED_COLUMNS = {"category", "estimated", "actual", "paid_by"}
+        for k, v in payload.model_dump(exclude_unset=True).items():
+            if k not in ALLOWED_COLUMNS:
+                raise HTTPException(status_code=400, detail=f"Invalid field: {k}")
             updates.append(f"{k} = ?")
             params.append(v)
         if updates:
@@ -228,7 +237,10 @@ def update_logistics_item(item_id: str, payload: TripLogisticsUpdate):
         cursor = conn.cursor()
         updates = []
         params = []
-        for k, v in payload.dict(exclude_unset=True).items():
+        ALLOWED_COLUMNS = {"details", "files"}
+        for k, v in payload.model_dump(exclude_unset=True).items():
+            if k not in ALLOWED_COLUMNS:
+                raise HTTPException(status_code=400, detail=f"Invalid field: {k}")
             updates.append(f"{k} = ?")
             params.append(v)
         if updates:

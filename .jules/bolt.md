@@ -1,0 +1,3 @@
+## 2024-05-30 - SQL Injection through Pydantic model dictionary keys
+**Learning:** Extracting keys from `payload.model_dump().items()` to directly format dynamic SQL `UPDATE` queries is vulnerable to SQL injection because it trusts user input for column names. Pydantic doesn't completely shield against this if a model allows extra keys or is modified to contain fields not meant to be updated directly via the endpoint.
+**Action:** Always validate dictionary keys against an explicit whitelist (e.g., `ALLOWED_COLUMNS = {"col1", "col2"}`) before appending them to a dynamic SQL string, rejecting invalid keys.
