@@ -1091,12 +1091,34 @@ def api_get_journal_entries():
         cursor.execute("SELECT * FROM journal_entries ORDER BY created_at DESC")
         entries = [dict(row) for row in cursor.fetchall()]
         
-        for entry in entries:
-            cursor.execute("SELECT * FROM journal_comments WHERE entry_id = ? ORDER BY created_at ASC", (entry["id"],))
-            entry["comments"] = [dict(row) for row in cursor.fetchall()]
+        entry_ids = [entry["id"] for entry in entries]
+
+        comments_by_entry = {entry_id: [] for entry_id in entry_ids}
+        reactions_by_entry = {entry_id: [] for entry_id in entry_ids}
+
+        chunk_size = 900
+        for i in range(0, len(entry_ids), chunk_size):
+            chunk = entry_ids[i:i + chunk_size]
+            if not chunk:
+                continue
+
+            placeholders = ",".join("?" * len(chunk))
             
-            cursor.execute("SELECT * FROM journal_reactions WHERE entry_id = ?", (entry["id"],))
-            entry["reactions"] = [dict(row) for row in cursor.fetchall()]
+            cursor.execute(f"SELECT * FROM journal_comments WHERE entry_id IN ({placeholders}) ORDER BY created_at ASC", chunk)
+            for row in cursor.fetchall():
+                comment = dict(row)
+                if comment["entry_id"] in comments_by_entry:
+                    comments_by_entry[comment["entry_id"]].append(comment)
+
+            cursor.execute(f"SELECT * FROM journal_reactions WHERE entry_id IN ({placeholders})", chunk)
+            for row in cursor.fetchall():
+                reaction = dict(row)
+                if reaction["entry_id"] in reactions_by_entry:
+                    reactions_by_entry[reaction["entry_id"]].append(reaction)
+
+        for entry in entries:
+            entry["comments"] = comments_by_entry.get(entry["id"], [])
+            entry["reactions"] = reactions_by_entry.get(entry["id"], [])
             
         return entries
 
