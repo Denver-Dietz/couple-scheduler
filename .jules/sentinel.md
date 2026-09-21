@@ -1,0 +1,4 @@
+## 2024-05-24 - File Upload Path Traversal Vulnerability
+**Vulnerability:** Found a critical path traversal vulnerability in file upload. The `file_ext` was extracted from `file.filename` directly using `os.path.splitext()`. If an attacker sent a filename like `x.php`, it would save as `UUID.php`. If they sent `file.html`, it would save as `UUID.html` and possibly allow XSS if served directly. Additionally, no validation was done on the file type.
+**Learning:** Never trust the user-provided filename or extension in file uploads. The backend needs to enforce an explicit allowlist of file extensions and validate the actual file contents (if possible, but at least extension).
+**Prevention:** Always restrict uploaded file extensions to a known-safe list (e.g., .jpg, .jpeg, .png, .gif) and reject any others.
