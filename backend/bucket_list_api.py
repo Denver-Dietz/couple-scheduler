@@ -122,9 +122,9 @@ def promote_to_trip(item_id: str):
         # 2. Create trip
         trip_id = str(uuid.uuid4())
         cursor.execute('''
-            INSERT INTO trips (id, couple_id, trip_type, destination, status)
-            VALUES (?, 'default', 'dream_board', ?, 'idea')
-        ''', (trip_id, item['title']))
+            INSERT INTO trips (id, couple_id, name, destination)
+            VALUES (?, 'default', ?, ?)
+        ''', (trip_id, item['title'], item['title']))
         
         # 3. Move links
         cursor.execute("SELECT * FROM bucket_list_links WHERE bucket_list_item_id = ?", (item_id,))
