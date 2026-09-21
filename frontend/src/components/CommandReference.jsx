@@ -9,26 +9,7 @@ import { api } from '../utils/api';
  * - Centralizes documentation for bot interactions so users can easily reference
  *   all available CLI-style commands from within the dashboard UI.
  */
-export default function CommandReference() {
-  const [user1Name, setUser1Name] = useState("user1");
-  const [user2Name, setUser2Name] = useState("user2");
-
-  useEffect(() => {
-    const fetchNames = async () => {
-      try {
-        const data = await api.getSettings();
-        const u1 = data.find(s => s.key === 'user1_name')?.value || "user1";
-        const u2 = data.find(s => s.key === 'user2_name')?.value || "user2";
-        setUser1Name(u1.replace(/ /g, "").toLowerCase());
-        setUser2Name(u2.replace(/ /g, "").toLowerCase());
-      } catch (err) {
-        console.error("Could not load user names:", err);
-      }
-    };
-    fetchNames();
-  }, []);
-
-  const commands = [
+const commands = [
     { cmd: '/work <day> <start>-<end>', desc: 'Set a work shift', example: '/work Monday 9am-5pm' },
     { cmd: '/work off <day>', desc: 'Mark a day off', example: '/work off Friday' },
     { cmd: '/work list', desc: 'Show upcoming shifts', example: '/work list' },
@@ -39,6 +20,27 @@ export default function CommandReference() {
     { cmd: '/trip <dest>', desc: 'Add a Dream Board destination', example: '/trip Tokyo' },
     { cmd: '[Send Photo]', desc: 'Upload a photo to Memories', example: 'Send an image with a caption' }
   ];
+
+const formatName = (name) => name.replace(/ /g, "").toLowerCase();
+
+export default function CommandReference() {
+  const [user1Name, setUser1Name] = useState("user1");
+  const [user2Name, setUser2Name] = useState("user2");
+
+  useEffect(() => {
+    const fetchNames = async () => {
+      try {
+        const data = await api.getSettings();
+        const user1Setting = data.find(s => s.key === 'user1_name')?.value || "user1";
+        const user2Setting = data.find(s => s.key === 'user2_name')?.value || "user2";
+        setUser1Name(formatName(user1Setting));
+        setUser2Name(formatName(user2Setting));
+      } catch (err) {
+        console.error("Could not load user names:", err);
+      }
+    };
+    fetchNames();
+  }, []);
 
   return (
     <div className="card mt-6" style={{ background: 'rgba(59, 130, 246, 0.05)', border: '1px solid rgba(59, 130, 246, 0.2)', padding: '1.5rem' }}>
