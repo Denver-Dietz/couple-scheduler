@@ -10,6 +10,7 @@ import json
 import os
 import webbrowser
 import logging
+import html
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, HTTPException, UploadFile, File, Form
 from fastapi.responses import StreamingResponse
@@ -1103,9 +1104,11 @@ def api_get_journal_entries():
 @app.post("/api/journal")
 def api_create_journal_entry(payload: JournalEntryPayload):
     e_id = str(uuid.uuid4())
+    # 🛡️ Sentinel: Sanitize user input to prevent XSS
+    safe_content = html.escape(payload.content)
     with get_db() as conn:
         conn.execute("INSERT INTO journal_entries (id, user_id, content) VALUES (?, ?, ?)",
-            (e_id, payload.user_id, payload.content))
+            (e_id, payload.user_id, safe_content))
         conn.commit()
     notify_frontend()
     return {"id": e_id}
@@ -1113,9 +1116,11 @@ def api_create_journal_entry(payload: JournalEntryPayload):
 @app.post("/api/journal/{entry_id}/comments")
 def api_create_journal_comment(entry_id: str, payload: JournalCommentPayload):
     c_id = str(uuid.uuid4())
+    # 🛡️ Sentinel: Sanitize user input to prevent XSS
+    safe_content = html.escape(payload.content)
     with get_db() as conn:
         conn.execute("INSERT INTO journal_comments (id, entry_id, user_id, content) VALUES (?, ?, ?, ?)",
-            (c_id, entry_id, payload.user_id, payload.content))
+            (c_id, entry_id, payload.user_id, safe_content))
         conn.commit()
     notify_frontend()
     return {"id": c_id}
@@ -1157,8 +1162,10 @@ async def api_enhance_journal_text(payload: JournalEnhancePayload):
 
 @app.put("/api/journal/{entry_id}")
 def api_edit_journal_entry(entry_id: str, payload: JournalEnhancePayload):
+    # 🛡️ Sentinel: Sanitize user input to prevent XSS on edit
+    safe_content = html.escape(payload.content)
     with get_db() as conn:
-        conn.execute("UPDATE journal_entries SET content = ? WHERE id = ?", (payload.content, entry_id))
+        conn.execute("UPDATE journal_entries SET content = ? WHERE id = ?", (safe_content, entry_id))
         conn.commit()
     notify_frontend()
     return {"status": "success"}
@@ -1429,11 +1436,13 @@ def submit_checkin(user_id: str, payload: CheckInSubmitRequest):
             raise HTTPException(status_code=400, detail="Already submitted")
             
         resp_id = str(uuid.uuid4())
+        # 🛡️ Sentinel: Sanitize user input to prevent XSS
+        safe_notes = html.escape(payload.notes) if payload.notes else None
         cursor.execute("""
             INSERT INTO check_in_responses 
             (id, checkin_id, user_id, communication_score, intimacy_score, quality_time_score, teamwork_score, notes)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        """, (resp_id, checkin_id, user_id, payload.communication_score, payload.intimacy_score, payload.quality_time_score, payload.teamwork_score, payload.notes))
+        """, (resp_id, checkin_id, user_id, payload.communication_score, payload.intimacy_score, payload.quality_time_score, payload.teamwork_score, safe_notes))
         
         conn.commit()
         notify_frontend()
@@ -1535,12 +1544,16 @@ def upload_memory(
         
     storage_url = f"/api/uploads/{filename}"
     
+    # 🛡️ Sentinel: Sanitize user input to prevent XSS
+    safe_caption = html.escape(caption) if caption else ""
+    safe_location = html.escape(location) if location else ""
+
     with get_db() as conn:
         cursor = conn.cursor()
         cursor.execute('''
             INSERT INTO memories (id, couple_id, uploader_id, caption, event_type, location, storage_url)
             VALUES (?, ?, ?, ?, ?, ?, ?)
-        ''', (memory_id, couple_id, user_id, caption, event_type, location, storage_url))
+        ''', (memory_id, couple_id, user_id, safe_caption, event_type, safe_location, storage_url))
         conn.commit()
         
     notify_frontend()
@@ -1566,12 +1579,14 @@ def get_memories():
 @app.post("/api/memories/{memory_id}/comment")
 def add_memory_comment(memory_id: str, payload: MemoryCommentSubmit):
     comment_id = str(uuid.uuid4())
+    # 🛡️ Sentinel: Sanitize user input to prevent XSS
+    safe_comment = html.escape(payload.comment_text)
     with get_db() as conn:
         cursor = conn.cursor()
         cursor.execute('''
             INSERT INTO memory_comments (id, memory_id, user_id, comment_text)
             VALUES (?, ?, ?, ?)
-        ''', (comment_id, memory_id, payload.user_id, payload.comment_text))
+        ''', (comment_id, memory_id, payload.user_id, safe_comment))
         conn.commit()
     notify_frontend()
     return {"status": "success"}
