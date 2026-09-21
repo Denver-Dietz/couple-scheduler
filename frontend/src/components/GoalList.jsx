@@ -182,8 +182,11 @@ export default function GoalList({ activeUser, dashboardActiveUser, showU1, show
                   </div>
                 </div>
                 {c.user_id === currentUser || c.user_id === 'both' ? (
-                  <button onClick={() => { api.deleteCommitment(c.id); refresh(); }}
-                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', padding: '4px' }}>
+                  <button
+                    aria-label="Delete commitment"
+                    onClick={() => { api.deleteCommitment(c.id); refresh(); }}
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', padding: '4px' }}
+                  >
                     <Trash2 size={14} />
                   </button>
                 ) : (
@@ -251,8 +254,11 @@ export default function GoalList({ activeUser, dashboardActiveUser, showU1, show
                   </div>
                 </div>
                 {g.user_id === currentUser || g.user_id === 'both' ? (
-                  <button onClick={() => { api.deleteGoal(g.id); refresh(); }}
-                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', padding: '4px' }}>
+                  <button
+                    aria-label="Delete goal"
+                    onClick={() => { api.deleteGoal(g.id); refresh(); }}
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', padding: '4px' }}
+                  >
                     <Trash2 size={14} />
                   </button>
                 ) : (
@@ -321,8 +327,11 @@ export default function GoalList({ activeUser, dashboardActiveUser, showU1, show
                   </div>
                 </div>
                 {p.user_id === currentUser || p.user_id === 'both' ? (
-                  <button onClick={() => { api.deleteProject(p.id); refresh(); }}
-                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', padding: '4px' }}>
+                  <button
+                    aria-label="Delete project"
+                    onClick={() => { api.deleteProject(p.id); refresh(); }}
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', padding: '4px' }}
+                  >
                     <Trash2 size={14} />
                   </button>
                 ) : (
