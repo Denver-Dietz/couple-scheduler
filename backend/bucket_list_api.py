@@ -68,11 +68,16 @@ def get_bucket_list():
             
         # 2. Extract IDs for batch fetching
         item_ids = [item['id'] for item in items]
-        placeholders = ','.join('?' for _ in item_ids)
         
-        # 3. Fetch all related links in a single query (resolving N+1)
-        cursor.execute(f"SELECT * FROM bucket_list_links WHERE bucket_list_item_id IN ({placeholders})", item_ids)
-        all_links = cursor.fetchall()
+        # 3. Fetch all related links in chunks (resolving N+1 and SQLite variable limit)
+        all_links = []
+        chunk_size = 900
+        for i in range(0, len(item_ids), chunk_size):
+            chunk_ids = item_ids[i:i + chunk_size]
+            placeholders = ','.join('?' for _ in chunk_ids)
+            query = "SELECT * FROM bucket_list_links WHERE bucket_list_item_id IN ({})".format(placeholders)
+            cursor.execute(query, chunk_ids)
+            all_links.extend(cursor.fetchall())
         
         # 4. Group links by item_id in memory
         links_by_item = {}
