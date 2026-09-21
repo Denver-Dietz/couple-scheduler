@@ -118,9 +118,22 @@ app = FastAPI(title="Couple Scheduler API", lifespan=lifespan)
 app.include_router(trips_router)
 app.include_router(bucket_list_router)
 
+# Define default allowed origins
+allowed_origins = [
+    "http://localhost:5173",
+    "http://localhost:8080",
+    "http://127.0.0.1:5173",
+    "http://127.0.0.1:8080",
+]
+
+# Add any additional origins from environment variables
+env_origins = os.getenv("ALLOWED_ORIGINS")
+if env_origins:
+    allowed_origins.extend([origin.strip() for origin in env_origins.split(",") if origin.strip()])
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=allowed_origins,
     allow_methods=["*"],
     allow_headers=["*"],
 )
