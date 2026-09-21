@@ -158,10 +158,15 @@ def create_wishlist_item(trip_id: str, payload: TripWishlistCreate):
 @trips_router.post("/wishlist/{item_id}/vote")
 def vote_wishlist_item(item_id: str, user: str, vote: int):
     # vote is 1 for upvote, -1 for downvote, 0 for neutral
-    column = "votes_u1" if user == "user1" else "votes_u2"
     with get_db() as conn:
         cursor = conn.cursor()
-        cursor.execute(f"UPDATE trip_wishlist SET {column} = ? WHERE id = ?", (vote, item_id))
+        if user == "user1":
+            cursor.execute("UPDATE trip_wishlist SET votes_u1 = ? WHERE id = ?", (vote, item_id))
+        elif user == "user2":
+            cursor.execute("UPDATE trip_wishlist SET votes_u2 = ? WHERE id = ?", (vote, item_id))
+        else:
+            from fastapi import HTTPException
+            raise HTTPException(status_code=400, detail="Invalid user specified")
         conn.commit()
     return {"status": "success"}
 
