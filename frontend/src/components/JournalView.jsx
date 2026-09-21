@@ -370,6 +370,7 @@ export default function JournalView({ activeUser }) {
             {entry.user_id === currentUser && editingEntryId !== entry.id && (
               <div className="flex gap-2 justify-end" style={{ marginTop: '0.75rem' }}>
                 <button 
+                  aria-label="Edit journal entry"
                   onClick={() => handleEditStart(entry)}
                   title="Edit entry"
                   style={{
@@ -390,6 +391,7 @@ export default function JournalView({ activeUser }) {
                   <Edit2 size={14} />
                 </button>
                 <button 
+                  aria-label="Delete journal entry"
                   onClick={() => handleDelete(entry.id)}
                   title="Delete entry"
                   style={{
