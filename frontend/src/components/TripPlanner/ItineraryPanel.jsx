@@ -56,9 +56,9 @@ export default function ItineraryPanel({ tripData, refresh, activeUser }) {
       </div>
 
       <div className="flex gap-2 mt-auto" style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1rem' }}>
-        <input className="input" placeholder="Day (e.g. 1)" value={day} onChange={e => setDay(e.target.value)} style={{ width: '80px' }} />
-        <input className="input" placeholder="Time" value={time} onChange={e => setTime(e.target.value)} style={{ width: '80px' }} />
-        <input className="input" placeholder="Activity Title" value={title} onChange={e => setTitle(e.target.value)} style={{ flex: 1 }} />
+        <input aria-label="Itinerary day" className="input" placeholder="Day (e.g. 1)" value={day} onChange={e => setDay(e.target.value)} style={{ width: '80px' }} />
+        <input aria-label="Itinerary time" className="input" placeholder="Time" value={time} onChange={e => setTime(e.target.value)} style={{ width: '80px' }} />
+        <input aria-label="Itinerary activity title" className="input" placeholder="Activity Title" value={title} onChange={e => setTitle(e.target.value)} style={{ flex: 1 }} />
         <button aria-label="Add itinerary item" className="btn btn-primary" onClick={handleAdd}><Plus size={16}/></button>
       </div>
     </div>

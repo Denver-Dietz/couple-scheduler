@@ -56,7 +56,7 @@ export default function LogisticsPanel({ tripData, refresh, activeUser }) {
           <option>Travel Documents</option>
           <option>Packing List</option>
         </select>
-        <input className="input" placeholder="Details..." value={details} onChange={e => setDetails(e.target.value)} style={{ flex: 1 }} />
+        <input aria-label="Logistic details" className="input" placeholder="Details..." value={details} onChange={e => setDetails(e.target.value)} style={{ flex: 1 }} />
         <button aria-label="Add logistic item" className="btn btn-primary" onClick={handleAdd}><Plus size={16}/></button>
       </div>
     </div>

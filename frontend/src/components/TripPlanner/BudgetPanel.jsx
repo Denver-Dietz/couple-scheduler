@@ -53,8 +53,8 @@ export default function BudgetPanel({ tripData, refresh, activeUser }) {
       </div>
 
       <div className="flex gap-2 mt-auto" style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1rem' }}>
-        <input className="input" placeholder="Category" value={category} onChange={e => setCategory(e.target.value)} style={{ flex: 1 }} />
-        <input className="input" type="number" placeholder="Est $" value={estimated} onChange={e => setEstimated(e.target.value)} style={{ width: '80px' }} />
+        <input aria-label="Budget category" className="input" placeholder="Category" value={category} onChange={e => setCategory(e.target.value)} style={{ flex: 1 }} />
+        <input aria-label="Budget estimated cost" className="input" type="number" placeholder="Est $" value={estimated} onChange={e => setEstimated(e.target.value)} style={{ width: '80px' }} />
         <button aria-label="Add budget item" className="btn btn-primary" onClick={handleAdd}><Plus size={16}/></button>
       </div>
     </div>

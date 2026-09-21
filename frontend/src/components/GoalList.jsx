@@ -145,16 +145,16 @@ export default function GoalList({ activeUser, dashboardActiveUser, showU1, show
         {showCommitForm && (
           <div className="card" style={{ padding: '1rem', marginBottom: '0.75rem' }}>
             <div style={{ marginBottom: '0.5rem' }}>
-              <input className="input" placeholder="Title" value={cTitle}
+              <input aria-label="Appointment title" className="input" placeholder="Title" value={cTitle}
                 onChange={e => setCTitle(e.target.value)} style={{ fontSize: '0.85rem' }} />
             </div>
             <div className="flex gap-2" style={{ marginBottom: '0.5rem' }}>
               <div style={{ flex: 1 }}>
-                <input type="datetime-local" className="input" value={cStart}
+                <input aria-label="Appointment start time" type="datetime-local" className="input" value={cStart}
                   onChange={e => setCStart(e.target.value)} style={{ fontSize: '0.85rem' }} />
               </div>
               <div style={{ flex: 1 }}>
-                <input type="datetime-local" className="input" value={cEnd}
+                <input aria-label="Appointment end time" type="datetime-local" className="input" value={cEnd}
                   onChange={e => setCEnd(e.target.value)} style={{ fontSize: '0.85rem' }} />
               </div>
             </div>
@@ -212,7 +212,7 @@ export default function GoalList({ activeUser, dashboardActiveUser, showU1, show
         {showGoalForm && (
           <div className="card" style={{ padding: '1rem', marginBottom: '0.75rem' }}>
             <div style={{ marginBottom: '0.5rem' }}>
-              <input className="input" placeholder="Goal title" value={goalTitle}
+              <input aria-label="Goal title" className="input" placeholder="Goal title" value={goalTitle}
                 onChange={e => setGoalTitle(e.target.value)} style={{ fontSize: '0.85rem' }} />
             </div>
             <div className="flex gap-2" style={{ marginBottom: '0.5rem' }}>
@@ -281,7 +281,7 @@ export default function GoalList({ activeUser, dashboardActiveUser, showU1, show
         {showProjectForm && (
           <div className="card" style={{ padding: '1rem', marginBottom: '0.75rem' }}>
             <div style={{ marginBottom: '0.5rem' }}>
-              <input className="input" placeholder="Project title" value={projectTitle}
+              <input aria-label="Project title" className="input" placeholder="Project title" value={projectTitle}
                 onChange={e => setProjectTitle(e.target.value)} style={{ fontSize: '0.85rem' }} />
             </div>
             <div className="flex gap-2" style={{ marginBottom: '0.5rem' }}>

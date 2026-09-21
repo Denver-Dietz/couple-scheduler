@@ -22,19 +22,19 @@ export default function OverviewPanel({ tripData, refresh, activeUser }) {
       <div className="flex flex-col gap-3">
         <div>
           <label className="label">Trip Name</label>
-          <input className="input" value={name} onChange={e => setName(e.target.value)} onBlur={handleSave} />
+          <input aria-label="Trip name" className="input" value={name} onChange={e => setName(e.target.value)} onBlur={handleSave} />
         </div>
         <div>
           <label className="label">Dates</label>
-          <input className="input" value={dates} onChange={e => setDates(e.target.value)} onBlur={handleSave} placeholder="e.g., Oct 1 - Oct 10" />
+          <input aria-label="Trip dates" className="input" value={dates} onChange={e => setDates(e.target.value)} onBlur={handleSave} placeholder="e.g., Oct 1 - Oct 10" />
         </div>
         <div>
           <label className="label">Destination</label>
-          <input className="input" value={destination} onChange={e => setDestination(e.target.value)} onBlur={handleSave} />
+          <input aria-label="Trip destination" className="input" value={destination} onChange={e => setDestination(e.target.value)} onBlur={handleSave} />
         </div>
         <div>
           <label className="label">Mood Tags</label>
-          <input className="input" value={moodTags} onChange={e => setMoodTags(e.target.value)} onBlur={handleSave} placeholder="Relaxing, Adventure, etc." />
+          <input aria-label="Trip mood tags" className="input" value={moodTags} onChange={e => setMoodTags(e.target.value)} onBlur={handleSave} placeholder="Relaxing, Adventure, etc." />
         </div>
       </div>
       

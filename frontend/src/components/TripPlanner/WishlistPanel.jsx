@@ -59,7 +59,7 @@ export default function WishlistPanel({ tripData, refresh, activeUser }) {
       </div>
 
       <div className="flex gap-2 mt-auto" style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1rem' }}>
-        <input className="input" placeholder="New Idea..." value={title} onChange={e => setTitle(e.target.value)} style={{ flex: 1 }} />
+        <input aria-label="New wishlist idea title" className="input" placeholder="New Idea..." value={title} onChange={e => setTitle(e.target.value)} style={{ flex: 1 }} />
         <button aria-label="Add wishlist item" className="btn btn-primary" onClick={handleAdd}><Plus size={16}/></button>
       </div>
     </div>
