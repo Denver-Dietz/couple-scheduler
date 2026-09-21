@@ -2,6 +2,16 @@ import React, { useState } from 'react';
 import { Upload, X, MapPin } from 'lucide-react';
 import { api } from '../../utils/api';
 
+const buildFormData = (activeUser, file, caption, eventType, location) => {
+  const formData = new FormData();
+  formData.append('user_id', activeUser);
+  formData.append('file', file);
+  formData.append('caption', caption);
+  formData.append('event_type', eventType);
+  formData.append('location', location);
+  return formData;
+};
+
 export default function MemoryUploader({ activeUser, onComplete, onCancel }) {
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
@@ -22,20 +32,16 @@ export default function MemoryUploader({ activeUser, onComplete, onCancel }) {
     if (!file) return;
     setUploading(true);
     
-    const formData = new FormData();
-    formData.append('user_id', activeUser);
-    formData.append('file', file);
-    formData.append('caption', caption);
-    formData.append('event_type', eventType);
-    formData.append('location', location);
+    const formData = buildFormData(activeUser, file, caption, eventType, location);
     
     try {
       await api.uploadMemory(formData);
       onComplete();
     } catch (e) {
       console.error(e);
+    } finally {
+      setUploading(false);
     }
-    setUploading(false);
   };
 
   return (
