@@ -1,0 +1,3 @@
+## 2024-05-18 - Fix N+1 queries with batched `IN` chunks to avoid SQLite limits
+**Learning:** This codebase experiences N+1 query problems in APIs returning a list of entities with relationships (e.g. `journal_entries` and their comments/reactions). When switching to a batched `IN` query to resolve this, SQLite throws a `sqlite3.OperationalError: too many SQL variables` error if there are too many items.
+**Action:** When solving N+1 query issues using an `IN` clause for querying a SQLite database, chunk the variable replacements (e.g. batch target IDs into 900 records each) to remain under SQLite's ~999 parameter limit.
