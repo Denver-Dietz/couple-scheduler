@@ -389,6 +389,19 @@ def init_db():
         )
         ''')
 
+        # Trip Resources
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS trip_resources (
+            id TEXT PRIMARY KEY,
+            trip_id TEXT,
+            resource_type TEXT,
+            content_url TEXT,
+            title TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (trip_id) REFERENCES trips(id)
+        )
+        ''')
+
         conn.commit()
 
 @contextmanager
@@ -454,4 +467,17 @@ def set_setting(key, value):
             "INSERT OR REPLACE INTO settings (key, value) VALUES (?, ?)",
             (key, value)
         )
+        # Trip Resources
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS trip_resources (
+            id TEXT PRIMARY KEY,
+            trip_id TEXT,
+            resource_type TEXT,
+            content_url TEXT,
+            title TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (trip_id) REFERENCES trips(id)
+        )
+        ''')
+
         conn.commit()
