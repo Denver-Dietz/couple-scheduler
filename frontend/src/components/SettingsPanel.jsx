@@ -87,7 +87,9 @@ export default function SettingsPanel({ activeUser }) {
               if (loadedPrefs[k] !== undefined) filteredPrefs[k] = loadedPrefs[k];
             });
             setFeedPrefs(prev => ({ ...prev, ...filteredPrefs }));
-          } catch (e) {}
+          } catch (e) {
+            console.error('Failed to parse feed preferences:', e);
+          }
         }
       } catch (err) {
         console.error('Failed to load settings:', err);
@@ -203,7 +205,10 @@ export default function SettingsPanel({ activeUser }) {
     try {
       await api.setSetting(`activity_feed_preferences_${currentUser}`, JSON.stringify(newPrefs));
       window.dispatchEvent(new Event('app-refresh'));
-    } catch(e) {}
+    } catch(e) {
+      console.error('Failed to update feed preferences:', e);
+      setStatus('Failed to save feed preference');
+    }
   };
 
   if (showAdvanced) {
