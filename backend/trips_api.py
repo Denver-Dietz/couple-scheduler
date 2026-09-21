@@ -3,6 +3,11 @@ import uuid
 import json
 from fastapi import APIRouter, HTTPException
 from backend.database import get_db
+
+ALLOWED_TRIP_FIELDS = {'name', 'dates', 'destination', 'cover_photo', 'mood_tags', 'progress'}
+ALLOWED_ITINERARY_FIELDS = {'day', 'title', 'time', 'location', 'notes', 'partner_id'}
+ALLOWED_BUDGET_FIELDS = {'category', 'estimated', 'actual', 'paid_by'}
+ALLOWED_LOGISTICS_FIELDS = {'type', 'details', 'files'}
 from backend.models import (
     TripCreate, TripUpdate,
     TripItineraryCreate, TripItineraryUpdate,
@@ -83,8 +88,9 @@ def update_trip(trip_id: str, payload: TripUpdate):
         updates = []
         params = []
         for k, v in payload.dict(exclude_unset=True).items():
-            updates.append(f"{k} = ?")
-            params.append(v)
+            if k in ALLOWED_TRIP_FIELDS:
+                updates.append(f"{k} = ?")
+                params.append(v)
             
         if updates:
             params.append(trip_id)
@@ -126,8 +132,9 @@ def update_itinerary_item(item_id: str, payload: TripItineraryUpdate):
         updates = []
         params = []
         for k, v in payload.dict(exclude_unset=True).items():
-            updates.append(f"{k} = ?")
-            params.append(v)
+            if k in ALLOWED_ITINERARY_FIELDS:
+                updates.append(f"{k} = ?")
+                params.append(v)
         if updates:
             params.append(item_id)
             cursor.execute(f"UPDATE trip_itinerary SET {', '.join(updates)} WHERE id = ?", params)
@@ -193,8 +200,9 @@ def update_budget_item(item_id: str, payload: TripBudgetUpdate):
         updates = []
         params = []
         for k, v in payload.dict(exclude_unset=True).items():
-            updates.append(f"{k} = ?")
-            params.append(v)
+            if k in ALLOWED_BUDGET_FIELDS:
+                updates.append(f"{k} = ?")
+                params.append(v)
         if updates:
             params.append(item_id)
             cursor.execute(f"UPDATE trip_budget SET {', '.join(updates)} WHERE id = ?", params)
@@ -229,8 +237,9 @@ def update_logistics_item(item_id: str, payload: TripLogisticsUpdate):
         updates = []
         params = []
         for k, v in payload.dict(exclude_unset=True).items():
-            updates.append(f"{k} = ?")
-            params.append(v)
+            if k in ALLOWED_LOGISTICS_FIELDS:
+                updates.append(f"{k} = ?")
+                params.append(v)
         if updates:
             params.append(item_id)
             cursor.execute(f"UPDATE trip_logistics SET {', '.join(updates)} WHERE id = ?", params)
