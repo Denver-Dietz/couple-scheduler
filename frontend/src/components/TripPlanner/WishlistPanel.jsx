@@ -48,10 +48,10 @@ export default function WishlistPanel({ tripData, refresh, activeUser }) {
             </div>
             
             <div className="flex items-center gap-1">
-              <button onClick={() => handleVote(item.id, 1)} className="btn btn-outline" style={{ padding: '4px' }}><ThumbsUp size={14}/></button>
-              <button onClick={() => handleVote(item.id, -1)} className="btn btn-outline" style={{ padding: '4px' }}><ThumbsDown size={14}/></button>
-              <button onClick={() => promoteToItinerary(item)} className="btn btn-outline" style={{ padding: '4px', color: 'var(--accent-emerald)' }} title="Add to Itinerary"><ArrowRight size={14}/></button>
-              <button onClick={() => handleDelete(item.id)} className="btn btn-outline" style={{ padding: '4px', border: 'none' }}><Trash2 size={14}/></button>
+              <button aria-label="Upvote item" onClick={() => handleVote(item.id, 1)} className="btn btn-outline" style={{ padding: '4px' }}><ThumbsUp size={14}/></button>
+              <button aria-label="Downvote item" onClick={() => handleVote(item.id, -1)} className="btn btn-outline" style={{ padding: '4px' }}><ThumbsDown size={14}/></button>
+              <button aria-label="Add to Itinerary" onClick={() => promoteToItinerary(item)} className="btn btn-outline" style={{ padding: '4px', color: 'var(--accent-emerald)' }} title="Add to Itinerary"><ArrowRight size={14}/></button>
+              <button aria-label="Delete wishlist item" onClick={() => handleDelete(item.id)} className="btn btn-outline" style={{ padding: '4px', border: 'none' }}><Trash2 size={14}/></button>
             </div>
           </div>
         ))}
@@ -60,7 +60,7 @@ export default function WishlistPanel({ tripData, refresh, activeUser }) {
 
       <div className="flex gap-2 mt-auto" style={{ borderTop: '1px solid var(--border-color)', paddingTop: '1rem' }}>
         <input className="input" placeholder="New Idea..." value={title} onChange={e => setTitle(e.target.value)} style={{ flex: 1 }} />
-        <button className="btn btn-primary" onClick={handleAdd}><Plus size={16}/></button>
+        <button aria-label="Add wishlist item" className="btn btn-primary" onClick={handleAdd}><Plus size={16}/></button>
       </div>
     </div>
   );

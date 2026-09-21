@@ -47,7 +47,7 @@ export default function ItineraryPanel({ tripData, refresh, activeUser }) {
                     <div style={{ fontWeight: 500 }}>{item.title}</div>
                     {item.time && <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}><Clock size={12} className="inline mr-1"/>{item.time}</div>}
                   </div>
-                  <button onClick={() => handleDelete(item.id)} className="btn btn-outline" style={{ padding: '4px', border: 'none' }}><Trash2 size={14}/></button>
+                  <button aria-label="Delete itinerary item" onClick={() => handleDelete(item.id)} className="btn btn-outline" style={{ padding: '4px', border: 'none' }}><Trash2 size={14}/></button>
                 </div>
               ))}
             </div>
@@ -59,7 +59,7 @@ export default function ItineraryPanel({ tripData, refresh, activeUser }) {
         <input className="input" placeholder="Day (e.g. 1)" value={day} onChange={e => setDay(e.target.value)} style={{ width: '80px' }} />
         <input className="input" placeholder="Time" value={time} onChange={e => setTime(e.target.value)} style={{ width: '80px' }} />
         <input className="input" placeholder="Activity Title" value={title} onChange={e => setTitle(e.target.value)} style={{ flex: 1 }} />
-        <button className="btn btn-primary" onClick={handleAdd}><Plus size={16}/></button>
+        <button aria-label="Add itinerary item" className="btn btn-primary" onClick={handleAdd}><Plus size={16}/></button>
       </div>
     </div>
   );
