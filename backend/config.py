@@ -11,5 +11,3 @@ from backend.database import get_setting
 def get_gemini_api_key():
     return get_setting("gemini_api_key")
 
-def get_telegram_bot_token():
-    return get_setting("telegram_bot_token")
