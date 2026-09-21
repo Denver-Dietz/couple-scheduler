@@ -15,6 +15,11 @@ const formatTimeAMPM = (timeStr) => {
   return `${hour}:${min} ${ampm}`;
 };
 
+const formatDateTimeForApi = (datetimeStr) => {
+  if (!datetimeStr) return '';
+  return datetimeStr.replace('T', ' ') + ':00';
+};
+
 /**
  * Main unified calendar rendering engine.
  * 
@@ -297,17 +302,14 @@ export default function CalendarView({ activeUser, dashboardActiveUser, showU1, 
 
   const handleEditSubmit = async () => {
     if (!selectedSlot || !selectedSlot.item_id || !editData) return;
+
     try {
       setLoading(true);
       
-      // Convert HTML datetime-local inputs back to API format (replace T, add seconds)
-      const start_time = editData.start_datetime.replace('T', ' ') + ':00';
-      const end_time = editData.end_datetime.replace('T', ' ') + ':00';
-      
       await api.rescheduleCommitment(selectedSlot.item_id, {
         title: editData.title,
-        start_time,
-        end_time,
+        start_time: formatDateTimeForApi(editData.start_datetime),
+        end_time: formatDateTimeForApi(editData.end_datetime),
         user_id: editData.user_id,
         is_fixed: editData.is_fixed
       });
