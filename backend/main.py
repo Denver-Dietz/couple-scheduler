@@ -17,6 +17,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from typing import Optional, List
+from collections import defaultdict
 import shutil
 from datetime import datetime, timedelta
 
@@ -1006,26 +1007,39 @@ def api_submit_schedule(req: SubmitScheduleRequest):
         if prev_row:
             try:
                 prev_data = json.loads(prev_row['schedule_json'])
+                rollback_hours = defaultdict(float)
                 for p_day in prev_data.get("days", {}).values():
                     for p_slot in p_day:
                         if p_slot.get("type") == "project" and p_slot.get("item_id"):
                             sh, sm = map(int, p_slot["start_time"].split(":"))
                             eh, em = map(int, p_slot["end_time"].split(":"))
                             dur_hours = (eh * 60 + em - (sh * 60 + sm)) / 60.0
-                            cursor.execute("UPDATE projects SET hours_allocated = MAX(0, hours_allocated - ?) WHERE id = ?", (dur_hours, p_slot["item_id"]))
+                            rollback_hours[p_slot["item_id"]] += dur_hours
+
+                if rollback_hours:
+                    cursor.executemany("UPDATE projects SET hours_allocated = MAX(0, hours_allocated - ?) WHERE id = ?",
+                                       [(hours, pid) for pid, hours in rollback_hours.items()])
             except Exception as e:
                 logger.error(f"Failed to rollback prev project hours: {e}")
 
         # 2. Add project hours from new schedule
+        add_hours = defaultdict(float)
         for slot in req.slots:
             if slot.get("type") == "project" and slot.get("item_id"):
                 try:
                     sh, sm = map(int, slot["start_time"].split(":"))
                     eh, em = map(int, slot["end_time"].split(":"))
                     dur_hours = (eh * 60 + em - (sh * 60 + sm)) / 60.0
-                    cursor.execute("UPDATE projects SET hours_allocated = MIN(total_hours, hours_allocated + ?) WHERE id = ?", (dur_hours, slot["item_id"]))
+                    add_hours[slot["item_id"]] += dur_hours
                 except Exception as e:
-                    logger.error(f"Failed to update project hours: {e}")
+                    logger.error(f"Failed to aggregate project hours: {e}")
+
+        if add_hours:
+            try:
+                cursor.executemany("UPDATE projects SET hours_allocated = MIN(total_hours, hours_allocated + ?) WHERE id = ?",
+                                   [(hours, pid) for pid, hours in add_hours.items()])
+            except Exception as e:
+                logger.error(f"Failed to update project hours: {e}")
 
         # 3. Delete existing schedule & Insert new schedule
         cursor.execute("DELETE FROM schedules WHERE user_id = ? AND start_date = ?", (req.user_id, req.start_date))
