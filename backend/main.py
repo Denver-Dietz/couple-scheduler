@@ -340,9 +340,11 @@ def api_update_commitment(item_id: str, payload: CommitmentUpdatePayload):
         cursor = conn.cursor()
         update_fields = []
         params = []
+        allowed_keys = {"title", "start_time", "end_time", "is_fixed", "user_id"}
         for field, value in payload.model_dump(exclude_unset=True).items():
-            update_fields.append(f"{field} = ?")
-            params.append(value)
+            if field in allowed_keys:
+                update_fields.append(f"{field} = ?")
+                params.append(value)
             
         if update_fields:
             params.append(item_id)
