@@ -1,0 +1,3 @@
+🎯 **What:** The testing gap addressed is the lack of tests for the `suggest_project_slots` function in `schedule_engine.py`, which identifies continuous free blocks in a schedule grid.
+📊 **Coverage:** Added test cases for an empty schedule (all slots free), a schedule with specific busy blocks that interrupt block accumulation, and edge cases (hours resulting in fractional blocks and large requested hours capped at a safe maximum).
+✨ **Result:** Improved test coverage by reliably verifying the scheduling logic and its ability to properly skip occupied blocks and correctly assign blocks in chunks.
