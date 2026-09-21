@@ -34,7 +34,10 @@ def update_bucket_list_item(item_id: str, payload: BucketListUpdate):
         # Build dynamic update statement based on provided fields
         update_fields = []
         params = []
+        ALLOWED_COLUMNS = {"title", "status", "estimated_cost", "effort_level", "latitude", "longitude", "address"}
         for field, value in payload.model_dump(exclude_unset=True).items():
+            if field not in ALLOWED_COLUMNS:
+                raise HTTPException(status_code=400, detail=f"Invalid field: {field}")
             update_fields.append(f"{field} = ?")
             params.append(value)
             
