@@ -33,6 +33,86 @@ const generateTimeOptions = () => {
  *   so it knows exactly when the user is unavailable, preventing goals/projects from being scheduled
  *   during the workday.
  */
+
+function DayScheduleCard({ date, dayShifts, showForm, draftShift, updateDraft, currentUser, onDeleteShift }) {
+  return (
+    <div style={{ border: '1px solid var(--border-color)', borderRadius: '8px', padding: '0.5rem', background: 'rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column', minHeight: '100px' }}>
+      <div style={{ fontSize: '0.75rem', fontWeight: 600, textAlign: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.25rem', marginBottom: '0.5rem' }}>
+        {format(new Date(date + 'T00:00:00'), 'EEE')} <br/>
+        <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>{format(new Date(date + 'T00:00:00'), 'MMM d')}</span>
+      </div>
+
+      {showForm ? (
+        <div className="flex flex-col gap-2" style={{ flex: 1, justifyContent: 'center' }}>
+          <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', cursor: 'pointer', justifyContent: 'center' }}>
+            <input
+              type="checkbox"
+              checked={draftShift?.is_off || false}
+              onChange={e => updateDraft(date, 'is_off', e.target.checked)}
+            />
+            Off
+          </label>
+          {!draftShift?.is_off && (
+            <div className="flex flex-col gap-1">
+              <select
+                value={draftShift?.start_time || '09:00'}
+                onChange={e => updateDraft(date, 'start_time', e.target.value)}
+                style={{ width: '100%', fontSize: '0.75rem', padding: '2px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'var(--text-primary)', borderRadius: '4px', textAlign: 'center', cursor: 'pointer' }}
+              >
+                {generateTimeOptions().map(opt => (
+                  <option key={opt.value} value={opt.value} style={{ background: 'var(--bg-card)', color: 'var(--text-primary)' }}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+              <select
+                value={draftShift?.end_time || '17:00'}
+                onChange={e => updateDraft(date, 'end_time', e.target.value)}
+                style={{ width: '100%', fontSize: '0.75rem', padding: '2px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'var(--text-primary)', borderRadius: '4px', textAlign: 'center', cursor: 'pointer' }}
+              >
+                {generateTimeOptions().map(opt => (
+                  <option key={opt.value} value={opt.value} style={{ background: 'var(--bg-card)', color: 'var(--text-primary)' }}>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="flex flex-col gap-1" style={{ flex: 1 }}>
+          {dayShifts.map(s => {
+            const colorVar = s.user_id === 'user1' ? 'var(--accent-emerald)' : 'var(--accent-purple)';
+            const colorRgb = s.user_id === 'user1' ? '16, 185, 129' : '139, 92, 246';
+            return (
+              <div key={s.id} style={{
+                fontSize: '0.7rem', padding: '0.25rem', borderRadius: '4px',
+                background: s.start_time === 'off' ? 'rgba(239, 68, 68, 0.1)' : `rgba(${colorRgb}, 0.1)`,
+                border: `1px solid ${s.start_time === 'off' ? 'rgba(239, 68, 68, 0.3)' : `rgba(${colorRgb}, 0.3)`}`,
+                color: s.start_time === 'off' ? '#ef4444' : colorVar,
+                display: 'flex', justifyContent: 'space-between', alignItems: 'center'
+              }}>
+                <span style={{flex: 1, textAlign: 'center'}}>
+                  {s.start_time === 'off' ? 'Off' : `${formatTimeAMPM(s.start_time)} - ${formatTimeAMPM(s.end_time)}`}
+                </span>
+                {s.user_id === currentUser && (
+                  <button onClick={() => onDeleteShift(s.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: 'inherit' }}>
+                    <Trash2 size={10} />
+                  </button>
+                )}
+              </div>
+            );
+          })}
+          {dayShifts.length === 0 && (
+            <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textAlign: 'center', padding: '0.5rem 0' }}>Default</div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+
 export default function WorkSchedulePanel({ activeUser, dashboardActiveUser, showU1, showU2 }) {
   const currentUser = activeUser || 'user1';
   const isDashboardOwner = !dashboardActiveUser || dashboardActiveUser === activeUser;
@@ -154,80 +234,22 @@ export default function WorkSchedulePanel({ activeUser, dashboardActiveUser, sho
         {weekDates.map(date => {
           const dayShifts = shifts.filter(s => s.date === date && ((s.user_id === 'user1' && showU1) || (s.user_id === 'user2' && showU2)));
           
+          const handleDeleteShift = async (shiftId) => {
+            await api.deleteWorkShift(shiftId);
+            refresh();
+          };
+
           return (
-            <div key={date} style={{ border: '1px solid var(--border-color)', borderRadius: '8px', padding: '0.5rem', background: 'rgba(0,0,0,0.02)', display: 'flex', flexDirection: 'column', minHeight: '100px' }}>
-              <div style={{ fontSize: '0.75rem', fontWeight: 600, textAlign: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '0.25rem', marginBottom: '0.5rem' }}>
-                {format(new Date(date + 'T00:00:00'), 'EEE')} <br/>
-                <span style={{ color: 'var(--text-muted)', fontWeight: 400 }}>{format(new Date(date + 'T00:00:00'), 'MMM d')}</span>
-              </div>
-              
-              {showForm ? (
-                <div className="flex flex-col gap-2" style={{ flex: 1, justifyContent: 'center' }}>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem', cursor: 'pointer', justifyContent: 'center' }}>
-                    <input 
-                      type="checkbox" 
-                      checked={draftShifts[date]?.is_off || false} 
-                      onChange={e => updateDraft(date, 'is_off', e.target.checked)} 
-                    />
-                    Off
-                  </label>
-                  {!draftShifts[date]?.is_off && (
-                    <div className="flex flex-col gap-1">
-                      <select 
-                        value={draftShifts[date]?.start_time || '09:00'} 
-                        onChange={e => updateDraft(date, 'start_time', e.target.value)} 
-                        style={{ width: '100%', fontSize: '0.75rem', padding: '2px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'var(--text-primary)', borderRadius: '4px', textAlign: 'center', cursor: 'pointer' }}
-                      >
-                        {generateTimeOptions().map(opt => (
-                          <option key={opt.value} value={opt.value} style={{ background: 'var(--bg-card)', color: 'var(--text-primary)' }}>
-                            {opt.label}
-                          </option>
-                        ))}
-                      </select>
-                      <select 
-                        value={draftShifts[date]?.end_time || '17:00'} 
-                        onChange={e => updateDraft(date, 'end_time', e.target.value)} 
-                        style={{ width: '100%', fontSize: '0.75rem', padding: '2px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', color: 'var(--text-primary)', borderRadius: '4px', textAlign: 'center', cursor: 'pointer' }}
-                      >
-                        {generateTimeOptions().map(opt => (
-                          <option key={opt.value} value={opt.value} style={{ background: 'var(--bg-card)', color: 'var(--text-primary)' }}>
-                            {opt.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <div className="flex flex-col gap-1" style={{ flex: 1 }}>
-                  {dayShifts.map(s => {
-                    const colorVar = s.user_id === 'user1' ? 'var(--accent-emerald)' : 'var(--accent-purple)';
-                    const colorRgb = s.user_id === 'user1' ? '16, 185, 129' : '139, 92, 246';
-                    return (
-                      <div key={s.id} style={{ 
-                        fontSize: '0.7rem', padding: '0.25rem', borderRadius: '4px', 
-                        background: s.start_time === 'off' ? 'rgba(239, 68, 68, 0.1)' : `rgba(${colorRgb}, 0.1)`,
-                        border: `1px solid ${s.start_time === 'off' ? 'rgba(239, 68, 68, 0.3)' : `rgba(${colorRgb}, 0.3)`}`,
-                        color: s.start_time === 'off' ? '#ef4444' : colorVar,
-                        display: 'flex', justifyContent: 'space-between', alignItems: 'center'
-                      }}>
-                        <span style={{flex: 1, textAlign: 'center'}}>
-                          {s.start_time === 'off' ? 'Off' : `${formatTimeAMPM(s.start_time)} - ${formatTimeAMPM(s.end_time)}`}
-                        </span>
-                        {s.user_id === currentUser && (
-                          <button onClick={async () => { await api.deleteWorkShift(s.id); refresh(); }} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: 'inherit' }}>
-                            <Trash2 size={10} />
-                          </button>
-                        )}
-                      </div>
-                    );
-                  })}
-                  {dayShifts.length === 0 && (
-                    <div style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textAlign: 'center', padding: '0.5rem 0' }}>Default</div>
-                  )}
-                </div>
-              )}
-            </div>
+            <DayScheduleCard
+              key={date}
+              date={date}
+              dayShifts={dayShifts}
+              showForm={showForm}
+              draftShift={draftShifts[date]}
+              updateDraft={updateDraft}
+              currentUser={currentUser}
+              onDeleteShift={handleDeleteShift}
+            />
           );
         })}
       </div>
