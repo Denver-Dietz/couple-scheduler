@@ -11,7 +11,71 @@ import { format } from 'date-fns';
  * - Implements a local AI "Enhance" feature that patches text locally before sending to
  *   a grammar engine, keeping sensitive journal entries away from public LLMs like ChatGPT.
  */
+
+function EntryContent({ entry, currentUser, entries, editingEntryId, editContent, setEditContent, handleEditSave, getLocalDateString, getEntryLocalDateString }) {
+  const today = getLocalDateString(new Date());
+  const isToday = getEntryLocalDateString(entry.created_at) === today;
+  const isQotd = entry.content.startsWith(`**QotD:**`);
+
+  let isBlurred = false;
+  if (isQotd && isToday && entry.user_id !== currentUser) {
+     const iAnswered = entries.some(e =>
+       e.user_id === currentUser &&
+       e.content.startsWith(`**QotD:**`) &&
+       getEntryLocalDateString(e.created_at) === today
+     );
+     if (!iAnswered) isBlurred = true;
+  }
+
+  if (editingEntryId === entry.id) {
+    return (
+      <div className="flex flex-col gap-2">
+        <textarea
+          className="input"
+          style={{ minHeight: '120px', resize: 'vertical', width: '100%', background: 'rgba(0,0,0,0.2)', color: 'var(--text-primary)', border: '1px solid rgba(255,255,255,0.1)' }}
+          value={editContent}
+          onChange={e => setEditContent(e.target.value)}
+        />
+        <div className="flex gap-2 justify-end mt-2">
+          <button className="btn btn-secondary" onClick={() => setEditingEntryId(null)}>Cancel</button>
+          <button className="btn btn-primary" onClick={() => handleEditSave(entry.id)}>Save Changes</button>
+        </div>
+      </div>
+    );
+  }
+
+  if (isBlurred) {
+    return (
+      <div style={{ position: 'relative', overflow: 'hidden', borderRadius: '8px' }}>
+        <p style={{ whiteSpace: 'pre-wrap', lineHeight: '1.6', filter: 'blur(6px)', opacity: 0.5, userSelect: 'none' }}>
+          {entry.content}
+        </p>
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.1)' }}>
+          <Lock size={24} style={{ color: 'var(--accent-blue)', marginBottom: '0.5rem' }} />
+          <span style={{ fontWeight: 'bold', textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>Answer today's question to unlock</span>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <p style={{ whiteSpace: 'pre-wrap', lineHeight: '1.6' }}>
+      {isQotd ? (
+        <>
+          <strong style={{ color: 'var(--accent-blue)', display: 'block' }}>Question of the Day:</strong>
+          <em style={{ color: 'var(--text-muted)' }}>{entry.content.split('\n\n')[0].replace('**QotD:** ', '')}</em>
+          <br/><br/>
+          {entry.content.substring(entry.content.indexOf('\n\n') + 2)}
+        </>
+      ) : (
+        entry.content
+      )}
+    </p>
+  );
+}
+
 export default function JournalView({ activeUser }) {
+
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
   
@@ -304,67 +368,17 @@ export default function JournalView({ activeUser }) {
               </small>
             </div>
             
-            {(() => {
-              const today = getLocalDateString(new Date());
-              const isToday = getEntryLocalDateString(entry.created_at) === today;
-              const isQotd = entry.content.startsWith(`**QotD:**`);
-              
-              let isBlurred = false;
-              if (isQotd && isToday && entry.user_id !== currentUser) {
-                 const iAnswered = entries.some(e => 
-                   e.user_id === currentUser && 
-                   e.content.startsWith(`**QotD:**`) && 
-                   getEntryLocalDateString(e.created_at) === today
-                 );
-                 if (!iAnswered) isBlurred = true;
-              }
-
-              if (editingEntryId === entry.id) {
-                return (
-                  <div className="flex flex-col gap-2">
-                    <textarea 
-                      className="input"
-                      style={{ minHeight: '120px', resize: 'vertical', width: '100%', background: 'rgba(0,0,0,0.2)', color: 'var(--text-primary)', border: '1px solid rgba(255,255,255,0.1)' }}
-                      value={editContent}
-                      onChange={e => setEditContent(e.target.value)}
-                    />
-                    <div className="flex gap-2 justify-end mt-2">
-                      <button className="btn btn-secondary" onClick={() => setEditingEntryId(null)}>Cancel</button>
-                      <button className="btn btn-primary" onClick={() => handleEditSave(entry.id)}>Save Changes</button>
-                    </div>
-                  </div>
-                );
-              }
-
-              if (isBlurred) {
-                return (
-                  <div style={{ position: 'relative', overflow: 'hidden', borderRadius: '8px' }}>
-                    <p style={{ whiteSpace: 'pre-wrap', lineHeight: '1.6', filter: 'blur(6px)', opacity: 0.5, userSelect: 'none' }}>
-                      {entry.content}
-                    </p>
-                    <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: 'rgba(0,0,0,0.1)' }}>
-                      <Lock size={24} style={{ color: 'var(--accent-blue)', marginBottom: '0.5rem' }} />
-                      <span style={{ fontWeight: 'bold', textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}>Answer today's question to unlock</span>
-                    </div>
-                  </div>
-                );
-              }
-
-              return (
-                <p style={{ whiteSpace: 'pre-wrap', lineHeight: '1.6' }}>
-                  {isQotd ? (
-                    <>
-                      <strong style={{ color: 'var(--accent-blue)', display: 'block' }}>Question of the Day:</strong>
-                      <em style={{ color: 'var(--text-muted)' }}>{entry.content.split('\n\n')[0].replace('**QotD:** ', '')}</em>
-                      <br/><br/>
-                      {entry.content.substring(entry.content.indexOf('\n\n') + 2)}
-                    </>
-                  ) : (
-                    entry.content
-                  )}
-                </p>
-              );
-            })()}
+            <EntryContent
+              entry={entry}
+              currentUser={currentUser}
+              entries={entries}
+              editingEntryId={editingEntryId}
+              editContent={editContent}
+              setEditContent={setEditContent}
+              handleEditSave={handleEditSave}
+              getLocalDateString={getLocalDateString}
+              getEntryLocalDateString={getEntryLocalDateString}
+            />
             
             {/* Actions for author */}
             {entry.user_id === currentUser && editingEntryId !== entry.id && (
