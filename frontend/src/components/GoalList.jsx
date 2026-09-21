@@ -136,7 +136,9 @@ export default function GoalList({ activeUser, dashboardActiveUser, showU1, show
           </h3>
           {isDashboardOwner && (
             <button className="btn btn-outline" onClick={() => setShowCommitForm(!showCommitForm)}
-              style={{ padding: '0.3rem 0.6rem', fontSize: '0.8rem' }}>
+              style={{ padding: '0.3rem 0.6rem', fontSize: '0.8rem' }}
+              aria-label={showCommitForm ? "Cancel adding appointment" : "Add new appointment"}
+              title={showCommitForm ? "Cancel adding appointment" : "Add new appointment"}>
               {showCommitForm ? <X size={14} /> : <Plus size={14} />}
             </button>
           )}
@@ -183,7 +185,9 @@ export default function GoalList({ activeUser, dashboardActiveUser, showU1, show
                 </div>
                 {c.user_id === currentUser || c.user_id === 'both' ? (
                   <button onClick={() => { api.deleteCommitment(c.id); refresh(); }}
-                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', padding: '4px' }}>
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', padding: '4px' }}
+                    aria-label={`Delete appointment: ${c.title}`}
+                    title="Delete appointment">
                     <Trash2 size={14} />
                   </button>
                 ) : (
@@ -203,7 +207,9 @@ export default function GoalList({ activeUser, dashboardActiveUser, showU1, show
           </h3>
           {isDashboardOwner && (
             <button className="btn btn-outline" onClick={() => setShowGoalForm(!showGoalForm)}
-              style={{ padding: '0.3rem 0.6rem', fontSize: '0.8rem' }}>
+              style={{ padding: '0.3rem 0.6rem', fontSize: '0.8rem' }}
+              aria-label={showGoalForm ? "Cancel adding goal" : "Add new goal"}
+              title={showGoalForm ? "Cancel adding goal" : "Add new goal"}>
               {showGoalForm ? <X size={14} /> : <Plus size={14} />}
             </button>
           )}
@@ -252,7 +258,9 @@ export default function GoalList({ activeUser, dashboardActiveUser, showU1, show
                 </div>
                 {g.user_id === currentUser || g.user_id === 'both' ? (
                   <button onClick={() => { api.deleteGoal(g.id); refresh(); }}
-                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', padding: '4px' }}>
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', padding: '4px' }}
+                    aria-label={`Delete goal: ${g.title}`}
+                    title="Delete goal">
                     <Trash2 size={14} />
                   </button>
                 ) : (
@@ -272,7 +280,9 @@ export default function GoalList({ activeUser, dashboardActiveUser, showU1, show
           </h3>
           {isDashboardOwner && (
             <button className="btn btn-outline" onClick={() => setShowProjectForm(!showProjectForm)}
-              style={{ padding: '0.3rem 0.6rem', fontSize: '0.8rem' }}>
+              style={{ padding: '0.3rem 0.6rem', fontSize: '0.8rem' }}
+              aria-label={showProjectForm ? "Cancel adding project" : "Add new project"}
+              title={showProjectForm ? "Cancel adding project" : "Add new project"}>
               {showProjectForm ? <X size={14} /> : <Plus size={14} />}
             </button>
           )}
@@ -322,7 +332,9 @@ export default function GoalList({ activeUser, dashboardActiveUser, showU1, show
                 </div>
                 {p.user_id === currentUser || p.user_id === 'both' ? (
                   <button onClick={() => { api.deleteProject(p.id); refresh(); }}
-                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', padding: '4px' }}>
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', padding: '4px' }}
+                    aria-label={`Delete project: ${p.title}`}
+                    title="Delete project">
                     <Trash2 size={14} />
                   </button>
                 ) : (
