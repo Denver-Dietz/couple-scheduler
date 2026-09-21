@@ -87,17 +87,15 @@ export default function App() {
   }, []);
 
   const handleLogin = async (userId) => {
-    const fetchTheme = async () => {
-      try {
-        const s = await api.getSettings();
-        const themeKey = `${userId}_theme`;
-        const userTheme = s.find(setting => setting.key === themeKey)?.value || 'dark';
-        document.documentElement.className = userTheme;
-      } catch (e) {
-        console.error("Error setting theme", e);
-      }
+    try {
+      const s = await api.getSettings();
+      const themeKey = `${userId}_theme`;
+      const userTheme = s.find(setting => setting.key === themeKey)?.value || 'dark';
+      document.documentElement.className = userTheme;
+    } catch (e) {
+      console.error("Error setting theme", e);
     }
-    fetchTheme();
+
     setActiveUser(userId);
     setDashboardActiveUser(userId);
   };
