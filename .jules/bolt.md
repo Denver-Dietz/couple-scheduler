@@ -1,0 +1,3 @@
+## 2024-09-21 - Fix N+1 Query in `get_memories`
+**Learning:** Resolving N+1 query patterns by using chunked `IN` queries drastically reduces execution time, especially for resources fetching highly connected child records like comments and reactions for multiple memories. Grouping by memory id using `collections.defaultdict` in memory is very fast and efficient.
+**Action:** When querying multiple child objects (e.g. comments, reactions) for a list of parent objects (e.g. memories), use a single `IN` query to batch fetch the child records and assemble the nested structures in application memory using `collections.defaultdict`. Make sure to chunk the parent IDs for the `IN` clause (e.g. to 900) to adhere to the SQLite query parameter limit.
