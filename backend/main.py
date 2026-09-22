@@ -338,29 +338,37 @@ def api_update_commitment(item_id: str, payload: CommitmentUpdatePayload):
 
     with get_db() as conn:
         cursor = conn.cursor()
+
+        # Security: Whitelist allowed columns to prevent SQL injection
+        allowed_columns = {
+            "title", "start_time", "end_time", "is_fixed", "user_id",
+            "is_date", "date_idea_id"
+        }
+
         update_fields = []
         params = []
         for field, value in payload.model_dump(exclude_unset=True).items():
-            update_fields.append(f"{field} = ?")
-            params.append(value)
+            if field in allowed_columns:
+                update_fields.append(field + " = ?")
+                params.append(value)
             
         if update_fields:
             params.append(item_id)
-            sql = f"UPDATE commitments SET {', '.join(update_fields)} WHERE id = ?"
+            sql = "UPDATE commitments SET " + ", ".join(update_fields) + " WHERE id = ?"
             try:
                 cursor.execute(sql, tuple(params))
             except sqlite3.OperationalError:
                 # Fallback for legacy columns
-                legacy_fields = ['title', 'start_time', 'end_time', 'is_fixed', 'user_id']
+                legacy_fields = {'title', 'start_time', 'end_time', 'is_fixed', 'user_id'}
                 filtered_fields = []
                 filtered_params = []
                 for field, value in payload.model_dump(exclude_unset=True).items():
                     if field in legacy_fields:
-                        filtered_fields.append(f"{field} = ?")
+                        filtered_fields.append(field + " = ?")
                         filtered_params.append(value)
                 if filtered_fields:
                     filtered_params.append(item_id)
-                    sql_legacy = f"UPDATE commitments SET {', '.join(filtered_fields)} WHERE id = ?"
+                    sql_legacy = "UPDATE commitments SET " + ", ".join(filtered_fields) + " WHERE id = ?"
                     cursor.execute(sql_legacy, tuple(filtered_params))
             conn.commit()
             

@@ -31,18 +31,25 @@ def update_bucket_list_item(item_id: str, payload: BucketListUpdate):
     with get_db() as conn:
         cursor = conn.cursor()
         
+        # Security: Whitelist allowed columns to prevent SQL injection
+        allowed_columns = {
+            "title", "status", "estimated_cost", "effort_level",
+            "latitude", "longitude", "address"
+        }
+
         # Build dynamic update statement based on provided fields
         update_fields = []
         params = []
         for field, value in payload.model_dump(exclude_unset=True).items():
-            update_fields.append(f"{field} = ?")
-            params.append(value)
+            if field in allowed_columns:
+                update_fields.append(field + " = ?")
+                params.append(value)
             
         if not update_fields:
             return {"status": "no updates"}
             
         params.append(item_id)
-        sql = f"UPDATE bucket_list_items SET {', '.join(update_fields)} WHERE id = ?"
+        sql = "UPDATE bucket_list_items SET " + ", ".join(update_fields) + " WHERE id = ?"
         cursor.execute(sql, tuple(params))
         conn.commit()
     return {"status": "success"}
