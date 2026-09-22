@@ -5,20 +5,21 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import { ArrowUpRight, Link as LinkIcon, Plus, Search, MapPin, Loader2, Layers } from 'lucide-react';
 
 const MAP_STYLES = [
-  { id: 'voyager', name: 'Voyager (Clean)', url: 'https://api.maptiler.com/maps/voyager/style.json?key=ReuTy2IY21j68ggRSvub' },
-  { id: 'streets', name: 'Streets', url: 'https://api.maptiler.com/maps/streets-v2/style.json?key=ReuTy2IY21j68ggRSvub' },
-  { id: 'dark', name: 'Dark Theme', url: 'https://api.maptiler.com/maps/dataviz-dark/style.json?key=ReuTy2IY21j68ggRSvub' },
-  { id: 'hybrid', name: 'Satellite Hybrid', url: 'https://api.maptiler.com/maps/hybrid/style.json?key=ReuTy2IY21j68ggRSvub' },
-  { id: 'outdoor', name: 'Outdoors', url: 'https://api.maptiler.com/maps/outdoor-v2/style.json?key=ReuTy2IY21j68ggRSvub' }
+  { id: 'voyager', name: 'Voyager (Clean)', url: 'https://api.maptiler.com/maps/voyager/style.json?key=' },
+  { id: 'streets', name: 'Streets', url: 'https://api.maptiler.com/maps/streets-v2/style.json?key=' },
+  { id: 'dark', name: 'Dark Theme', url: 'https://api.maptiler.com/maps/dataviz-dark/style.json?key=' },
+  { id: 'hybrid', name: 'Satellite Hybrid', url: 'https://api.maptiler.com/maps/hybrid/style.json?key=' },
+  { id: 'outdoor', name: 'Outdoors', url: 'https://api.maptiler.com/maps/outdoor-v2/style.json?key=' }
 ];
 
 export default function DestinationsTab({ items, refresh }) {
   const [selectedItem, setSelectedItem] = useState(null);
   const [addingLocation, setAddingLocation] = useState(null);
   const [newTitle, setNewTitle] = useState('');
+  const [maptilerKey, setMaptilerKey] = useState(null);
   
   // Map Style & Search states
-  const [activeStyle, setActiveStyle] = useState(MAP_STYLES[0].url);
+  const [activeStyleId, setActiveStyleId] = useState(MAP_STYLES[0].id);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -27,13 +28,34 @@ export default function DestinationsTab({ items, refresh }) {
   const mapInstanceRef = useRef(null);
   const markersRef = useRef([]);
 
+  useEffect(() => {
+    async function loadSettings() {
+      try {
+        const s = await api.getSettings();
+        const key = s.find(setting => setting.key === 'maptiler_api_key')?.value;
+        if (key) {
+          setMaptilerKey(key);
+        } else {
+          setMaptilerKey(''); // Fallback
+        }
+      } catch (e) {
+        console.error("Failed to load map settings", e);
+        setMaptilerKey(''); // Fallback
+      }
+    }
+    loadSettings();
+  }, []);
+
   // Initialize MapLibre GL map
   useEffect(() => {
-    if (!mapContainerRef.current) return;
+    // Only initialize when maptilerKey is loaded and container is ready
+    if (!mapContainerRef.current || maptilerKey === null) return;
+
+    const activeStyleUrl = MAP_STYLES.find(s => s.id === activeStyleId).url + maptilerKey;
 
     const map = new maplibregl.Map({
       container: mapContainerRef.current,
-      style: activeStyle,
+      style: activeStyleUrl,
       center: [12, 42], // Default centered near Europe/Global view
       zoom: 2.2
     });
@@ -59,15 +81,16 @@ export default function DestinationsTab({ items, refresh }) {
     return () => {
       map.remove();
     };
-  }, []);
+  }, [maptilerKey]);
 
-  // Update map style dynamically when activeStyle changes
+  // Update map style dynamically when activeStyleId or maptilerKey changes
   useEffect(() => {
     const map = mapInstanceRef.current;
-    if (map) {
-      map.setStyle(activeStyle);
+    if (map && maptilerKey !== null) {
+      const activeStyleUrl = MAP_STYLES.find(s => s.id === activeStyleId).url + maptilerKey;
+      map.setStyle(activeStyleUrl);
     }
-  }, [activeStyle]);
+  }, [activeStyleId, maptilerKey]);
 
   // Update markers when items, addingLocation, or map style changes
   useEffect(() => {
@@ -134,7 +157,7 @@ export default function DestinationsTab({ items, refresh }) {
     } else {
       map.on('style.load', drawMarkers);
     }
-  }, [items, addingLocation, activeStyle]);
+  }, [items, addingLocation, activeStyleId, maptilerKey]);
 
   // Debounced geocoding search querying Nominatim API
   useEffect(() => {
@@ -403,11 +426,11 @@ export default function DestinationsTab({ items, refresh }) {
           <Layers size={16} className="text-muted" style={{ marginRight: '0.2rem' }} />
           <select
             className="style-select"
-            value={activeStyle}
-            onChange={e => setActiveStyle(e.target.value)}
+            value={activeStyleId}
+            onChange={e => setActiveStyleId(e.target.value)}
           >
             {MAP_STYLES.map(style => (
-              <option key={style.id} value={style.url}>
+              <option key={style.id} value={style.id}>
                 {style.name}
               </option>
             ))}

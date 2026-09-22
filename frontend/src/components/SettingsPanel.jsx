@@ -61,7 +61,7 @@ export default function SettingsPanel({ activeUser }) {
         const find = (k, d) => s.find(setting => setting.key === k)?.value || d;
         
         setGeminiKey(find('gemini_api_key', ''));
-        setMaptilerKey(find('maptiler_api_key', 'J6Q9BvE0gL7zV8xP4nC3'));
+        setMaptilerKey(find('maptiler_api_key', ''));
         setAuthorizedUsers(find('authorized_users', ''));
         
         setU1Name(find('user1_name', 'User 1'));
