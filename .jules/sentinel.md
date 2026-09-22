@@ -1,0 +1,4 @@
+## 2024-05-18 - Unrestricted File Upload
+**Vulnerability:** Unrestricted File Upload in `backend/main.py`. The `upload_memory` endpoint allowed any file to be uploaded because it only extracted the file extension from the provided filename and appended it to a UUID, blindly saving whatever extension was submitted.
+**Learning:** Fast API `UploadFile` does not validate file extensions by default. Assuming that only standard media types will be uploaded just because the endpoint is named 'memories' leaves a serious vulnerability open to XSS (if HTML/SVG uploaded) or RCE (if PHP/Python script uploaded and somehow executed, though less likely in a FastAPI static mount, but still problematic).
+**Prevention:** Always validate uploaded files against a strict whitelist of allowed extensions/MIME types on the server side, rather than trusting the client-provided file name or extension.
