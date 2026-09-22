@@ -8,6 +8,7 @@ import asyncio
 import uuid
 import json
 import os
+import re
 import webbrowser
 import logging
 from contextlib import asynccontextmanager
@@ -1315,6 +1316,7 @@ def api_get_qotd():
     import random
     from datetime import date
     import os
+import re
     
     json_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "couples_questions_365.json")
     if not os.path.exists(json_path):
@@ -1527,6 +1529,8 @@ def upload_memory(
     
     # Save file
     file_ext = os.path.splitext(file.filename)[1]
+    # Sanitize extension to prevent path traversal via extension
+    file_ext = re.sub(r'[^a-zA-Z0-9.]', '', file_ext)
     filename = f"{memory_id}{file_ext}"
     file_path = os.path.join(UPLOAD_DIR, filename)
     
