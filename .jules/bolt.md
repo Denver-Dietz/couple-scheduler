@@ -1,0 +1,3 @@
+## 2024-05-18 - Never check in pycache and package lock files accidentally
+**Learning:** Running `pytest` creates `__pycache__` directories in python codebases. Running `pnpm install` in the frontend will modify `pnpm-lock.yaml`. These side effects of testing and building are highly risky to check in since they introduce bloat and unexpected dependencies.
+**Action:** Always run `git status` right before creating a commit or PR to verify exactly which files are staged. Use `git restore --staged` and clean up build artifacts to prevent accidentally committing binaries or unauthorized lock file changes.
