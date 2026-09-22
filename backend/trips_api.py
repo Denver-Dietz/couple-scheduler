@@ -80,15 +80,18 @@ def update_trip(trip_id: str, payload: TripUpdate):
         if not cursor.fetchone():
             raise HTTPException(status_code=404, detail="Trip not found")
             
+        allowed_columns = {"name", "dates", "destination", "cover_photo", "mood_tags", "progress"}
         updates = []
         params = []
         for k, v in payload.dict(exclude_unset=True).items():
-            updates.append(f"{k} = ?")
-            params.append(v)
+            if k in allowed_columns:
+                updates.append(k + " = ?")
+                params.append(v)
             
         if updates:
             params.append(trip_id)
-            cursor.execute(f"UPDATE trips SET {', '.join(updates)} WHERE id = ?", params)
+            sql = "UPDATE trips SET " + ", ".join(updates) + " WHERE id = ?"
+            cursor.execute(sql, params)
             conn.commit()
             
     return {"status": "success"}
@@ -123,14 +126,17 @@ def create_itinerary_item(trip_id: str, payload: TripItineraryCreate):
 def update_itinerary_item(item_id: str, payload: TripItineraryUpdate):
     with get_db() as conn:
         cursor = conn.cursor()
+        allowed_columns = {"day", "title", "time", "location", "notes"}
         updates = []
         params = []
         for k, v in payload.dict(exclude_unset=True).items():
-            updates.append(f"{k} = ?")
-            params.append(v)
+            if k in allowed_columns:
+                updates.append(k + " = ?")
+                params.append(v)
         if updates:
             params.append(item_id)
-            cursor.execute(f"UPDATE trip_itinerary SET {', '.join(updates)} WHERE id = ?", params)
+            sql = "UPDATE trip_itinerary SET " + ", ".join(updates) + " WHERE id = ?"
+            cursor.execute(sql, params)
             conn.commit()
     return {"status": "success"}
 
@@ -161,7 +167,8 @@ def vote_wishlist_item(item_id: str, user: str, vote: int):
     column = "votes_u1" if user == "user1" else "votes_u2"
     with get_db() as conn:
         cursor = conn.cursor()
-        cursor.execute(f"UPDATE trip_wishlist SET {column} = ? WHERE id = ?", (vote, item_id))
+        sql = "UPDATE trip_wishlist SET " + column + " = ? WHERE id = ?"
+        cursor.execute(sql, (vote, item_id))
         conn.commit()
     return {"status": "success"}
 
@@ -190,14 +197,17 @@ def create_budget_item(trip_id: str, payload: TripBudgetCreate):
 def update_budget_item(item_id: str, payload: TripBudgetUpdate):
     with get_db() as conn:
         cursor = conn.cursor()
+        allowed_columns = {"category", "estimated", "actual", "paid_by"}
         updates = []
         params = []
         for k, v in payload.dict(exclude_unset=True).items():
-            updates.append(f"{k} = ?")
-            params.append(v)
+            if k in allowed_columns:
+                updates.append(k + " = ?")
+                params.append(v)
         if updates:
             params.append(item_id)
-            cursor.execute(f"UPDATE trip_budget SET {', '.join(updates)} WHERE id = ?", params)
+            sql = "UPDATE trip_budget SET " + ", ".join(updates) + " WHERE id = ?"
+            cursor.execute(sql, params)
             conn.commit()
     return {"status": "success"}
 
@@ -226,14 +236,17 @@ def create_logistics_item(trip_id: str, payload: TripLogisticsCreate):
 def update_logistics_item(item_id: str, payload: TripLogisticsUpdate):
     with get_db() as conn:
         cursor = conn.cursor()
+        allowed_columns = {"details", "files"}
         updates = []
         params = []
         for k, v in payload.dict(exclude_unset=True).items():
-            updates.append(f"{k} = ?")
-            params.append(v)
+            if k in allowed_columns:
+                updates.append(k + " = ?")
+                params.append(v)
         if updates:
             params.append(item_id)
-            cursor.execute(f"UPDATE trip_logistics SET {', '.join(updates)} WHERE id = ?", params)
+            sql = "UPDATE trip_logistics SET " + ", ".join(updates) + " WHERE id = ?"
+            cursor.execute(sql, params)
             conn.commit()
     return {"status": "success"}
 
