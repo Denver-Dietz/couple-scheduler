@@ -1091,12 +1091,47 @@ def api_get_journal_entries():
         cursor.execute("SELECT * FROM journal_entries ORDER BY created_at DESC")
         entries = [dict(row) for row in cursor.fetchall()]
         
+        if not entries:
+            return []
+
+        # Initialize comments and reactions
         for entry in entries:
-            cursor.execute("SELECT * FROM journal_comments WHERE entry_id = ? ORDER BY created_at ASC", (entry["id"],))
-            entry["comments"] = [dict(row) for row in cursor.fetchall()]
+            entry["comments"] = []
+            entry["reactions"] = []
+
+        entry_ids = [entry["id"] for entry in entries]
+
+        # Helper to batch queries and avoid "too many SQL variables"
+        def chunked_in_query(query_prefix, id_list):
+            results = []
+            chunk_size = 900
+            for i in range(0, len(id_list), chunk_size):
+                chunk = id_list[i:i + chunk_size]
+                placeholders = ','.join(['?'] * len(chunk))
+                query = f"{query_prefix} IN ({placeholders})"
+                cursor.execute(query, chunk)
+                results.extend([dict(row) for row in cursor.fetchall()])
+            return results
             
-            cursor.execute("SELECT * FROM journal_reactions WHERE entry_id = ?", (entry["id"],))
-            entry["reactions"] = [dict(row) for row in cursor.fetchall()]
+        # Fetch all comments and group them
+        comments = chunked_in_query("SELECT * FROM journal_comments WHERE entry_id", entry_ids)
+        # Sort comments by created_at since IN doesn't guarantee order globally
+        comments.sort(key=lambda x: x.get('created_at', ''))
+
+        comments_by_entry = {}
+        for c in comments:
+            comments_by_entry.setdefault(c["entry_id"], []).append(c)
+
+        # Fetch all reactions and group them
+        reactions = chunked_in_query("SELECT * FROM journal_reactions WHERE entry_id", entry_ids)
+        reactions_by_entry = {}
+        for r in reactions:
+            reactions_by_entry.setdefault(r["entry_id"], []).append(r)
+
+        # Attach to entries
+        for entry in entries:
+            entry["comments"] = comments_by_entry.get(entry["id"], [])
+            entry["reactions"] = reactions_by_entry.get(entry["id"], [])
             
         return entries
 
@@ -1554,12 +1589,47 @@ def get_memories():
         cursor.execute("SELECT * FROM memories WHERE couple_id = ? ORDER BY captured_at DESC", (couple_id,))
         memories = [dict(r) for r in cursor.fetchall()]
         
+        if not memories:
+            return []
+
+        # Initialize comments and reactions
         for m in memories:
-            cursor.execute("SELECT * FROM memory_comments WHERE memory_id = ? ORDER BY submitted_at ASC", (m['id'],))
-            m['comments'] = [dict(r) for r in cursor.fetchall()]
+            m['comments'] = []
+            m['reactions'] = []
+
+        memory_ids = [m['id'] for m in memories]
+
+        # Helper to batch queries and avoid "too many SQL variables"
+        def chunked_in_query(query_prefix, id_list):
+            results = []
+            chunk_size = 900
+            for i in range(0, len(id_list), chunk_size):
+                chunk = id_list[i:i + chunk_size]
+                placeholders = ','.join(['?'] * len(chunk))
+                query = f"{query_prefix} IN ({placeholders})"
+                cursor.execute(query, chunk)
+                results.extend([dict(row) for row in cursor.fetchall()])
+            return results
             
-            cursor.execute("SELECT * FROM memory_reactions WHERE memory_id = ?", (m['id'],))
-            m['reactions'] = [dict(r) for r in cursor.fetchall()]
+        # Fetch all comments and group them
+        comments = chunked_in_query("SELECT * FROM memory_comments WHERE memory_id", memory_ids)
+        # Sort comments by submitted_at
+        comments.sort(key=lambda x: x.get('submitted_at', ''))
+
+        comments_by_memory = {}
+        for c in comments:
+            comments_by_memory.setdefault(c["memory_id"], []).append(c)
+
+        # Fetch all reactions and group them
+        reactions = chunked_in_query("SELECT * FROM memory_reactions WHERE memory_id", memory_ids)
+        reactions_by_memory = {}
+        for r in reactions:
+            reactions_by_memory.setdefault(r["memory_id"], []).append(r)
+
+        # Attach to memories
+        for m in memories:
+            m['comments'] = comments_by_memory.get(m['id'], [])
+            m['reactions'] = reactions_by_memory.get(m['id'], [])
             
     return memories
 

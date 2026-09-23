@@ -1,0 +1,3 @@
+## 2024-05-23 - Fix N+1 query in journal and memories endpoints
+**Learning:** Found N+1 query patterns in `api_get_journal_entries` and `get_memories` endpoints in `backend/main.py`. The child records (comments, reactions) were being fetched inside a loop iterating over the parent records (entries, memories). This scales very poorly.
+**Action:** Replaced the nested queries with a single query using an `IN` clause to fetch all child records at once, grouped them in memory, and attached them to the parents. Used a chunked `IN` query helper function to batch IDs into chunks of 900 to avoid `sqlite3.OperationalError: too many SQL variables` when the number of parent records grows large.
