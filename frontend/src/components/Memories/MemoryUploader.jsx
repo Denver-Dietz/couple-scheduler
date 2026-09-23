@@ -41,6 +41,7 @@ export default function MemoryUploader({ activeUser, onComplete, onCancel }) {
   return (
     <div className="card glass-panel" style={{ padding: '2rem', maxWidth: '600px', margin: '0 auto', position: 'relative' }}>
       <button 
+        aria-label="Cancel upload"
         className="btn btn-ghost" 
         style={{ position: 'absolute', top: '1rem', right: '1rem', padding: '0.5rem' }}
         onClick={onCancel}
@@ -68,6 +69,7 @@ export default function MemoryUploader({ activeUser, onComplete, onCancel }) {
         <div style={{ position: 'relative', marginBottom: '1.5rem' }}>
           <img src={preview} alt="Preview" style={{ width: '100%', borderRadius: '12px', maxHeight: '400px', objectFit: 'contain', background: '#000' }} />
           <button 
+            aria-label="Remove image"
             className="btn" 
             style={{ position: 'absolute', top: '10px', right: '10px', background: 'rgba(0,0,0,0.5)', color: 'white', padding: '0.5rem' }}
             onClick={() => { setFile(null); setPreview(null); }}
