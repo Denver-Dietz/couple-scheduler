@@ -1,3 +1,3 @@
-## 2024-05-20 - Add ARIA Labels to Icon-Only Buttons
-**Learning:** Icon-only buttons (like those using `lucide-react` icons such as `ThumbsUp`, `ThumbsDown`, `Trash2`, `Plus`, `ArrowRight`) lacked accessibility context for screen readers. Using simple `aria-label`s significantly improves UX for assistive technologies.
-**Action:** When adding or reviewing icon-only buttons, always ensure an `aria-label` or visually hidden text is provided. Look for instances of `btn-outline` or `btn-primary` with just an icon inside.
+## 2023-10-27 - Icon-only buttons lack ARIA labels
+**Learning:** Many icon-only buttons throughout the frontend components (`ScheduleDateModal`, `DestinationsTabLeaflet`, `DestinationsTab`, `MonthlyCalendar`, `SleepSchedulePanel`) lack `aria-label` attributes. This is a common pattern in the codebase, significantly reducing accessibility for screen reader users who cannot deduce the button's purpose without visual context.
+**Action:** When adding or reviewing new icon-only buttons, always enforce the inclusion of a descriptive `aria-label` attribute. Search for `lucide-react` icon usages inside `<button>` elements that don't have text content.

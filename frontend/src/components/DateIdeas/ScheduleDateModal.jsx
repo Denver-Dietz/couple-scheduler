@@ -59,7 +59,7 @@ export default function ScheduleDateModal({ idea, onClose, onSchedule }) {
       background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
     }}>
       <div className="card glass-panel" style={{ width: '90%', maxWidth: '400px', maxHeight: '90vh', overflowY: 'auto', textAlign: 'left', position: 'relative' }}>
-        <button onClick={onClose} className="btn btn-ghost" style={{ position: 'absolute', top: '1rem', right: '1rem', padding: '0.5rem' }}>
+        <button onClick={onClose} aria-label="Close modal" className="btn btn-ghost" style={{ position: 'absolute', top: '1rem', right: '1rem', padding: '0.5rem' }}>
           <X size={20} />
         </button>
         <h3 style={{ marginTop: 0, color: 'var(--accent-emerald)' }}>Schedule: {idea.title}</h3>
