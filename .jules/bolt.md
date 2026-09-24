@@ -1,0 +1,3 @@
+## 2025-02-23 - Batching queries over loop iterations in Python/SQLite
+**Learning:** This codebase uses Python loops that execute `cursor.execute` sequentially per parent record to fetch associated children (N+1 queries), rather than grouping them.
+**Action:** When fixing N+1 queries by grouping IDs to use SQL `IN` clauses, always chunk the IDs (e.g., using `chunk = ids[i:i + 900]`) to ensure we don't hit SQLite's default ~999 parameter limit (`sqlite3.OperationalError: too many SQL variables`), and map results back in memory using dictionaries. Avoid generic optimization logs for standard N+1 issues unless they hit edge cases like DB constraints.
