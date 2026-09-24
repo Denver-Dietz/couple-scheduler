@@ -192,7 +192,7 @@ export default function DestinationsTab({ items, refresh }) {
             
             <div style={{ display: 'flex', gap: '0.5rem' }}>
               <input type="text" className="input" placeholder="Paste a link..." value={newUrl} onChange={e => setNewUrl(e.target.value)} style={{ flex: 1 }} />
-              <button className="btn btn-ghost" onClick={handleAddLink}><Plus size={20} /></button>
+              <button className="btn btn-ghost" onClick={handleAddLink} aria-label="Add link"><Plus size={20} /></button>
             </div>
           </div>
         </div>
