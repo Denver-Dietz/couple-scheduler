@@ -1091,12 +1091,34 @@ def api_get_journal_entries():
         cursor.execute("SELECT * FROM journal_entries ORDER BY created_at DESC")
         entries = [dict(row) for row in cursor.fetchall()]
         
+        if not entries:
+            return entries
+
+        entries_by_id = {}
         for entry in entries:
-            cursor.execute("SELECT * FROM journal_comments WHERE entry_id = ? ORDER BY created_at ASC", (entry["id"],))
-            entry["comments"] = [dict(row) for row in cursor.fetchall()]
+            entry["comments"] = []
+            entry["reactions"] = []
+            entries_by_id[entry["id"]] = entry
+
+        entry_ids = list(entries_by_id.keys())
+
+        # ⚡ Bolt: Fix N+1 query problem by batching comment and reaction queries
+        # Chunking at 900 to stay under SQLite's default 999 parameter limit
+        for i in range(0, len(entry_ids), 900):
+            chunk = entry_ids[i:i + 900]
+            placeholders = ",".join(["?"] * len(chunk))
             
-            cursor.execute("SELECT * FROM journal_reactions WHERE entry_id = ?", (entry["id"],))
-            entry["reactions"] = [dict(row) for row in cursor.fetchall()]
+            query_comments = "SELECT * FROM journal_comments WHERE entry_id IN ({}) ORDER BY created_at ASC".format(placeholders)
+            cursor.execute(query_comments, chunk)
+            for row in cursor.fetchall():
+                comment = dict(row)
+                entries_by_id[comment["entry_id"]]["comments"].append(comment)
+
+            query_reactions = "SELECT * FROM journal_reactions WHERE entry_id IN ({})".format(placeholders)
+            cursor.execute(query_reactions, chunk)
+            for row in cursor.fetchall():
+                reaction = dict(row)
+                entries_by_id[reaction["entry_id"]]["reactions"].append(reaction)
             
         return entries
 
@@ -1554,12 +1576,34 @@ def get_memories():
         cursor.execute("SELECT * FROM memories WHERE couple_id = ? ORDER BY captured_at DESC", (couple_id,))
         memories = [dict(r) for r in cursor.fetchall()]
         
+        if not memories:
+            return memories
+
+        memories_by_id = {}
         for m in memories:
-            cursor.execute("SELECT * FROM memory_comments WHERE memory_id = ? ORDER BY submitted_at ASC", (m['id'],))
-            m['comments'] = [dict(r) for r in cursor.fetchall()]
+            m['comments'] = []
+            m['reactions'] = []
+            memories_by_id[m['id']] = m
+
+        memory_ids = list(memories_by_id.keys())
+
+        # ⚡ Bolt: Fix N+1 query problem by batching comment and reaction queries
+        # Chunking at 900 to stay under SQLite's default 999 parameter limit
+        for i in range(0, len(memory_ids), 900):
+            chunk = memory_ids[i:i + 900]
+            placeholders = ",".join(["?"] * len(chunk))
             
-            cursor.execute("SELECT * FROM memory_reactions WHERE memory_id = ?", (m['id'],))
-            m['reactions'] = [dict(r) for r in cursor.fetchall()]
+            query_comments = "SELECT * FROM memory_comments WHERE memory_id IN ({}) ORDER BY submitted_at ASC".format(placeholders)
+            cursor.execute(query_comments, chunk)
+            for row in cursor.fetchall():
+                comment = dict(row)
+                memories_by_id[comment["memory_id"]]["comments"].append(comment)
+
+            query_reactions = "SELECT * FROM memory_reactions WHERE memory_id IN ({})".format(placeholders)
+            cursor.execute(query_reactions, chunk)
+            for row in cursor.fetchall():
+                reaction = dict(row)
+                memories_by_id[reaction["memory_id"]]["reactions"].append(reaction)
             
     return memories
 
