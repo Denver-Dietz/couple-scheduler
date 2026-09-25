@@ -1,3 +1,3 @@
-## 2024-05-20 - Add ARIA Labels to Icon-Only Buttons
-**Learning:** Icon-only buttons (like those using `lucide-react` icons such as `ThumbsUp`, `ThumbsDown`, `Trash2`, `Plus`, `ArrowRight`) lacked accessibility context for screen readers. Using simple `aria-label`s significantly improves UX for assistive technologies.
-**Action:** When adding or reviewing icon-only buttons, always ensure an `aria-label` or visually hidden text is provided. Look for instances of `btn-outline` or `btn-primary` with just an icon inside.
+## 2024-05-24 - Frontend React Extensions
+**Learning:** The frontend React components are primarily written in standard JavaScript and use `.jsx` and `.js` file extensions, not TypeScript (`.ts` or `.tsx`).
+**Action:** When searching for components or applying accessibility fixes, ensure file search patterns include `*.jsx` and `*.js` instead of defaulting to TypeScript extensions.

@@ -157,6 +157,7 @@ export default function MonthlyCalendar({ activeUser }) {
                   {isSlotEditable && (
                     <button 
                       className="edit-pencil-btn"
+                      aria-label="Edit event"
                       style={{ position: 'absolute', top: '2px', right: '2px', background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '4px', padding: '2px', color: 'var(--text-muted)', cursor: 'pointer', opacity: 0, transition: 'opacity 0.2s', zIndex: 10 }}
                       onClick={(e) => {
                         e.stopPropagation();
@@ -202,12 +203,12 @@ export default function MonthlyCalendar({ activeUser }) {
       </div>
 
       <div className="calendar-header glass-panel">
-        <button className="btn-icon" onClick={prevMonth}><ChevronLeft /></button>
+        <button className="btn-icon" aria-label="Previous month" onClick={prevMonth}><ChevronLeft /></button>
         <h3 className="calendar-title flex items-center gap-2">
           <CalendarIcon className="text-accent" />
           {monthName} {year}
         </h3>
-        <button className="btn-icon" onClick={nextMonth}><ChevronRight /></button>
+        <button className="btn-icon" aria-label="Next month" onClick={nextMonth}><ChevronRight /></button>
       </div>
 
       <div className="calendar-grid-header">
@@ -269,7 +270,7 @@ export default function MonthlyCalendar({ activeUser }) {
               </div>
             </div>
             
-            <button className="close-btn" style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }} onClick={() => setSelectedEvent(null)}>
+            <button className="close-btn" aria-label="Close modal" style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }} onClick={() => setSelectedEvent(null)}>
               <X size={20} />
             </button>
           </div>

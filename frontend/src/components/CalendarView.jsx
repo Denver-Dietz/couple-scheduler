@@ -437,7 +437,8 @@ export default function CalendarView({ activeUser, dashboardActiveUser, showU1, 
                            }}>
                         {isSlotEditable && (
                           <button 
-                            className="edit-pencil-btn" 
+                            className="edit-pencil-btn"
+                            aria-label="Edit event"
                             style={{
                               position: 'absolute',
                               top: '4px',
