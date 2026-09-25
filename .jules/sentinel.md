@@ -1,0 +1,4 @@
+## 2025-09-25 - Prevent Stored XSS in File Upload Endpoint
+**Vulnerability:** The `/api/memories/upload` endpoint in `backend/main.py` blindly accepted uploaded files of any extension and saved them publicly. An attacker could upload `.html` or `.js` files containing malicious scripts, leading to a Stored XSS vulnerability when those files are served.
+**Learning:** The FastAPI `UploadFile` feature must be combined with explicit, allow-list based validation of `file.filename` (or its extension) to prevent execution of untrusted scripts.
+**Prevention:** Always implement an allowlist of safe extensions (`.jpg`, `.jpeg`, `.png`, `.gif`, `.webp`, `.mp4`, `.webm`, `.mov`) when accepting file uploads and reject all other extensions with an `HTTPException`. Never rely solely on `os.path.splitext` without verifying the resulting extension against an allowlist.
