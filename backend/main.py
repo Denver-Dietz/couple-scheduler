@@ -1091,13 +1091,35 @@ def api_get_journal_entries():
         cursor.execute("SELECT * FROM journal_entries ORDER BY created_at DESC")
         entries = [dict(row) for row in cursor.fetchall()]
         
+        if not entries:
+            return []
+
+        # ⚡ Bolt optimization: Resolve N+1 query issue.
+        # Previously we ran 2 queries per journal entry. Now we chunk entry IDs and
+        # use an IN clause to batch fetch all comments/reactions.
+        # SQLite limits variables to ~999, so we chunk by 900.
         for entry in entries:
-            cursor.execute("SELECT * FROM journal_comments WHERE entry_id = ? ORDER BY created_at ASC", (entry["id"],))
-            entry["comments"] = [dict(row) for row in cursor.fetchall()]
+            entry["comments"] = []
+            entry["reactions"] = []
+
+        entry_ids = [e['id'] for e in entries]
+        entry_map = {e['id']: e for e in entries}
+
+        chunk_size = 900
+        for i in range(0, len(entry_ids), chunk_size):
+            chunk = entry_ids[i:i+chunk_size]
+            placeholders = ','.join(['?'] * len(chunk))
             
-            cursor.execute("SELECT * FROM journal_reactions WHERE entry_id = ?", (entry["id"],))
-            entry["reactions"] = [dict(row) for row in cursor.fetchall()]
-            
+            cursor.execute(f"SELECT * FROM journal_comments WHERE entry_id IN ({placeholders}) ORDER BY created_at ASC", chunk)
+            for row in cursor.fetchall():
+                c = dict(row)
+                entry_map[c['entry_id']]['comments'].append(c)
+
+            cursor.execute(f"SELECT * FROM journal_reactions WHERE entry_id IN ({placeholders})", chunk)
+            for row in cursor.fetchall():
+                r = dict(row)
+                entry_map[r['entry_id']]['reactions'].append(r)
+
         return entries
 
 @app.post("/api/journal")
@@ -1554,12 +1576,34 @@ def get_memories():
         cursor.execute("SELECT * FROM memories WHERE couple_id = ? ORDER BY captured_at DESC", (couple_id,))
         memories = [dict(r) for r in cursor.fetchall()]
         
+        if not memories:
+            return []
+
+        # ⚡ Bolt optimization: Resolve N+1 query issue.
+        # Previously we ran 2 queries per memory item. Now we chunk memory IDs and
+        # use an IN clause to batch fetch all comments/reactions in just a few queries.
+        # SQLite limits variables to ~999, so we chunk by 900.
         for m in memories:
-            cursor.execute("SELECT * FROM memory_comments WHERE memory_id = ? ORDER BY submitted_at ASC", (m['id'],))
-            m['comments'] = [dict(r) for r in cursor.fetchall()]
+            m['comments'] = []
+            m['reactions'] = []
+
+        memory_ids = [m['id'] for m in memories]
+        memory_map = {m['id']: m for m in memories}
+
+        chunk_size = 900
+        for i in range(0, len(memory_ids), chunk_size):
+            chunk = memory_ids[i:i+chunk_size]
+            placeholders = ','.join(['?'] * len(chunk))
             
-            cursor.execute("SELECT * FROM memory_reactions WHERE memory_id = ?", (m['id'],))
-            m['reactions'] = [dict(r) for r in cursor.fetchall()]
+            cursor.execute(f"SELECT * FROM memory_comments WHERE memory_id IN ({placeholders}) ORDER BY submitted_at ASC", chunk)
+            for row in cursor.fetchall():
+                c = dict(row)
+                memory_map[c['memory_id']]['comments'].append(c)
+
+            cursor.execute(f"SELECT * FROM memory_reactions WHERE memory_id IN ({placeholders})", chunk)
+            for row in cursor.fetchall():
+                r = dict(row)
+                memory_map[r['memory_id']]['reactions'].append(r)
             
     return memories
 
