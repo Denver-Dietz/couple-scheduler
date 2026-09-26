@@ -215,7 +215,7 @@ export default function WorkSchedulePanel({ activeUser, dashboardActiveUser, sho
                           {s.start_time === 'off' ? 'Off' : `${formatTimeAMPM(s.start_time)} - ${formatTimeAMPM(s.end_time)}`}
                         </span>
                         {s.user_id === currentUser && (
-                          <button onClick={async () => { await api.deleteWorkShift(s.id); refresh(); }} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: 'inherit' }}>
+                          <button onClick={async () => { await api.deleteWorkShift(s.id); refresh(); }} aria-label="Delete work shift" style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: 'inherit' }}>
                             <Trash2 size={10} />
                           </button>
                         )}

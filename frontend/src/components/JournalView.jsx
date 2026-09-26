@@ -372,6 +372,7 @@ export default function JournalView({ activeUser }) {
                 <button 
                   onClick={() => handleEditStart(entry)}
                   title="Edit entry"
+                  aria-label="Edit entry"
                   style={{
                     background: 'rgba(255,255,255,0.05)',
                     border: '1px solid rgba(255,255,255,0.08)',
@@ -392,6 +393,7 @@ export default function JournalView({ activeUser }) {
                 <button 
                   onClick={() => handleDelete(entry.id)}
                   title="Delete entry"
+                  aria-label="Delete entry"
                   style={{
                     background: 'rgba(255,255,255,0.05)',
                     border: '1px solid rgba(255,255,255,0.08)',
@@ -484,7 +486,7 @@ export default function JournalView({ activeUser }) {
                       onChange={e => setCommentText(e.target.value)}
                       onKeyDown={e => e.key === 'Enter' && submitComment(entry.id)}
                     />
-                    <button className="btn btn-primary" onClick={() => submitComment(entry.id)}>
+                    <button className="btn btn-primary" onClick={() => submitComment(entry.id)} aria-label="Send comment">
                       <Send size={16} />
                     </button>
                   </div>
