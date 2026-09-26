@@ -1526,7 +1526,11 @@ def upload_memory(
     memory_id = str(uuid.uuid4())
     
     # Save file
-    file_ext = os.path.splitext(file.filename)[1]
+    file_ext = os.path.splitext(file.filename)[1].lower()
+    ALLOWED_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.webp', '.gif'}
+    if file_ext not in ALLOWED_EXTENSIONS:
+        raise HTTPException(status_code=400, detail=f"Unsupported file extension: {file_ext}")
+
     filename = f"{memory_id}{file_ext}"
     file_path = os.path.join(UPLOAD_DIR, filename)
     
