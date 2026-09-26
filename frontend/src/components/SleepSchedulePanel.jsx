@@ -106,7 +106,7 @@ export default function SleepSchedulePanel({ activeUser, dashboardActiveUser, sh
                 </div>
               </div>
               {s.user_id === currentUser && (
-                <button onClick={() => { api.deleteSleepSchedule(s.id); refresh(); }} className="btn btn-outline" style={{ padding: '0.4rem', border: 'none' }}>
+                <button aria-label="Delete sleep schedule" onClick={() => { api.deleteSleepSchedule(s.id); refresh(); }} className="btn btn-outline" style={{ padding: '0.4rem', border: 'none' }}>
                   <Trash2 size={16} color="#ef4444" />
                 </button>
               )}
@@ -125,7 +125,7 @@ export default function SleepSchedulePanel({ activeUser, dashboardActiveUser, sh
           <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '8px', padding: '1rem' }}>
             <div className="flex justify-between items-center mb-4">
               <h4 style={{ fontSize: '0.9rem', margin: 0 }}>Add Sleep Schedule for {currentUser === 'user1' ? u1Name : u2Name}</h4>
-              <button onClick={() => setShowForm(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}><X size={16}/></button>
+              <button aria-label="Close sleep schedule form" onClick={() => setShowForm(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)' }}><X size={16}/></button>
             </div>
             
             <div className="flex gap-4 mb-4">
