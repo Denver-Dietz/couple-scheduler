@@ -1091,12 +1091,36 @@ def api_get_journal_entries():
         cursor.execute("SELECT * FROM journal_entries ORDER BY created_at DESC")
         entries = [dict(row) for row in cursor.fetchall()]
         
-        for entry in entries:
-            cursor.execute("SELECT * FROM journal_comments WHERE entry_id = ? ORDER BY created_at ASC", (entry["id"],))
-            entry["comments"] = [dict(row) for row in cursor.fetchall()]
+        # O(1) batched query for comments and reactions
+        entry_ids = [entry["id"] for entry in entries]
+
+        comments_by_entry = {eid: [] for eid in entry_ids}
+        reactions_by_entry = {eid: [] for eid in entry_ids}
+
+        # Chunk entry_ids to avoid SQLite limits (~999 variables)
+        chunk_size = 900
+        for i in range(0, len(entry_ids), chunk_size):
+            chunk = entry_ids[i:i + chunk_size]
+            if not chunk:
+                break
+
+            placeholders = ",".join(["?"] * len(chunk))
             
-            cursor.execute("SELECT * FROM journal_reactions WHERE entry_id = ?", (entry["id"],))
-            entry["reactions"] = [dict(row) for row in cursor.fetchall()]
+            # Fetch comments for chunk
+            cursor.execute(f"SELECT * FROM journal_comments WHERE entry_id IN ({placeholders}) ORDER BY created_at ASC", chunk)
+            for row in cursor.fetchall():
+                comment = dict(row)
+                comments_by_entry[comment["entry_id"]].append(comment)
+
+            # Fetch reactions for chunk
+            cursor.execute(f"SELECT * FROM journal_reactions WHERE entry_id IN ({placeholders})", chunk)
+            for row in cursor.fetchall():
+                reaction = dict(row)
+                reactions_by_entry[reaction["entry_id"]].append(reaction)
+
+        for entry in entries:
+            entry["comments"] = comments_by_entry[entry["id"]]
+            entry["reactions"] = reactions_by_entry[entry["id"]]
             
         return entries
 
@@ -1554,12 +1578,36 @@ def get_memories():
         cursor.execute("SELECT * FROM memories WHERE couple_id = ? ORDER BY captured_at DESC", (couple_id,))
         memories = [dict(r) for r in cursor.fetchall()]
         
-        for m in memories:
-            cursor.execute("SELECT * FROM memory_comments WHERE memory_id = ? ORDER BY submitted_at ASC", (m['id'],))
-            m['comments'] = [dict(r) for r in cursor.fetchall()]
+        # O(1) batched query for comments and reactions
+        memory_ids = [m["id"] for m in memories]
+
+        comments_by_memory = {mid: [] for mid in memory_ids}
+        reactions_by_memory = {mid: [] for mid in memory_ids}
+
+        # Chunk memory_ids to avoid SQLite limits (~999 variables)
+        chunk_size = 900
+        for i in range(0, len(memory_ids), chunk_size):
+            chunk = memory_ids[i:i + chunk_size]
+            if not chunk:
+                break
+
+            placeholders = ",".join(["?"] * len(chunk))
             
-            cursor.execute("SELECT * FROM memory_reactions WHERE memory_id = ?", (m['id'],))
-            m['reactions'] = [dict(r) for r in cursor.fetchall()]
+            # Fetch comments for chunk
+            cursor.execute(f"SELECT * FROM memory_comments WHERE memory_id IN ({placeholders}) ORDER BY submitted_at ASC", chunk)
+            for row in cursor.fetchall():
+                comment = dict(row)
+                comments_by_memory[comment["memory_id"]].append(comment)
+
+            # Fetch reactions for chunk
+            cursor.execute(f"SELECT * FROM memory_reactions WHERE memory_id IN ({placeholders})", chunk)
+            for row in cursor.fetchall():
+                reaction = dict(row)
+                reactions_by_memory[reaction["memory_id"]].append(reaction)
+
+        for m in memories:
+            m['comments'] = comments_by_memory[m['id']]
+            m['reactions'] = reactions_by_memory[m['id']]
             
     return memories
 
