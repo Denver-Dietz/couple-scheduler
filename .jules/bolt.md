@@ -1,0 +1,3 @@
+## 2024-09-27 - SQLite IN Clause Variable Limit
+**Learning:** SQLite has a hard limit on the number of variables (parameters) that can be passed to a query (typically ~999). When optimizing N+1 queries by replacing loops with `IN` clauses, directly passing an unbounded list of IDs to the `IN` clause will cause an `OperationalError: too many SQL variables` exception if the list exceeds this limit.
+**Action:** When resolving N+1 queries or batching operations using an `IN` clause in Python/SQLite, always chunk the parameters into manageable batches (e.g., 900) and iterate over the chunks, aggregating the results in memory before attaching them to the parent records.
