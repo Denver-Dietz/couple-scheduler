@@ -1,0 +1,3 @@
+## 2024-05-18 - Optimize API list fetching to avoid N+1 querying pattern
+**Learning:** A recurring pattern in the backend codebase (e.g., in `api_get_journal_entries`, `get_memories`, and `get_bucket_list`) was fetching child items (like comments and reactions) individually in a loop using `SELECT ... WHERE parent_id = ?`. This resulted in the N+1 query problem, heavily impacting performance as the list size grows.
+**Action:** When querying child objects related to a list of parent objects, always use a single batched query with an `IN` clause, process the results by grouping them in a dictionary mapping `parent_id` to its related children, and explicitly handle the ~999 parameter limit in SQLite by chunking the parameter lists (e.g. `900` IDs at a time).
