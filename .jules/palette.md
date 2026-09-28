@@ -1,3 +1,3 @@
-## 2024-05-20 - Add ARIA Labels to Icon-Only Buttons
-**Learning:** Icon-only buttons (like those using `lucide-react` icons such as `ThumbsUp`, `ThumbsDown`, `Trash2`, `Plus`, `ArrowRight`) lacked accessibility context for screen readers. Using simple `aria-label`s significantly improves UX for assistive technologies.
-**Action:** When adding or reviewing icon-only buttons, always ensure an `aria-label` or visually hidden text is provided. Look for instances of `btn-outline` or `btn-primary` with just an icon inside.
+## 2026-09-28 - Dynamic ARIA labels for mapping blocks
+**Learning:** When applying ARIA labels to dynamically mapped lists (like appointments, goals, and projects in `GoalList.jsx`), it's crucial to first verify the exact variable names (e.g., `c.title`, `g.title`, `p.title`) used to render the item titles within the mapping block context before writing the code, as guessing can lead to undefined variables.
+**Action:** Always use commands like `grep -A 10 "map("` to explicitly confirm the mapping variables and their properties before proposing or implementing dynamic ARIA label strings.
