@@ -136,6 +136,7 @@ export default function GoalList({ activeUser, dashboardActiveUser, showU1, show
           </h3>
           {isDashboardOwner && (
             <button className="btn btn-outline" onClick={() => setShowCommitForm(!showCommitForm)}
+              aria-label={showCommitForm ? "Close appointment form" : "Open appointment form"}
               style={{ padding: '0.3rem 0.6rem', fontSize: '0.8rem' }}>
               {showCommitForm ? <X size={14} /> : <Plus size={14} />}
             </button>
@@ -183,6 +184,7 @@ export default function GoalList({ activeUser, dashboardActiveUser, showU1, show
                 </div>
                 {c.user_id === currentUser || c.user_id === 'both' ? (
                   <button onClick={() => { api.deleteCommitment(c.id); refresh(); }}
+                    aria-label={`Delete appointment: ${c.title}`}
                     style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', padding: '4px' }}>
                     <Trash2 size={14} />
                   </button>
@@ -203,6 +205,7 @@ export default function GoalList({ activeUser, dashboardActiveUser, showU1, show
           </h3>
           {isDashboardOwner && (
             <button className="btn btn-outline" onClick={() => setShowGoalForm(!showGoalForm)}
+              aria-label={showGoalForm ? "Close goal form" : "Open goal form"}
               style={{ padding: '0.3rem 0.6rem', fontSize: '0.8rem' }}>
               {showGoalForm ? <X size={14} /> : <Plus size={14} />}
             </button>
@@ -252,6 +255,7 @@ export default function GoalList({ activeUser, dashboardActiveUser, showU1, show
                 </div>
                 {g.user_id === currentUser || g.user_id === 'both' ? (
                   <button onClick={() => { api.deleteGoal(g.id); refresh(); }}
+                    aria-label={`Delete goal: ${g.title}`}
                     style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', padding: '4px' }}>
                     <Trash2 size={14} />
                   </button>
@@ -272,6 +276,7 @@ export default function GoalList({ activeUser, dashboardActiveUser, showU1, show
           </h3>
           {isDashboardOwner && (
             <button className="btn btn-outline" onClick={() => setShowProjectForm(!showProjectForm)}
+              aria-label={showProjectForm ? "Close project form" : "Open project form"}
               style={{ padding: '0.3rem 0.6rem', fontSize: '0.8rem' }}>
               {showProjectForm ? <X size={14} /> : <Plus size={14} />}
             </button>
@@ -322,6 +327,7 @@ export default function GoalList({ activeUser, dashboardActiveUser, showU1, show
                 </div>
                 {p.user_id === currentUser || p.user_id === 'both' ? (
                   <button onClick={() => { api.deleteProject(p.id); refresh(); }}
+                    aria-label={`Delete project: ${p.title}`}
                     style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', padding: '4px' }}>
                     <Trash2 size={14} />
                   </button>
