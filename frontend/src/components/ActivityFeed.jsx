@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { api } from '../utils/api';
+import DOMPurify from 'dompurify';
 
 /**
  * A persistent ticker-tape feed at the bottom of the dashboard.
@@ -191,7 +192,7 @@ const ActivityFeed = ({ activeUser }) => {
         <span 
           key={messageIndex} 
           className="activity-feed-text fade-in-out" 
-          dangerouslySetInnerHTML={{ __html: messages[messageIndex] }} 
+          dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(messages[messageIndex]) }}
         />
       </div>
     </div>
