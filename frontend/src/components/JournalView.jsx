@@ -370,6 +370,7 @@ export default function JournalView({ activeUser }) {
             {entry.user_id === currentUser && editingEntryId !== entry.id && (
               <div className="flex gap-2 justify-end" style={{ marginTop: '0.75rem' }}>
                 <button 
+                  aria-label="Edit entry"
                   onClick={() => handleEditStart(entry)}
                   title="Edit entry"
                   style={{
@@ -390,6 +391,7 @@ export default function JournalView({ activeUser }) {
                   <Edit2 size={14} />
                 </button>
                 <button 
+                  aria-label="Delete entry"
                   onClick={() => handleDelete(entry.id)}
                   title="Delete entry"
                   style={{
@@ -484,7 +486,7 @@ export default function JournalView({ activeUser }) {
                       onChange={e => setCommentText(e.target.value)}
                       onKeyDown={e => e.key === 'Enter' && submitComment(entry.id)}
                     />
-                    <button className="btn btn-primary" onClick={() => submitComment(entry.id)}>
+                    <button aria-label="Submit comment" className="btn btn-primary" onClick={() => submitComment(entry.id)}>
                       <Send size={16} />
                     </button>
                   </div>
@@ -544,6 +546,7 @@ export default function JournalView({ activeUser }) {
             </div>
             
             <button 
+              aria-label="Close enhancement modal"
               style={{ 
                 position: 'absolute', 
                 top: '0.75rem', 
@@ -610,6 +613,7 @@ export default function JournalView({ activeUser }) {
             </div>
             
             <button 
+              aria-label="Close question of the day modal"
               style={{ 
                 position: 'absolute', 
                 top: '0.75rem', 
