@@ -1514,6 +1514,8 @@ os.makedirs(UPLOAD_DIR, exist_ok=True)
 # We will mount it before the frontend is mounted.
 app.mount("/api/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 
+ALLOWED_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.gif', '.webp', '.mp4', '.mov'}
+
 @app.post("/api/memories/upload")
 def upload_memory(
     user_id: str = Form(...),
@@ -1525,8 +1527,12 @@ def upload_memory(
     couple_id = "default"
     memory_id = str(uuid.uuid4())
     
+    # Validate extension to prevent Stored XSS and other file upload vulnerabilities
+    file_ext = os.path.splitext(file.filename)[1].lower()
+    if file_ext not in ALLOWED_EXTENSIONS:
+        raise HTTPException(status_code=400, detail="Invalid file type.")
+
     # Save file
-    file_ext = os.path.splitext(file.filename)[1]
     filename = f"{memory_id}{file_ext}"
     file_path = os.path.join(UPLOAD_DIR, filename)
     
