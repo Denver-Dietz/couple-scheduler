@@ -1,3 +1,3 @@
-## 2024-05-20 - Add ARIA Labels to Icon-Only Buttons
-**Learning:** Icon-only buttons (like those using `lucide-react` icons such as `ThumbsUp`, `ThumbsDown`, `Trash2`, `Plus`, `ArrowRight`) lacked accessibility context for screen readers. Using simple `aria-label`s significantly improves UX for assistive technologies.
-**Action:** When adding or reviewing icon-only buttons, always ensure an `aria-label` or visually hidden text is provided. Look for instances of `btn-outline` or `btn-primary` with just an icon inside.
+## 2024-05-24 - GoalList Accessible Buttons & Confirmation
+**Learning:** Icon-only toggle buttons and inline delete actions in list components (like GoalList) lack context for screen reader users and present a risk of accidental data loss without confirmation steps.
+**Action:** Always verify that state-toggling buttons and inputs have dynamic `aria-label`s based on their current state, and integrate `window.confirm` or similar dialogs before executing destructive API calls.
