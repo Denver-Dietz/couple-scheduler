@@ -1091,12 +1091,41 @@ def api_get_journal_entries():
         cursor.execute("SELECT * FROM journal_entries ORDER BY created_at DESC")
         entries = [dict(row) for row in cursor.fetchall()]
         
-        for entry in entries:
-            cursor.execute("SELECT * FROM journal_comments WHERE entry_id = ? ORDER BY created_at ASC", (entry["id"],))
-            entry["comments"] = [dict(row) for row in cursor.fetchall()]
+        if not entries:
+            return []
+
+        entry_ids = [entry["id"] for entry in entries]
+
+        # Resolve N+1 queries by batching related queries in chunks of 900
+        comments_by_entry = {}
+        reactions_by_entry = {}
+
+        for i in range(0, len(entry_ids), 900):
+            chunk = entry_ids[i:i+900]
+            placeholders = ','.join(['?'] * len(chunk))
             
-            cursor.execute("SELECT * FROM journal_reactions WHERE entry_id = ?", (entry["id"],))
-            entry["reactions"] = [dict(row) for row in cursor.fetchall()]
+            # Fetch comments for the chunk
+            cursor.execute(f"SELECT * FROM journal_comments WHERE entry_id IN ({placeholders}) ORDER BY created_at ASC", chunk)
+            for row in cursor.fetchall():
+                c = dict(row)
+                e_id = c["entry_id"]
+                if e_id not in comments_by_entry:
+                    comments_by_entry[e_id] = []
+                comments_by_entry[e_id].append(c)
+
+            # Fetch reactions for the chunk
+            cursor.execute(f"SELECT * FROM journal_reactions WHERE entry_id IN ({placeholders})", chunk)
+            for row in cursor.fetchall():
+                r = dict(row)
+                e_id = r["entry_id"]
+                if e_id not in reactions_by_entry:
+                    reactions_by_entry[e_id] = []
+                reactions_by_entry[e_id].append(r)
+
+        # Attach to entries
+        for entry in entries:
+            entry["comments"] = comments_by_entry.get(entry["id"], [])
+            entry["reactions"] = reactions_by_entry.get(entry["id"], [])
             
         return entries
 
