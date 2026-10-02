@@ -86,13 +86,31 @@ export default function RecapViewer({ onClose }) {
 
       {/* Controls */}
       <div style={{ position: 'absolute', top: '20px', right: '20px', zIndex: 1001, display: 'flex', gap: '1rem' }}>
-        <button className="btn" style={{ background: 'rgba(255,255,255,0.2)', color: 'white', border: 'none', padding: '0.5rem' }} onClick={() => setIsMuted(!isMuted)}>
+        <button
+          className="btn"
+          style={{ background: 'rgba(255,255,255,0.2)', color: 'white', border: 'none', padding: '0.5rem' }}
+          onClick={() => setIsMuted(!isMuted)}
+          aria-label={isMuted ? "Unmute audio" : "Mute audio"}
+          title={isMuted ? "Unmute" : "Mute"}
+        >
           {isMuted ? <VolumeX size={24} /> : <Volume2 size={24} />}
         </button>
-        <button className="btn" style={{ background: 'rgba(255,255,255,0.2)', color: 'white', border: 'none', padding: '0.5rem' }} onClick={() => setIsPlaying(!isPlaying)}>
+        <button
+          className="btn"
+          style={{ background: 'rgba(255,255,255,0.2)', color: 'white', border: 'none', padding: '0.5rem' }}
+          onClick={() => setIsPlaying(!isPlaying)}
+          aria-label={isPlaying ? "Pause recap" : "Play recap"}
+          title={isPlaying ? "Pause" : "Play"}
+        >
           {isPlaying ? <Pause size={24} /> : <Play size={24} />}
         </button>
-        <button className="btn" style={{ background: 'rgba(255,255,255,0.2)', color: 'white', border: 'none', padding: '0.5rem' }} onClick={onClose}>
+        <button
+          className="btn"
+          style={{ background: 'rgba(255,255,255,0.2)', color: 'white', border: 'none', padding: '0.5rem' }}
+          onClick={onClose}
+          aria-label="Close recap viewer"
+          title="Close"
+        >
           <X size={24} />
         </button>
       </div>
