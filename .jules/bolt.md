@@ -1,0 +1,3 @@
+## 2024-05-18 - Fix N+1 queries on journal entries and memories lists
+**Learning:** The original implementation suffered from N+1 query problems where each entry required 2 additional database queries for comments and reactions. As entries grow, this causes severe latency bottlenecks.
+**Action:** Replaced looped SELECT statements for comments and reactions with batched IN clauses. Crucially, when solving N+1 bottlenecks on SQLite databases using an IN clause, it is necessary to batch the query variables in chunks (e.g., 900) to avoid the `sqlite3.OperationalError: too many SQL variables` exception caused by the ~999 parameter limit.
