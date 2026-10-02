@@ -1,0 +1,4 @@
+## 2024-10-02 - Unrestricted File Upload (Stored XSS)
+**Vulnerability:** The `/api/memories/upload` endpoint saved uploaded files directly into a static directory (`/api/uploads/`) without checking the file extension. This allowed users to upload files with extensions like `.html` or `.svg`.
+**Learning:** Any endpoint that accepts user uploads and serves them statically must strictly validate file types/extensions against an allowlist. Trusting user input or the file extension can lead to severe vulnerabilities like Stored XSS if malicious scripts are embedded in HTML/SVG files and later viewed by victims.
+**Prevention:** Always validate uploaded files against a strict extension allowlist (e.g., `{'.png', '.jpg', '.jpeg', '.gif', '.webp'}`). Do not rely on `os.path.splitext` without verifying the extension. Also, consider setting the `Content-Type` strictly based on the actual file content, setting a strict `Content-Disposition`, and sanitizing filenames.
