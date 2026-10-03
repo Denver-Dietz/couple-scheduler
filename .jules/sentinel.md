@@ -1,0 +1,4 @@
+## 2025-01-20 - Stored XSS via Unrestricted File Upload
+**Vulnerability:** The `/api/memories/upload` endpoint in `backend/main.py` did not validate file extensions before saving uploaded files to the filesystem. This allowed an attacker to upload arbitrary files (e.g., `.html`, `.svg` containing scripts). Because the upload directory was statically mounted and accessible via `/api/uploads`, a user could visit the uploaded file URL and trigger XSS (Stored XSS).
+**Learning:** File upload endpoints must explicitly restrict allowed file extensions using a strict whitelist. Relying solely on the original file extension without validation is inherently insecure and can lead to code execution or XSS.
+**Prevention:** Always validate file extensions against a predefined list of safe types (e.g., `[".jpg", ".png", ".webp"]`) *before* saving them to the filesystem or generating a public URL. Ensure extensions are normalized (e.g., lowercase) prior to comparison.

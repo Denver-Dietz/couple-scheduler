@@ -1526,7 +1526,15 @@ def upload_memory(
     memory_id = str(uuid.uuid4())
     
     # Save file
-    file_ext = os.path.splitext(file.filename)[1]
+    file_ext = os.path.splitext(file.filename)[1].lower()
+
+    # Security: Validate file extension to prevent Stored XSS or executing malicious files
+    allowed_extensions = {".jpg", ".jpeg", ".png", ".webp", ".gif"}
+    if file_ext not in allowed_extensions:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid file type. Only image files are allowed."
+        )
     filename = f"{memory_id}{file_ext}"
     file_path = os.path.join(UPLOAD_DIR, filename)
     
