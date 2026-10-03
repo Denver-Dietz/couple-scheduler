@@ -1091,13 +1091,38 @@ def api_get_journal_entries():
         cursor.execute("SELECT * FROM journal_entries ORDER BY created_at DESC")
         entries = [dict(row) for row in cursor.fetchall()]
         
+        if not entries:
+            return []
+
+        entry_ids = [e["id"] for e in entries]
+
+        # Initialize empty lists for all entries
         for entry in entries:
-            cursor.execute("SELECT * FROM journal_comments WHERE entry_id = ? ORDER BY created_at ASC", (entry["id"],))
-            entry["comments"] = [dict(row) for row in cursor.fetchall()]
+            entry["comments"] = []
+            entry["reactions"] = []
             
-            cursor.execute("SELECT * FROM journal_reactions WHERE entry_id = ?", (entry["id"],))
-            entry["reactions"] = [dict(row) for row in cursor.fetchall()]
+        # SQLite has a limit of 999 parameters, batch by 900
+        batch_size = 900
+
+        # Create a mapping for faster lookup
+        entries_by_id = {entry["id"]: entry for entry in entries}
+
+        for i in range(0, len(entry_ids), batch_size):
+            batch_ids = entry_ids[i:i + batch_size]
+            placeholders = ','.join(['?'] * len(batch_ids))
             
+            # Fetch comments
+            cursor.execute(f"SELECT * FROM journal_comments WHERE entry_id IN ({placeholders}) ORDER BY created_at ASC", batch_ids)
+            for row in cursor.fetchall():
+                comment = dict(row)
+                entries_by_id[comment["entry_id"]]["comments"].append(comment)
+
+            # Fetch reactions
+            cursor.execute(f"SELECT * FROM journal_reactions WHERE entry_id IN ({placeholders})", batch_ids)
+            for row in cursor.fetchall():
+                reaction = dict(row)
+                entries_by_id[reaction["entry_id"]]["reactions"].append(reaction)
+
         return entries
 
 @app.post("/api/journal")
@@ -1554,12 +1579,30 @@ def get_memories():
         cursor.execute("SELECT * FROM memories WHERE couple_id = ? ORDER BY captured_at DESC", (couple_id,))
         memories = [dict(r) for r in cursor.fetchall()]
         
+        if not memories:
+            return []
+
+        memory_ids = [m["id"] for m in memories]
+        memories_by_id = {m["id"]: m for m in memories}
+
         for m in memories:
-            cursor.execute("SELECT * FROM memory_comments WHERE memory_id = ? ORDER BY submitted_at ASC", (m['id'],))
-            m['comments'] = [dict(r) for r in cursor.fetchall()]
+            m['comments'] = []
+            m['reactions'] = []
             
-            cursor.execute("SELECT * FROM memory_reactions WHERE memory_id = ?", (m['id'],))
-            m['reactions'] = [dict(r) for r in cursor.fetchall()]
+        batch_size = 900
+        for i in range(0, len(memory_ids), batch_size):
+            batch_ids = memory_ids[i:i + batch_size]
+            placeholders = ','.join(['?'] * len(batch_ids))
+
+            cursor.execute(f"SELECT * FROM memory_comments WHERE memory_id IN ({placeholders}) ORDER BY submitted_at ASC", batch_ids)
+            for row in cursor.fetchall():
+                comment = dict(row)
+                memories_by_id[comment["memory_id"]]["comments"].append(comment)
+
+            cursor.execute(f"SELECT * FROM memory_reactions WHERE memory_id IN ({placeholders})", batch_ids)
+            for row in cursor.fetchall():
+                reaction = dict(row)
+                memories_by_id[reaction["memory_id"]]["reactions"].append(reaction)
             
     return memories
 
