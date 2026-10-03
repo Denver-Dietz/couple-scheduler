@@ -372,6 +372,7 @@ export default function JournalView({ activeUser }) {
                 <button 
                   onClick={() => handleEditStart(entry)}
                   title="Edit entry"
+                  aria-label="Edit entry"
                   style={{
                     background: 'rgba(255,255,255,0.05)',
                     border: '1px solid rgba(255,255,255,0.08)',
@@ -392,6 +393,7 @@ export default function JournalView({ activeUser }) {
                 <button 
                   onClick={() => handleDelete(entry.id)}
                   title="Delete entry"
+                  aria-label="Delete entry"
                   style={{
                     background: 'rgba(255,255,255,0.05)',
                     border: '1px solid rgba(255,255,255,0.08)',
@@ -422,6 +424,8 @@ export default function JournalView({ activeUser }) {
                   <button 
                     key={emoji}
                     onClick={() => toggleReaction(entry.id, emoji)}
+                    title={`React with ${emoji}`}
+                    aria-label={`React with ${emoji}`}
                     style={{
                       background: iReacted ? 'rgba(255,255,255,0.1)' : 'transparent',
                       border: `1px solid ${iReacted ? 'var(--accent-blue)' : 'var(--border-color)'}`,
@@ -442,6 +446,8 @@ export default function JournalView({ activeUser }) {
               
               <button 
                 onClick={() => setActiveCommentEntry(activeCommentEntry === entry.id ? null : entry.id)}
+                title="Toggle comments"
+                aria-label="Toggle comments"
                 style={{
                   marginLeft: 'auto',
                   fontSize: '0.8rem',
@@ -544,6 +550,8 @@ export default function JournalView({ activeUser }) {
             </div>
             
             <button 
+              title="Close modal"
+              aria-label="Close modal"
               style={{ 
                 position: 'absolute', 
                 top: '0.75rem', 
@@ -610,6 +618,8 @@ export default function JournalView({ activeUser }) {
             </div>
             
             <button 
+              title="Close modal"
+              aria-label="Close modal"
               style={{ 
                 position: 'absolute', 
                 top: '0.75rem', 
