@@ -1,0 +1,3 @@
+## 2023-10-24 - N+1 Query Bottleneck in SQLite Array Fetching
+**Learning:** Using a loop in Python to execute individual `cursor.execute` statements for child relations (like comments and reactions) caused significant N+1 latency, despite SQLite being a local database. While memory-fast, the overhead of creating and parsing multiple SQL statements adds up heavily at scale.
+**Action:** Always batch related child records in SQLite using an `IN` clause (e.g. `WHERE parent_id IN (?, ?, ...)`). Since SQLite has a ~999 parameter limit per query, remember to chunk the parent IDs array (e.g. `chunk_size = 900`) and group results in a Python dictionary/`defaultdict` in memory before attaching to parent objects.
