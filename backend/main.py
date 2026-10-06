@@ -1527,6 +1527,11 @@ def upload_memory(
     
     # Save file
     file_ext = os.path.splitext(file.filename)[1]
+
+    ALLOWED_EXTENSIONS = {'.jpg', '.jpeg', '.png', '.webp', '.gif'}
+    if file_ext.lower() not in ALLOWED_EXTENSIONS:
+        raise HTTPException(status_code=400, detail="Invalid file type")
+
     filename = f"{memory_id}{file_ext}"
     file_path = os.path.join(UPLOAD_DIR, filename)
     
