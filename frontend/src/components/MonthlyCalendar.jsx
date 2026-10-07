@@ -202,12 +202,12 @@ export default function MonthlyCalendar({ activeUser }) {
       </div>
 
       <div className="calendar-header glass-panel">
-        <button className="btn-icon" onClick={prevMonth}><ChevronLeft /></button>
+        <button className="btn-icon" onClick={prevMonth} aria-label="Previous month" title="Previous month"><ChevronLeft /></button>
         <h3 className="calendar-title flex items-center gap-2">
           <CalendarIcon className="text-accent" />
           {monthName} {year}
         </h3>
-        <button className="btn-icon" onClick={nextMonth}><ChevronRight /></button>
+        <button className="btn-icon" onClick={nextMonth} aria-label="Next month" title="Next month"><ChevronRight /></button>
       </div>
 
       <div className="calendar-grid-header">
@@ -269,7 +269,7 @@ export default function MonthlyCalendar({ activeUser }) {
               </div>
             </div>
             
-            <button className="close-btn" style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }} onClick={() => setSelectedEvent(null)}>
+            <button className="close-btn" style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }} onClick={() => setSelectedEvent(null)} aria-label="Close event details" title="Close event details">
               <X size={20} />
             </button>
           </div>
