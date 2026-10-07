@@ -1,0 +1,3 @@
+## 2023-10-24 - SQLite N+1 Query Batching
+**Learning:** SQLite has a parameter limit (often ~999) which can cause `sqlite3.OperationalError: too many SQL variables` when using an `IN` clause to resolve N+1 queries.
+**Action:** Always batch variables in chunks (e.g., 900) when using an `IN` clause to query SQLite databases to avoid exceeding the parameter limit. Group child records in memory to attach them to parents.
