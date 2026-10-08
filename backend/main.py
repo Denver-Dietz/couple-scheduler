@@ -1525,8 +1525,18 @@ def upload_memory(
     couple_id = "default"
     memory_id = str(uuid.uuid4())
     
-    # Save file
-    file_ext = os.path.splitext(file.filename)[1]
+    # Validate and save file
+    file_ext = os.path.splitext(file.filename)[1].lower()
+    allowed_exts = {".jpg", ".jpeg", ".png", ".gif", ".webp"}
+    if file_ext not in allowed_exts:
+        raise HTTPException(status_code=400, detail="Invalid file type")
+
+    file.file.seek(0, 2)
+    file_size = file.file.tell()
+    if file_size > 5 * 1024 * 1024: # 5MB limit
+        raise HTTPException(status_code=400, detail="File too large (max 5MB)")
+    file.file.seek(0)
+
     filename = f"{memory_id}{file_ext}"
     file_path = os.path.join(UPLOAD_DIR, filename)
     
