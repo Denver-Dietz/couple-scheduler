@@ -1,0 +1,3 @@
+## 2024-10-08 - SQLite N+1 Queries & Parameter Limits
+**Learning:** When fetching records with child relationships (e.g., Journal entries and comments/reactions), executing a SELECT per parent causes a severe N+1 query performance bottleneck. However, converting to an IN clause in SQLite requires caution due to the ~999 parameter limit (`sqlite3.OperationalError: too many SQL variables`).
+**Action:** Batch the IDs in chunks (e.g., 900) when querying child records using IN clauses, then group the children in memory by parent ID.
