@@ -1548,19 +1548,51 @@ def upload_memory(
 
 @app.get("/api/memories")
 def get_memories():
+    """
+    Retrieves all memories and their associated comments and reactions.
+
+    Performance Impact: Resolves N+1 query problem by batch fetching comments
+    and reactions in chunks of 900 to respect SQLite parameter limits.
+    Reduces total DB queries from O(2N) to O(1) chunks, improving response
+    time for large memory feeds.
+    """
     couple_id = "default"
     with get_db() as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM memories WHERE couple_id = ? ORDER BY captured_at DESC", (couple_id,))
         memories = [dict(r) for r in cursor.fetchall()]
         
+        if not memories:
+            return []
+
+        memory_ids = [m['id'] for m in memories]
+
+        # Initialize empty lists for all memories
         for m in memories:
-            cursor.execute("SELECT * FROM memory_comments WHERE memory_id = ? ORDER BY submitted_at ASC", (m['id'],))
-            m['comments'] = [dict(r) for r in cursor.fetchall()]
+            m['comments'] = []
+            m['reactions'] = []
             
-            cursor.execute("SELECT * FROM memory_reactions WHERE memory_id = ?", (m['id'],))
-            m['reactions'] = [dict(r) for r in cursor.fetchall()]
+        # Create a lookup for O(1) attachment
+        memories_by_id = {m['id']: m for m in memories}
+
+        # Batch fetch in chunks of 900 to avoid SQLite limits
+        chunk_size = 900
+        for i in range(0, len(memory_ids), chunk_size):
+            chunk_ids = memory_ids[i:i + chunk_size]
+            placeholders = ','.join('?' for _ in chunk_ids)
             
+            # Fetch comments
+            cursor.execute(f"SELECT * FROM memory_comments WHERE memory_id IN ({placeholders}) ORDER BY submitted_at ASC", chunk_ids)
+            for row in cursor.fetchall():
+                comment = dict(row)
+                memories_by_id[comment['memory_id']]['comments'].append(comment)
+
+            # Fetch reactions
+            cursor.execute(f"SELECT * FROM memory_reactions WHERE memory_id IN ({placeholders})", chunk_ids)
+            for row in cursor.fetchall():
+                reaction = dict(row)
+                memories_by_id[reaction['memory_id']]['reactions'].append(reaction)
+
     return memories
 
 @app.post("/api/memories/{memory_id}/comment")
