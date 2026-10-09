@@ -1,3 +1,3 @@
-## 2024-05-20 - Add ARIA Labels to Icon-Only Buttons
-**Learning:** Icon-only buttons (like those using `lucide-react` icons such as `ThumbsUp`, `ThumbsDown`, `Trash2`, `Plus`, `ArrowRight`) lacked accessibility context for screen readers. Using simple `aria-label`s significantly improves UX for assistive technologies.
-**Action:** When adding or reviewing icon-only buttons, always ensure an `aria-label` or visually hidden text is provided. Look for instances of `btn-outline` or `btn-primary` with just an icon inside.
+## 2026-10-09 - Accessible Icon-only Expanders
+**Learning:** Found a pattern across dashboard components where icon-only toggle buttons for forms (like those in GoalList) completely lack ARIA attributes (`aria-label`, `aria-expanded`), making them invisible/unclear to screen reader users and missing helpful native tooltips for sighted users.
+**Action:** When adding expandable forms or list items with inline actions, always ensure icon-only buttons have descriptive `aria-label`, `title`, and appropriate state bindings like `aria-expanded={isOpen}`.
