@@ -1091,12 +1091,35 @@ def api_get_journal_entries():
         cursor.execute("SELECT * FROM journal_entries ORDER BY created_at DESC")
         entries = [dict(row) for row in cursor.fetchall()]
         
-        for entry in entries:
-            cursor.execute("SELECT * FROM journal_comments WHERE entry_id = ? ORDER BY created_at ASC", (entry["id"],))
-            entry["comments"] = [dict(row) for row in cursor.fetchall()]
+        if not entries:
+            return []
+
+        # ⚡ Bolt Optimization: Fix N+1 Query Problem
+        # Instead of querying comments/reactions for each entry (2N queries),
+        # we batch fetch all related data in 2 queries using IN clauses.
+        # This reduces DB roundtrips from O(N) to O(1).
+        entry_ids = [entry["id"] for entry in entries]
+        comments_by_entry = {e_id: [] for e_id in entry_ids}
+        reactions_by_entry = {e_id: [] for e_id in entry_ids}
+
+        # SQLite has a limit of ~999 parameters per query.
+        # We chunk the IDs into batches of 900 to safely stay under the limit.
+        chunk_size = 900
+        for i in range(0, len(entry_ids), chunk_size):
+            chunk = entry_ids[i:i + chunk_size]
+            placeholders = ','.join('?' for _ in chunk)
             
-            cursor.execute("SELECT * FROM journal_reactions WHERE entry_id = ?", (entry["id"],))
-            entry["reactions"] = [dict(row) for row in cursor.fetchall()]
+            cursor.execute(f"SELECT * FROM journal_comments WHERE entry_id IN ({placeholders}) ORDER BY created_at ASC", chunk)
+            for row in cursor.fetchall():
+                comments_by_entry[row["entry_id"]].append(dict(row))
+
+            cursor.execute(f"SELECT * FROM journal_reactions WHERE entry_id IN ({placeholders})", chunk)
+            for row in cursor.fetchall():
+                reactions_by_entry[row["entry_id"]].append(dict(row))
+
+        for entry in entries:
+            entry["comments"] = comments_by_entry[entry["id"]]
+            entry["reactions"] = reactions_by_entry[entry["id"]]
             
         return entries
 
