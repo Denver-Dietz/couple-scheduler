@@ -1,0 +1,3 @@
+## 2025-03-03 - N+1 Query Optimization in SQLite
+**Learning:** When resolving N+1 queries or querying the SQLite database using an 'IN' clause, the number of parameters is limited (usually ~999).
+**Action:** Always batch the variables in chunks (e.g., 900) when resolving N+1 queries to avoid the `sqlite3.OperationalError: too many SQL variables` exception. Group child records in memory to attach them to parents.
