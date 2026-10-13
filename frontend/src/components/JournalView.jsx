@@ -371,6 +371,7 @@ export default function JournalView({ activeUser }) {
               <div className="flex gap-2 justify-end" style={{ marginTop: '0.75rem' }}>
                 <button 
                   onClick={() => handleEditStart(entry)}
+                  aria-label="Edit entry"
                   title="Edit entry"
                   style={{
                     background: 'rgba(255,255,255,0.05)',
@@ -391,6 +392,7 @@ export default function JournalView({ activeUser }) {
                 </button>
                 <button 
                   onClick={() => handleDelete(entry.id)}
+                  aria-label="Delete entry"
                   title="Delete entry"
                   style={{
                     background: 'rgba(255,255,255,0.05)',

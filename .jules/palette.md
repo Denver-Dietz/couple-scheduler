@@ -1,3 +1,6 @@
 ## 2024-05-20 - Add ARIA Labels to Icon-Only Buttons
 **Learning:** Icon-only buttons (like those using `lucide-react` icons such as `ThumbsUp`, `ThumbsDown`, `Trash2`, `Plus`, `ArrowRight`) lacked accessibility context for screen readers. Using simple `aria-label`s significantly improves UX for assistive technologies.
 **Action:** When adding or reviewing icon-only buttons, always ensure an `aria-label` or visually hidden text is provided. Look for instances of `btn-outline` or `btn-primary` with just an icon inside.
+## 2024-05-24 - Interactive button accessibility patterns in core components
+**Learning:** Icon-only buttons used across standard lists (e.g. `GoalList.jsx`, `JournalView.jsx`, `SleepSchedulePanel.jsx`) generally lack `aria-label` attributes and `title` tooltips to explain their function (add, edit, delete, cancel). This leads to poor screen-reader experiences and confusing interactions for mouse/keyboard users.
+**Action:** When working on lists, specifically check for and add `aria-label` and `title` to all `<button>` elements that only contain an icon component (e.g. `<Trash2>`, `<Plus>`, `<X>`, `<Edit2>`). Also ensure they have `aria-expanded` and `aria-pressed` for toggles.
