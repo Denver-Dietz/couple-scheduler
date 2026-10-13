@@ -1,0 +1,3 @@
+## 2024-10-14 - Fix N+1 Query in Journal Endpoint
+**Learning:** SQLite has a parameter limit of 999 when using IN clauses. The N+1 query in `/api/journal` must be grouped in memory, but variables must be batched in chunks (e.g., 900) to avoid `sqlite3.OperationalError: too many SQL variables` exceptions when fetching children across large datasets.
+**Action:** When resolving N+1 queries in this application using an 'IN' clause, always chunk the parameters in arrays smaller than 900, fetching and accumulating the results, before attaching child records to parents in-memory.
