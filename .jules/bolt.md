@@ -1,0 +1,3 @@
+## 2024-10-13 - SQLite IN Clause Pagination for N+1 Query Resolution
+**Learning:** Resolving N+1 queries in SQLite using the `IN` clause requires chunking variables when the dataset might exceed the maximum allowed host parameters (~999 variables) to avoid `sqlite3.OperationalError: too many SQL variables`. Memory mapping child records back to parents is much faster than running nested queries per parent record.
+**Action:** When fixing N+1 queries with SQLite `IN` clauses, always batch parameter binding in chunks (e.g., 900) and construct dictionaries in Python to associate the fetched child rows with their parent rows efficiently.
