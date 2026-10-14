@@ -158,7 +158,7 @@ export default function MatchGame({ onBack, datesData, activeUser, onSchedule })
   return (
     <div className="flex flex-col gap-6" style={{ maxWidth: '600px', margin: '0 auto', alignItems: 'center' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-        <button onClick={onBack} className="btn btn-ghost">
+        <button onClick={onBack} className="btn btn-ghost" aria-label="Go back" title="Go back">
           <ArrowLeft size={20} />
         </button>
         <h2 style={{ margin: 0, color: 'var(--accent-purple)' }}>Match Game</h2>
@@ -204,11 +204,13 @@ export default function MatchGame({ onBack, datesData, activeUser, onSchedule })
       {currentCard && (
         <div style={{ display: 'flex', gap: '2rem', marginTop: '1rem' }}>
           <button className="btn" style={{ padding: '1rem', borderRadius: '50%', background: 'var(--bg-color)', border: '2px solid var(--accent-red)', color: 'var(--accent-red)' }}
-                  onClick={() => handleSwipeAction('left', currentCard)}>
+                  onClick={() => handleSwipeAction('left', currentCard)}
+                  aria-label="Pass" title="Pass">
             <X size={32} />
           </button>
           <button className="btn" style={{ padding: '1rem', borderRadius: '50%', background: 'var(--bg-color)', border: '2px solid var(--accent-emerald)', color: 'var(--accent-emerald)' }}
-                  onClick={() => handleSwipeAction('right', currentCard)}>
+                  onClick={() => handleSwipeAction('right', currentCard)}
+                  aria-label="Like" title="Like">
             <Heart size={32} />
           </button>
         </div>
