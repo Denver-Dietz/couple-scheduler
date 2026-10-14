@@ -1,0 +1,3 @@
+## 2024-10-14 - N+1 Queries in FastAPI SQLite Backend
+**Learning:** In the backend `main.py`, several endpoints (e.g., `/api/journal` and `/api/memories`) suffer from an N+1 query problem where they first fetch a list of entries, then execute two separate queries (for comments and reactions) for *each* entry in a loop. When querying the SQLite database using an 'IN' clause to resolve this, the variables must be batched in chunks (e.g., 900) to avoid the `sqlite3.OperationalError: too many SQL variables` exception caused by the ~999 parameter limit.
+**Action:** Replace loop-based queries with chunked 'IN' queries, fetching related records in batches and grouping them in memory using a dictionary lookup by parent ID.
