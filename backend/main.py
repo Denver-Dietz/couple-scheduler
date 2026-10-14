@@ -1091,12 +1091,27 @@ def api_get_journal_entries():
         cursor.execute("SELECT * FROM journal_entries ORDER BY created_at DESC")
         entries = [dict(row) for row in cursor.fetchall()]
         
-        for entry in entries:
-            cursor.execute("SELECT * FROM journal_comments WHERE entry_id = ? ORDER BY created_at ASC", (entry["id"],))
-            entry["comments"] = [dict(row) for row in cursor.fetchall()]
-            
-            cursor.execute("SELECT * FROM journal_reactions WHERE entry_id = ?", (entry["id"],))
-            entry["reactions"] = [dict(row) for row in cursor.fetchall()]
+        # BOLT OPTIMIZATION: Resolves N+1 query issue by batching child record lookups
+        # into a single IN clause per chunk (max 900 to avoid SQLite limits), mapping
+        # results in memory rather than querying 2x per journal entry.
+        if entries:
+            entry_dict = {e['id']: e for e in entries}
+            for e in entries:
+                e['comments'] = []
+                e['reactions'] = []
+            e_ids = list(entry_dict.keys())
+            chunk_size = 900
+            for i in range(0, len(e_ids), chunk_size):
+                chunk = e_ids[i:i+chunk_size]
+                placeholders = ",".join(["?"] * len(chunk))
+
+                cursor.execute(f"SELECT * FROM journal_comments WHERE entry_id IN ({placeholders}) ORDER BY created_at ASC", chunk)
+                for row in cursor.fetchall():
+                    entry_dict[row['entry_id']]['comments'].append(dict(row))
+
+                cursor.execute(f"SELECT * FROM journal_reactions WHERE entry_id IN ({placeholders})", chunk)
+                for row in cursor.fetchall():
+                    entry_dict[row['entry_id']]['reactions'].append(dict(row))
             
         return entries
 
@@ -1554,12 +1569,27 @@ def get_memories():
         cursor.execute("SELECT * FROM memories WHERE couple_id = ? ORDER BY captured_at DESC", (couple_id,))
         memories = [dict(r) for r in cursor.fetchall()]
         
-        for m in memories:
-            cursor.execute("SELECT * FROM memory_comments WHERE memory_id = ? ORDER BY submitted_at ASC", (m['id'],))
-            m['comments'] = [dict(r) for r in cursor.fetchall()]
-            
-            cursor.execute("SELECT * FROM memory_reactions WHERE memory_id = ?", (m['id'],))
-            m['reactions'] = [dict(r) for r in cursor.fetchall()]
+        # BOLT OPTIMIZATION: Resolves N+1 query issue by batching child record lookups
+        # into a single IN clause per chunk (max 900 to avoid SQLite limits), mapping
+        # results in memory rather than querying 2x per memory item.
+        if memories:
+            mem_dict = {m['id']: m for m in memories}
+            for m in memories:
+                m['comments'] = []
+                m['reactions'] = []
+            m_ids = list(mem_dict.keys())
+            chunk_size = 900
+            for i in range(0, len(m_ids), chunk_size):
+                chunk = m_ids[i:i+chunk_size]
+                placeholders = ",".join(["?"] * len(chunk))
+
+                cursor.execute(f"SELECT * FROM memory_comments WHERE memory_id IN ({placeholders}) ORDER BY submitted_at ASC", chunk)
+                for row in cursor.fetchall():
+                    mem_dict[row['memory_id']]['comments'].append(dict(row))
+
+                cursor.execute(f"SELECT * FROM memory_reactions WHERE memory_id IN ({placeholders})", chunk)
+                for row in cursor.fetchall():
+                    mem_dict[row['memory_id']]['reactions'].append(dict(row))
             
     return memories
 
