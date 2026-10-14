@@ -34,7 +34,7 @@ export default function RandomDate({ onBack, datesData, onSchedule, activeUser }
   return (
     <div className="flex flex-col gap-6" style={{ maxWidth: '600px', margin: '0 auto', textAlign: 'center', position: 'relative' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-        <button onClick={onBack} className="btn btn-ghost">
+        <button onClick={onBack} className="btn btn-ghost" aria-label="Go back" title="Go back">
           <ArrowLeft size={20} />
         </button>
         <h2 style={{ margin: 0, color: 'var(--accent-emerald)' }}>Random Date</h2>
