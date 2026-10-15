@@ -77,8 +77,10 @@ const ActivityFeed = ({ activeUser }) => {
           newMessages.push(`✨ <strong>Quote of the Day:</strong> ${dailyQuote}`);
         }
 
-        // 3. Weather
-        if (prefs.weather) {
+        // 3. Concurrent fetching for Weather, News, and Activity
+        const fetchPromises = [];
+
+        const weatherPromise = prefs.weather ? (async () => {
           try {
             const geoRes = await fetch(`https://api.zippopotam.us/us/${zip || '60601'}`);
             if (geoRes.ok) {
@@ -92,38 +94,52 @@ const ActivityFeed = ({ activeUser }) => {
               const weatherData = await weatherRes.json();
               const current = weatherData.current_weather;
               const info = getWeatherDescription(current.weathercode);
-              newMessages.push(`${info.emoji} <strong>Current Weather:</strong> ${Math.round(current.temperature)}°F, ${info.text} in ${city}, ${state}`);
+              return `${info.emoji} <strong>Current Weather:</strong> ${Math.round(current.temperature)}°F, ${info.text} in ${city}, ${state}`;
             } else {
-              newMessages.push(`🌡️ <strong>Weather:</strong> Invalid Zip Code (${zip})`);
+              return `🌡️ <strong>Weather:</strong> Invalid Zip Code (${zip})`;
             }
           } catch(err) {
-            newMessages.push(`🌡️ <strong>Weather:</strong> Unavailable`);
+            return `🌡️ <strong>Weather:</strong> Unavailable`;
           }
-        }
+        })() : Promise.resolve(null);
+        fetchPromises.push(weatherPromise);
 
-        // 4. Breaking News
-        if (prefs.news) {
+        const newsPromise = prefs.news ? (async () => {
           try {
             const newsRes = await fetch('https://api.rss2json.com/v1/api.json?rss_url=http://feeds.bbci.co.uk/news/world/rss.xml');
             const newsData = await newsRes.json();
             if (newsData.items && newsData.items.length > 0) {
-              newMessages.push(`📰 <strong>Breaking News:</strong> ${newsData.items[0].title}`);
+              return `📰 <strong>Breaking News:</strong> ${newsData.items[0].title}`;
             }
           } catch(err) {}
-        }
+          return null;
+        })() : Promise.resolve(null);
+        fetchPromises.push(newsPromise);
 
-        // 5. Internal Activity
-        try {
-          const actData = await api.getRecentActivity();
-          const currentUser = activeUser || 'user1';
-          const oppositeUser = currentUser === 'user1' ? 'user2' : 'user1';
-          
-          for (const item of actData) {
-            if (item.type === 'appointment' && prefs.appointment && item.user_id === oppositeUser) newMessages.push(item.text);
-            if (item.type === 'goal' && prefs.goal && item.user_id === oppositeUser) newMessages.push(item.text);
-            if (item.type === 'project' && prefs.project && item.user_id === oppositeUser) newMessages.push(item.text);
-          }
-        } catch(err) {}
+        const activityPromise = (async () => {
+          const acts = [];
+          try {
+            const actData = await api.getRecentActivity();
+            const currentUser = activeUser || 'user1';
+            const oppositeUser = currentUser === 'user1' ? 'user2' : 'user1';
+
+            for (const item of actData) {
+              if (item.type === 'appointment' && prefs.appointment && item.user_id === oppositeUser) acts.push(item.text);
+              if (item.type === 'goal' && prefs.goal && item.user_id === oppositeUser) acts.push(item.text);
+              if (item.type === 'project' && prefs.project && item.user_id === oppositeUser) acts.push(item.text);
+            }
+          } catch(err) {}
+          return acts;
+        })();
+        fetchPromises.push(activityPromise);
+
+        const [weatherMsg, newsMsg, actMsgs] = await Promise.all(fetchPromises);
+
+        if (weatherMsg) newMessages.push(weatherMsg);
+        if (newsMsg) newMessages.push(newsMsg);
+        if (actMsgs && actMsgs.length > 0) {
+          actMsgs.forEach(msg => newMessages.push(msg));
+        }
 
         // No default fallback message needed.
 
