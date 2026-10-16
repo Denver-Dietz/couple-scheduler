@@ -1091,12 +1091,38 @@ def api_get_journal_entries():
         cursor.execute("SELECT * FROM journal_entries ORDER BY created_at DESC")
         entries = [dict(row) for row in cursor.fetchall()]
         
-        for entry in entries:
-            cursor.execute("SELECT * FROM journal_comments WHERE entry_id = ? ORDER BY created_at ASC", (entry["id"],))
-            entry["comments"] = [dict(row) for row in cursor.fetchall()]
+        if not entries:
+            return []
+
+        entry_ids = [e["id"] for e in entries]
+
+        # ⚡ Bolt Optimization: Fixed N+1 query problem by batching IDs instead of looping.
+        # SQLite has a parameter limit (usually 32766), so we chunk the IDs into batches of 900
+        # to ensure we safely fetch all comments and reactions with O(1) queries.
+        all_comments = []
+        all_reactions = []
+        CHUNK_SIZE = 900
+        for i in range(0, len(entry_ids), CHUNK_SIZE):
+            chunk = entry_ids[i:i + CHUNK_SIZE]
+            placeholders = ",".join("?" * len(chunk))
+
+            cursor.execute(f"SELECT * FROM journal_comments WHERE entry_id IN ({placeholders}) ORDER BY created_at ASC", chunk)
+            all_comments.extend([dict(row) for row in cursor.fetchall()])
             
-            cursor.execute("SELECT * FROM journal_reactions WHERE entry_id = ?", (entry["id"],))
-            entry["reactions"] = [dict(row) for row in cursor.fetchall()]
+            cursor.execute(f"SELECT * FROM journal_reactions WHERE entry_id IN ({placeholders})", chunk)
+            all_reactions.extend([dict(row) for row in cursor.fetchall()])
+
+        comments_map = {e_id: [] for e_id in entry_ids}
+        for c in all_comments:
+            comments_map[c["entry_id"]].append(c)
+
+        reactions_map = {e_id: [] for e_id in entry_ids}
+        for r in all_reactions:
+            reactions_map[r["entry_id"]].append(r)
+
+        for entry in entries:
+            entry["comments"] = comments_map[entry["id"]]
+            entry["reactions"] = reactions_map[entry["id"]]
             
         return entries
 
