@@ -156,6 +156,8 @@ export default function MonthlyCalendar({ activeUser }) {
                 >
                   {isSlotEditable && (
                     <button 
+                      aria-label="Edit event"
+                      title="Edit event"
                       className="edit-pencil-btn"
                       style={{ position: 'absolute', top: '2px', right: '2px', background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '4px', padding: '2px', color: 'var(--text-muted)', cursor: 'pointer', opacity: 0, transition: 'opacity 0.2s', zIndex: 10 }}
                       onClick={(e) => {
@@ -182,6 +184,7 @@ export default function MonthlyCalendar({ activeUser }) {
     <div className="monthly-calendar-container">
       <div className="flex gap-2 bg-gray-100 p-1 rounded-lg" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: '8px', padding: '4px', alignSelf: 'flex-start', marginBottom: '1rem' }}>
         <button 
+          aria-pressed={showU1}
           onClick={() => setShowU1(!showU1)}
           style={{ 
             padding: '0.4rem 0.8rem', borderRadius: '6px', border: 'none', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px',
@@ -191,6 +194,7 @@ export default function MonthlyCalendar({ activeUser }) {
           <User size={14} /> {u1Name}
         </button>
         <button 
+          aria-pressed={showU2}
           onClick={() => setShowU2(!showU2)}
           style={{ 
             padding: '0.4rem 0.8rem', borderRadius: '6px', border: 'none', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px',
@@ -202,12 +206,12 @@ export default function MonthlyCalendar({ activeUser }) {
       </div>
 
       <div className="calendar-header glass-panel">
-        <button className="btn-icon" onClick={prevMonth}><ChevronLeft /></button>
+        <button aria-label="Previous month" title="Previous month" className="btn-icon" onClick={prevMonth}><ChevronLeft /></button>
         <h3 className="calendar-title flex items-center gap-2">
           <CalendarIcon className="text-accent" />
           {monthName} {year}
         </h3>
-        <button className="btn-icon" onClick={nextMonth}><ChevronRight /></button>
+        <button aria-label="Next month" title="Next month" className="btn-icon" onClick={nextMonth}><ChevronRight /></button>
       </div>
 
       <div className="calendar-grid-header">
@@ -269,7 +273,7 @@ export default function MonthlyCalendar({ activeUser }) {
               </div>
             </div>
             
-            <button className="close-btn" style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }} onClick={() => setSelectedEvent(null)}>
+            <button aria-label="Close edit modal" title="Close edit modal" className="close-btn" style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'transparent', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }} onClick={() => setSelectedEvent(null)}>
               <X size={20} />
             </button>
           </div>
