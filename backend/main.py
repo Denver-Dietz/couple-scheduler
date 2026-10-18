@@ -1526,7 +1526,21 @@ def upload_memory(
     memory_id = str(uuid.uuid4())
     
     # Save file
-    file_ext = os.path.splitext(file.filename)[1]
+    file_ext = os.path.splitext(file.filename)[1].lower()
+
+    # Security: Validate file extension to prevent Stored XSS and arbitrary file uploads
+    allowed_extensions = {".jpg", ".jpeg", ".png", ".webp", ".gif"}
+    if file_ext not in allowed_extensions:
+        raise HTTPException(status_code=400, detail="Invalid file type. Only image files are allowed.")
+
+    # Security: Enforce maximum file size (5MB) to prevent DoS
+    max_file_size = 5 * 1024 * 1024
+    file.file.seek(0, 2)
+    file_size = file.file.tell()
+    file.file.seek(0)
+    if file_size > max_file_size:
+        raise HTTPException(status_code=413, detail="File too large. Maximum size is 5MB.")
+
     filename = f"{memory_id}{file_ext}"
     file_path = os.path.join(UPLOAD_DIR, filename)
     
