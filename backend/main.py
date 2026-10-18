@@ -1091,12 +1091,31 @@ def api_get_journal_entries():
         cursor.execute("SELECT * FROM journal_entries ORDER BY created_at DESC")
         entries = [dict(row) for row in cursor.fetchall()]
         
-        for entry in entries:
-            cursor.execute("SELECT * FROM journal_comments WHERE entry_id = ? ORDER BY created_at ASC", (entry["id"],))
-            entry["comments"] = [dict(row) for row in cursor.fetchall()]
+        if not entries:
+            return entries
             
-            cursor.execute("SELECT * FROM journal_reactions WHERE entry_id = ?", (entry["id"],))
-            entry["reactions"] = [dict(row) for row in cursor.fetchall()]
+        entry_ids = [e["id"] for e in entries]
+        entry_map = {e["id"]: e for e in entries}
+        for e in entries:
+            e["comments"] = []
+            e["reactions"] = []
+
+        batch_size = 900
+        for i in range(0, len(entry_ids), batch_size):
+            chunk = entry_ids[i:i + batch_size]
+            placeholders = ",".join("?" * len(chunk))
+
+            cursor.execute(f"SELECT * FROM journal_comments WHERE entry_id IN ({placeholders}) ORDER BY created_at ASC", chunk)
+            for row in cursor.fetchall():
+                c = dict(row)
+                if c["entry_id"] in entry_map:
+                    entry_map[c["entry_id"]]["comments"].append(c)
+
+            cursor.execute(f"SELECT * FROM journal_reactions WHERE entry_id IN ({placeholders})", chunk)
+            for row in cursor.fetchall():
+                r = dict(row)
+                if r["entry_id"] in entry_map:
+                    entry_map[r["entry_id"]]["reactions"].append(r)
             
         return entries
 
@@ -1554,12 +1573,31 @@ def get_memories():
         cursor.execute("SELECT * FROM memories WHERE couple_id = ? ORDER BY captured_at DESC", (couple_id,))
         memories = [dict(r) for r in cursor.fetchall()]
         
+        if not memories:
+            return memories
+
+        mem_ids = [m["id"] for m in memories]
+        mem_map = {m["id"]: m for m in memories}
         for m in memories:
-            cursor.execute("SELECT * FROM memory_comments WHERE memory_id = ? ORDER BY submitted_at ASC", (m['id'],))
-            m['comments'] = [dict(r) for r in cursor.fetchall()]
+            m["comments"] = []
+            m["reactions"] = []
+
+        batch_size = 900
+        for i in range(0, len(mem_ids), batch_size):
+            chunk = mem_ids[i:i + batch_size]
+            placeholders = ",".join("?" * len(chunk))
             
-            cursor.execute("SELECT * FROM memory_reactions WHERE memory_id = ?", (m['id'],))
-            m['reactions'] = [dict(r) for r in cursor.fetchall()]
+            cursor.execute(f"SELECT * FROM memory_comments WHERE memory_id IN ({placeholders}) ORDER BY submitted_at ASC", chunk)
+            for row in cursor.fetchall():
+                c = dict(row)
+                if c["memory_id"] in mem_map:
+                    mem_map[c["memory_id"]]["comments"].append(c)
+
+            cursor.execute(f"SELECT * FROM memory_reactions WHERE memory_id IN ({placeholders})", chunk)
+            for row in cursor.fetchall():
+                r = dict(row)
+                if r["memory_id"] in mem_map:
+                    mem_map[r["memory_id"]]["reactions"].append(r)
             
     return memories
 
