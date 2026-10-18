@@ -202,12 +202,12 @@ export default function MonthlyCalendar({ activeUser }) {
       </div>
 
       <div className="calendar-header glass-panel">
-        <button className="btn-icon" onClick={prevMonth}><ChevronLeft /></button>
+        <button aria-label="Previous month" title="Previous month" className="btn-icon" onClick={prevMonth}><ChevronLeft /></button>
         <h3 className="calendar-title flex items-center gap-2">
           <CalendarIcon className="text-accent" />
           {monthName} {year}
         </h3>
-        <button className="btn-icon" onClick={nextMonth}><ChevronRight /></button>
+        <button aria-label="Next month" title="Next month" className="btn-icon" onClick={nextMonth}><ChevronRight /></button>
       </div>
 
       <div className="calendar-grid-header">
