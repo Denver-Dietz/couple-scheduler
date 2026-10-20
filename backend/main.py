@@ -1554,12 +1554,30 @@ def get_memories():
         cursor.execute("SELECT * FROM memories WHERE couple_id = ? ORDER BY captured_at DESC", (couple_id,))
         memories = [dict(r) for r in cursor.fetchall()]
         
+        if not memories:
+            return memories
+
+        memory_ids = [m['id'] for m in memories]
+
+        # Initialize empty lists for comments and reactions
         for m in memories:
-            cursor.execute("SELECT * FROM memory_comments WHERE memory_id = ? ORDER BY submitted_at ASC", (m['id'],))
-            m['comments'] = [dict(r) for r in cursor.fetchall()]
+            m['comments'] = []
+            m['reactions'] = []
             
-            cursor.execute("SELECT * FROM memory_reactions WHERE memory_id = ?", (m['id'],))
-            m['reactions'] = [dict(r) for r in cursor.fetchall()]
+        memory_map = {m['id']: m for m in memories}
+
+        # Chunk the memory_ids in batches of 900 to avoid SQLite limits
+        for i in range(0, len(memory_ids), 900):
+            chunk = memory_ids[i:i + 900]
+            placeholders = ','.join('?' for _ in chunk)
+
+            cursor.execute(f"SELECT * FROM memory_comments WHERE memory_id IN ({placeholders}) ORDER BY submitted_at ASC", chunk)
+            for c in cursor.fetchall():
+                memory_map[c['memory_id']]['comments'].append(dict(c))
+
+            cursor.execute(f"SELECT * FROM memory_reactions WHERE memory_id IN ({placeholders})", chunk)
+            for r in cursor.fetchall():
+                memory_map[r['memory_id']]['reactions'].append(dict(r))
             
     return memories
 
