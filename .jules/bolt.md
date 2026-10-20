@@ -1,0 +1,3 @@
+## 2024-10-20 - Fix N+1 Query in Memory Feed Fetching
+**Learning:** Found a severe N+1 query vulnerability in `get_memories` where each memory required two separate queries for comments and reactions. While `IN` clauses solve this, SQLite has a strict limit on variable parameters, meaning unbounded `IN (?, ...)` clauses will crash on large data sets. Also, resolving batched child queries using list-scanning inside a loop introduces an O(N^2) bottleneck in Python.
+**Action:** When fixing N+1 queries with SQLite `IN` clauses, always chunk the parent IDs (e.g., batches of 900) to respect parameter limits, and strictly use O(1) hash map lookups (`memory_map = {m['id']: m for m in memories}`) rather than O(N) list scans to map the results back to their parents.
